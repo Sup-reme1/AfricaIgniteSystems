@@ -1,0 +1,54 @@
+<header
+  class="app-header fixed top-0 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-30 px-space-md sm:px-space-lg flex items-center justify-between gap-space-md"
+>
+  <div class="flex items-center gap-space-sm sm:gap-space-md flex-1 max-w-xl min-w-0">
+    <button
+      class="lg:hidden p-2 -ml-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface shrink-0"
+      type="button"
+      aria-label="Open menu"
+      aria-controls="app-sidebar"
+      aria-expanded="false"
+      data-sidebar-open
+    >
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+    <div class="relative w-full min-w-0">
+      <span
+        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg"
+        >search</span
+      ><input
+        class="w-full h-10 pl-10 pr-4 bg-surface-container-low rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary-container/20"
+        placeholder="Search OKRs, key results, team members..."
+        type="search"
+        aria-label="Search"
+      />
+    </div>
+    <div class="hidden xl:flex items-center gap-1.5 px-space-sm py-1 bg-surface-container rounded-full shrink-0">
+      <span class="w-2 h-2 rounded-full bg-primary"></span
+      ><span class="font-label-sm text-label-sm text-on-surface font-medium">Q3 FY25 • 42 Days Remaining</span>
+    </div>
+  </div>
+  <div class="flex items-center gap-space-sm sm:gap-space-md shrink-0">
+    <button
+      class="relative p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"
+      type="button"
+      aria-label="Notifications"
+    >
+      <span class="material-symbols-outlined">notifications</span
+      ><span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error"></span>
+    </button>
+    <button
+      class="hidden sm:flex items-center gap-1.5 h-10 px-space-md bg-primary-container hover:bg-primary text-on-primary rounded-lg font-title-sm text-title-sm transition-colors shadow-sm"
+      type="button"
+    >
+      <span class="material-symbols-outlined text-lg">add</span><span>New Objective</span>
+    </button>
+    <div class="flex items-center gap-space-sm pl-space-xs">
+      <img alt="Sarah Lin" class="w-8 h-8 rounded-full object-cover" src="assets/img/avatar.jpg" />
+      <div class="hidden md:block text-left">
+        <div class="font-title-sm text-title-sm text-on-surface leading-tight">Sarah Lin</div>
+        <div class="font-label-sm text-label-sm text-on-surface-variant leading-tight">VP of Product</div>
+      </div>
+    </div>
+  </div>
+</header>

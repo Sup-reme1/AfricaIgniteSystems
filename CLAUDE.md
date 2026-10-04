@@ -1,0 +1,149 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+---
+
+## Project
+
+**Africa Ignite Systems** is a web portal where individuals and teams work together, using structured systems (OKRs, check-ins, initiatives) to achieve their goals and objectives.
+
+The frontend is static HTML/CSS/JS with no build step. Current pages are slices of the original "AlignWork" designs, rebranded to Africa Ignite Systems. Their content is still hard-coded sample data; the next phase adds a data layer and real features (see Roadmap).
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Markup | HTML5 |
+| Styling | Tailwind CSS via Play CDN (`cdn.tailwindcss.com`), plus plain CSS in `assets/css/` |
+| Scripting | Vanilla JS (no framework, no bundler) |
+| Icons | Material Symbols Outlined (Google Fonts) |
+| Fonts | Inter (body/UI), Plus Jakarta Sans (headlines/metrics) |
+| Dev Server | `dev-server.js`, a zero-dependency Node static server on `http://127.0.0.1:4173` |
+| Screenshots | `dev-server.js screenshot`, which drives the installed Edge/Chrome via `puppeteer-core` |
+
+Stay on the Tailwind CDN. Do not add a Tailwind build step, PostCSS, or a bundler unless asked.
+
+---
+
+## Structure
+
+```
+index.html            Dashboard                     data-page="dashboard"
+objectives.html       Objective Hierarchy           data-page="objectives"
+check-ins.html        Weekly Check-ins              data-page="check-ins"
+initiatives.html      Initiatives & Milestones      data-page="initiatives"
+analytics.html        Team & Analytics (stub)       data-page="analytics"
+settings.html         Settings (stub)               data-page="settings"
+partials/
+  sidebar.html        logo, workspace switcher, main nav, OKR progress, mobile backdrop
+  header.html         menu button (mobile), search, cycle badge, notifications, CTA, profile
+  footer.html         copyright, footer links, version
+assets/
+  css/base.css        global resets
+  css/layout.css      app shell: sidebar/header/content/footer positioning + responsive behaviour
+  js/tailwind-theme.js  Tailwind theme tokens (colors, spacing, type scale), shared by all pages
+  js/layout.js        injects partials, marks active nav link, exposes AIS.layoutReady
+  js/app.js           shared behaviour (mobile sidebar, footer year)
+  js/pages/*.js       one script per page, named after its data-page
+  img/                logo.svg, avatar.jpg
+```
+
+### Page skeleton
+
+Every page has the same shell; only `<title>`, `data-page`, the `<main>` content and the page script differ:
+
+```html
+<body data-page="dashboard" class="bg-surface font-body-md text-on-surface antialiased">
+  <div data-include="sidebar"></div>
+  <div class="app-content">
+    <div data-include="header"></div>
+    <main class="w-full pt-16 bg-surface"> ...page content... </main>
+    <div data-include="footer"></div>
+  </div>
+  <script src="assets/js/layout.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/pages/dashboard.js"></script>
+</body>
+```
+
+The `<head>` loads fonts, then the Tailwind CDN, then `assets/js/tailwind-theme.js`, then `base.css` and `layout.css`. Copy it from an existing page.
+
+### Adding a page
+
+1. Copy an existing page and set `<title>` and `data-page`.
+2. Add a nav link in `partials/sidebar.html` with a matching `data-page`.
+3. Put page-specific JS in `assets/js/pages/<data-page>.js`. Don't use inline `<script>` or `onclick=`.
+
+---
+
+## Conventions
+
+- **Shared layout lives only in `partials/`.** Never paste sidebar/header/footer markup into a page.
+- **Active nav state is automatic.** `layout.js` matches `<body data-page>` to the nav link's `data-page` and applies the nav's `data-active-classes`. Don't hard-code `aria-current` or active classes.
+- **Code that touches partial markup must wait for the layout:** `AIS.layoutReady.then(() => { ... })`. Code that only touches `<main>` can run immediately.
+- **Use theme tokens, not raw values:** `bg-primary-container`, `text-on-surface-variant`, `p-space-lg`, `font-title-sm text-title-sm`, etc. are defined in `tailwind-theme.js`. Add new tokens there, not inline.
+- Classes added from JS must be full literal class names (the Tailwind CDN only generates classes it sees in the DOM).
+- **Paths are relative to the project root** (`assets/...`, `partials/...`, `objectives.html`). All pages live at the root, so relative paths work.
+- Layout breakpoint: below `lg` (1024px) the sidebar is off-canvas, opened by the header menu button. From `lg` up it's fixed open.
+- Brand name is **Africa Ignite Systems**. Don't reintroduce "AlignWork".
+
+---
+
+## Running the project
+
+`fetch()` loads the partials, so pages **must be served over http**. Opening the files from disk (`file://`) leaves the layout empty.
+
+```bash
+npm install          # once, installs puppeteer-core for screenshots
+npm run dev          # http://127.0.0.1:4173  (PORT env var overrides)
+```
+
+The dev server sends `Cache-Control: no-store`, so no cache-busting query strings are needed.
+
+### Taking a screenshot
+
+Use the project screenshot tool. Do NOT start another server (`npx serve`, Live Server, `python -m http.server`) or drive a browser by hand:
+
+```bash
+node dev-server.js screenshot <page.html> [out.png] [--width=1440] [--height=900] [--viewport] [--click=<selector>]
+```
+
+- Default output: `screenshots/<page>-<width>.png` (git-ignored), full page at **1440px wide** (the design target).
+- `--viewport` captures only the window (use for mobile, e.g. `--width=390 --height=844 --viewport`).
+- `--click=<selector>` clicks before capturing (repeatable) to show interactive states.
+- It starts its own server on a free port, so `npm run dev` doesn't need to be running.
+- It exits non-zero and lists problems if the page has JS errors, failed requests, or HTTP 4xx/5xx responses.
+
+Examples:
+
+```bash
+node dev-server.js screenshot index.html
+node dev-server.js screenshot check-ins.html screenshots/menu-390.png --width=390 --height=844 --viewport --click=[data-sidebar-open]
+```
+
+---
+
+## Rules
+
+- Do NOT modify `dev-server.js` unless explicitly instructed.
+- Do NOT consider a UI task done until you've taken screenshots of the affected pages (1440px, plus 390px for layout changes), looked at them, and seen no reported problems.
+- Do NOT use any server, browser or tool other than `node dev-server.js screenshot` for screenshots.
+- Keep JS and CSS out of the HTML. Use `assets/js/pages/*.js` and `assets/css/`.
+
+---
+
+## Known issues (inherited from the original designs)
+
+- Objective Hierarchy (`objectives.html`): at 1440px the tree canvas is clipped on the left and partly sits under the Node Inspector panel.
+- Pages are not yet tuned for narrow screens beyond the shell (some content grids are desktop-first).
+- Header actions (search, notifications, New Objective, workspace switcher) are visual only.
+
+## Roadmap
+
+1. Mock data layer: `data/*.json` (objectives, key results, check-ins, initiatives) and a `data.js` service, so pages render from data.
+2. Persistence: localStorage for creating/editing objectives and submitting check-ins.
+3. Shared UI components: modal, toast, dropdown, tabs (New Objective, notifications, workspace switcher).
+4. Auth and roles (individual, team lead, admin), then a backend API.

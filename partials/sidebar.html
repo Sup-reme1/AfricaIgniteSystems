@@ -1,0 +1,85 @@
+<div class="app-backdrop fixed inset-0 bg-inverse-surface/40 z-40 lg:hidden" data-sidebar-close></div>
+<aside
+  id="app-sidebar"
+  class="app-sidebar fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
+>
+  <div class="flex flex-col flex-1 min-h-0">
+    <div class="h-16 px-space-lg flex items-center justify-between gap-space-sm">
+      <a href="index.html" class="flex items-center gap-space-sm min-w-0">
+        <img alt="" class="h-8 w-8 shrink-0" src="assets/img/logo.svg" />
+        <span class="min-w-0 leading-none">
+          <span class="block font-headline-sm text-headline-sm text-on-surface tracking-tight truncate">Africa Ignite</span>
+          <span class="block font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Systems</span>
+        </span>
+      </a>
+      <button
+        class="lg:hidden p-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high"
+        type="button"
+        aria-label="Close menu"
+        data-sidebar-close
+      >
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <div class="px-space-md py-space-xs">
+      <div
+        class="p-space-sm bg-surface-container rounded-xl flex items-center justify-between cursor-pointer hover:bg-surface-container-high transition-colors"
+      >
+        <div class="flex items-center gap-space-sm min-w-0">
+          <div
+            class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-title-sm text-title-sm shrink-0"
+          >
+            PE
+          </div>
+          <div class="min-w-0">
+            <div class="font-title-sm text-title-sm text-on-surface truncate">Product &amp; Eng</div>
+            <div class="font-label-sm text-label-sm text-on-surface-variant truncate">Q3 2025 Cycle</div>
+          </div>
+        </div>
+        <span class="material-symbols-outlined text-on-surface-variant shrink-0">unfold_more</span>
+      </div>
+    </div>
+    <nav
+      class="flex-1 px-space-md py-space-sm space-y-1 overflow-y-auto"
+      aria-label="Main"
+      data-active-classes="bg-primary-container text-on-primary"
+      data-inactive-classes="text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface"
+    >
+      <a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors font-title-sm text-title-sm"data-page="dashboard" href="index.html"
+        ><span class="material-symbols-outlined text-xl">dashboard</span><span>Dashboard</span></a
+      ><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors font-title-sm text-title-sm"data-page="objectives" href="objectives.html"
+        ><span class="material-symbols-outlined text-xl">account_tree</span><span>Objective Hierarchy</span></a
+      ><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors font-title-sm text-title-sm"data-page="check-ins" href="check-ins.html"
+        ><span class="material-symbols-outlined text-xl">fact_check</span><span>Weekly Check-ins</span></a
+      ><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors font-title-sm text-title-sm"data-page="initiatives" href="initiatives.html"
+        ><span class="material-symbols-outlined text-xl">flag</span><span>Initiatives &amp; Milestones</span></a
+      ><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors font-title-sm text-title-sm"data-page="analytics" href="analytics.html"
+        ><span class="material-symbols-outlined text-xl">query_stats</span><span>Team &amp; Analytics</span></a
+      ><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl transition-colors font-title-sm text-title-sm"data-page="settings" href="settings.html"
+        ><span class="material-symbols-outlined text-xl">settings</span><span>Settings</span></a
+      >
+    </nav>
+  </div>
+  <div class="p-space-md space-y-space-sm">
+    <div class="p-space-sm bg-surface-container rounded-xl">
+      <div class="flex items-center justify-between mb-space-xs">
+        <span class="font-label-sm text-label-sm text-on-surface-variant">Quarter OKR Target</span
+        ><span class="font-label-sm text-label-sm text-primary font-semibold">78%</span>
+      </div>
+      <div class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+        <div class="h-full bg-primary-container rounded-full" style="width: 78%"></div>
+      </div>
+      <div class="mt-space-xs flex justify-between items-center">
+        <span class="font-label-sm text-label-sm text-on-surface-variant">28 of 36 KRs Met</span
+        ><a class="font-label-sm text-label-sm text-primary hover:underline" href="#">Help</a>
+      </div>
+    </div>
+    <div
+      class="flex items-center justify-between px-space-sm py-space-xs text-on-surface-variant font-label-md text-label-md"
+    >
+      <span class="flex items-center gap-1.5"
+        ><span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span>Cloud Sync Active</span
+      ><span class="material-symbols-outlined text-sm">cloud_done</span>
+    </div>
+  </div>
+</aside>

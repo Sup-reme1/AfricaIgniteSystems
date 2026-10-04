@@ -1,0 +1,13 @@
+{
+  "name": "africa-ignite-systems",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Africa Ignite Systems portal — static HTML/CSS/JS frontend.",
+  "scripts": {
+    "dev": "node dev-server.js",
+    "screenshot": "node dev-server.js screenshot"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^24.43.1"
+  }
+}

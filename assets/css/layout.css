@@ -1,0 +1,65 @@
+/* App shell: sidebar, header, content area and footer. */
+
+:root {
+  --sidebar-width: 16rem;
+  --header-height: 4rem;
+}
+
+/* Sidebar: off-canvas below 1024px, fixed open from 1024px up. */
+.app-sidebar {
+  transform: translateX(-100%);
+  transition: transform 200ms ease;
+}
+
+body.sidebar-open .app-sidebar {
+  transform: translateX(0);
+}
+
+.app-backdrop {
+  display: none;
+}
+
+body.sidebar-open .app-backdrop {
+  display: block;
+}
+
+body.sidebar-open {
+  overflow: hidden;
+}
+
+.app-header {
+  left: 0;
+}
+
+.app-content {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content > main {
+  flex: 1;
+}
+
+@media (min-width: 1024px) {
+  .app-sidebar,
+  body.sidebar-open .app-sidebar {
+    transform: none;
+  }
+
+  body.sidebar-open .app-backdrop {
+    display: none;
+  }
+
+  body.sidebar-open {
+    overflow: auto;
+  }
+
+  .app-header {
+    left: var(--sidebar-width);
+  }
+
+  .app-content {
+    padding-left: var(--sidebar-width);
+  }
+}
