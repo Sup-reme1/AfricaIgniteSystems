@@ -1,0 +1,1644 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="web_dashboard" name="shell-type" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @layer base {
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+        }
+
+        body {
+          overscroll-behavior: none;
+        }
+
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-on-surface": "#eaf1ff",
+              "outline-variant": "#c7c4d8",
+              outline: "#777587",
+              surface: "#f8f9ff",
+              "inverse-surface": "#213145",
+              "primary-fixed-dim": "#c3c0ff",
+              "on-primary-fixed-variant": "#3323cc",
+              "on-error-container": "#93000a",
+              "tertiary-fixed-dim": "#4edea3",
+              "error-container": "#ffdad6",
+              "on-primary-fixed": "#0f0069",
+              "primary-fixed": "#e2dfff",
+              tertiary: "#005338",
+              "on-error": "#ffffff",
+              "on-secondary-container": "#5c647a",
+              "on-primary-container": "#dad7ff",
+              "surface-dim": "#cbdbf5",
+              "on-primary": "#ffffff",
+              "surface-container-highest": "#d3e4fe",
+              "surface-container-high": "#dce9ff",
+              "on-secondary-fixed": "#131b2e",
+              error: "#ba1a1a",
+              "on-secondary": "#ffffff",
+              "on-background": "#0b1c30",
+              "surface-tint": "#4d44e3",
+              "surface-container": "#e5eeff",
+              "tertiary-container": "#006e4b",
+              "secondary-fixed-dim": "#bec6e0",
+              "on-secondary-fixed-variant": "#3f465c",
+              "on-surface": "#0b1c30",
+              "on-tertiary-fixed-variant": "#005236",
+              background: "#f8f9ff",
+              "tertiary-fixed": "#6ffbbe",
+              primary: "#3525cd",
+              "secondary-container": "#dae2fd",
+              "surface-variant": "#d3e4fe",
+              "on-tertiary-fixed": "#002113",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed": "#dae2fd",
+              "on-tertiary-container": "#67f4b7",
+              "surface-bright": "#f8f9ff",
+              secondary: "#565e74",
+              "surface-container-low": "#eff4ff",
+              "primary-container": "#4f46e5",
+              "on-tertiary": "#ffffff",
+              "on-surface-variant": "#464555",
+              "inverse-primary": "#c3c0ff",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+            spacing: {
+              "margin-mobile": "1rem",
+              "gutter-mobile": "1rem",
+              margin: "2rem",
+              "space-xs": "0.25rem",
+              "space-xl": "2rem",
+              gutter: "1.5rem",
+              "space-md": "1rem",
+              "space-lg": "1.5rem",
+              "space-sm": "0.5rem",
+            },
+            fontFamily: {
+              "label-md": ["Inter"],
+              "headline-lg-mobile": ["Plus Jakarta Sans"],
+              "body-md": ["Inter"],
+              "body-sm": ["Inter"],
+              "headline-md": ["Plus Jakarta Sans"],
+              "headline-sm": ["Plus Jakarta Sans"],
+              "label-sm": ["Inter"],
+              "display-lg-mobile": ["Plus Jakarta Sans"],
+              "body-lg": ["Inter"],
+              "title-sm": ["Inter"],
+              "title-md": ["Inter"],
+              "display-lg": ["Plus Jakarta Sans"],
+              "headline-lg": ["Plus Jakarta Sans"],
+              "metric-stat": ["Plus Jakarta Sans"],
+            },
+            fontSize: {
+              "label-md": [
+                "12px",
+                {
+                  lineHeight: "16px",
+                  letterSpacing: "0.02em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-lg-mobile": [
+                "24px",
+                {
+                  lineHeight: "32px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+              "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+              "headline-md": [
+                "22px",
+                {
+                  lineHeight: "28px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-sm": [
+                "18px",
+                {
+                  lineHeight: "24px",
+                  letterSpacing: "-0.005em",
+                  fontWeight: "600",
+                },
+              ],
+              "label-sm": [
+                "11px",
+                {
+                  lineHeight: "14px",
+                  letterSpacing: "0.03em",
+                  fontWeight: "500",
+                },
+              ],
+              "display-lg-mobile": [
+                "28px",
+                {
+                  lineHeight: "36px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "700",
+                },
+              ],
+              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+              "title-sm": ["14px", { lineHeight: "20px", fontWeight: "600" }],
+              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+              "display-lg": [
+                "36px",
+                {
+                  lineHeight: "44px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+              "headline-lg": [
+                "30px",
+                {
+                  lineHeight: "38px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "600",
+                },
+              ],
+              "metric-stat": [
+                "28px",
+                {
+                  lineHeight: "32px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body class="bg-surface font-body-md text-on-surface antialiased">
+    <aside
+      class="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
+    >
+      <div class="flex flex-col flex-1 min-h-0">
+        <div class="h-16 px-space-lg flex items-center gap-space-sm">
+          <img
+            alt="AlignWork Logo"
+            class="h-8 w-auto object-contain"
+            src="https://lh3.googleusercontent.com/aida/AEtjO1VEBnOYQx-vRxxC2qXaqH5e68U1Lp2dIQeo9njPGCdtRrc-YrkkaN8ngKCLthtQkGshzyw5zqd5_OuqwUV3ULQPnJ7UjzKW-Hii2g9GTKGwW4PazoPgQ9QfgccKH6kby4eZJPpO0P5MLOf7BpHsF82MeF3Emrd8GanoCNdXqtgUMvsf12m6Xyu_GZm4ucoLn6QWDVck8ilP_kc1LniGGVvDxFTzF9FrGrZYOYhuDrlNj9sz_23SzficaGlX"
+          /><span
+            class="font-headline-sm text-headline-sm text-on-surface tracking-tight"
+            >AlignWork</span
+          >
+        </div>
+        <div class="px-space-md py-space-xs">
+          <div
+            class="p-space-sm bg-surface-container rounded-xl flex items-center justify-between cursor-pointer hover:bg-surface-container-high transition-colors"
+          >
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div
+                class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-title-sm text-title-sm shrink-0"
+              >
+                PE
+              </div>
+              <div class="min-w-0">
+                <div
+                  class="font-title-sm text-title-sm text-on-surface truncate"
+                >
+                  Product &amp; Eng
+                </div>
+                <div
+                  class="font-label-sm text-label-sm text-on-surface-variant truncate"
+                >
+                  Q3 2025 Cycle
+                </div>
+              </div>
+            </div>
+            <span
+              class="material-symbols-outlined text-on-surface-variant shrink-0"
+              >unfold_more</span
+            >
+          </div>
+        </div>
+        <nav
+          class="flex-1 px-space-md py-space-sm space-y-1 overflow-y-auto"
+          data-active-classes="bg-primary-container text-on-primary font-title-sm rounded-xl"
+        >
+          <a
+            aria-current="page"
+            class="flex items-center gap-space-sm px-space-md py-space-sm transition-colors bg-primary-container text-on-primary font-title-sm rounded-xl"
+            data-path="dashboard-overview"
+            href="/gm1.html"
+            ><span class="material-symbols-outlined text-xl">dashboard</span
+            ><span>Dashboard</span></a
+          ><a
+            class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm"
+            data-path="objective-hierarchy"
+            href="/gm2.html"
+            ><span class="material-symbols-outlined text-xl">account_tree</span
+            ><span>Objective Hierarchy</span></a
+          ><a
+            class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm"
+            data-path="weekly-check-ins"
+            href="/gm3.html"
+            ><span class="material-symbols-outlined text-xl">fact_check</span
+            ><span>Weekly Check-ins</span></a
+          ><a
+            class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm"
+            data-path="initiatives-and-milestones"
+            href="/gm4.html"
+            ><span class="material-symbols-outlined text-xl">flag</span
+            ><span>Initiatives &amp; Milestones</span></a
+          ><a
+            class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm"
+            data-path="team-and-performance-analytics"
+            href="#"
+            ><span class="material-symbols-outlined text-xl">query_stats</span
+            ><span>Team &amp; Analytics</span></a
+          ><a
+            class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm"
+            data-path="settings"
+            href="#"
+            ><span class="material-symbols-outlined text-xl">settings</span
+            ><span>Settings</span></a
+          >
+        </nav>
+      </div>
+      <div class="p-space-md space-y-space-sm">
+        <div class="p-space-sm bg-surface-container rounded-xl">
+          <div class="flex items-center justify-between mb-space-xs">
+            <span class="font-label-sm text-label-sm text-on-surface-variant"
+              >Quarter OKR Target</span
+            ><span
+              class="font-label-sm text-label-sm text-primary font-semibold"
+              >78%</span
+            >
+          </div>
+          <div
+            class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden"
+          >
+            <div
+              class="h-full bg-primary-container rounded-full"
+              style="width: 78%"
+            ></div>
+          </div>
+          <div class="mt-space-xs flex justify-between items-center">
+            <span class="font-label-sm text-label-sm text-on-surface-variant"
+              >28 of 36 KRs Met</span
+            ><a
+              class="font-label-sm text-label-sm text-primary hover:underline"
+              data-path="help-center"
+              href="#"
+              >Help</a
+            >
+          </div>
+        </div>
+        <div
+          class="flex items-center justify-between px-space-sm py-space-xs text-on-surface-variant font-label-md text-label-md"
+        >
+          <span class="flex items-center gap-1.5"
+            ><span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span
+            >Cloud Sync Active</span
+          ><span class="material-symbols-outlined text-sm">cloud_done</span>
+        </div>
+      </div>
+    </aside>
+    <div class="pl-64">
+      <header
+        class="fixed top-0 left-64 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-space-lg flex items-center justify-between gap-space-md"
+      >
+        <div class="flex items-center gap-space-md flex-1 max-w-xl">
+          <div class="relative w-full">
+            <span
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg"
+              >search</span
+            ><input
+              class="w-full h-10 pl-10 pr-4 bg-surface-container-low rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary-container/20"
+              placeholder="Search OKRs, key results, team members..."
+              type="text"
+            />
+          </div>
+          <div
+            class="hidden xl:flex items-center gap-1.5 px-space-sm py-1 bg-surface-container rounded-full shrink-0"
+          >
+            <span class="w-2 h-2 rounded-full bg-primary"></span
+            ><span
+              class="font-label-sm text-label-sm text-on-surface font-medium"
+              >Q3 FY25 • 42 Days Remaining</span
+            >
+          </div>
+        </div>
+        <div class="flex items-center gap-space-md shrink-0">
+          <button
+            class="relative p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"
+            type="button"
+          >
+            <span class="material-symbols-outlined">notifications</span
+            ><span
+              class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error"
+            ></span></button
+          ><button
+            class="hidden sm:flex items-center gap-1.5 h-10 px-space-md bg-primary-container hover:bg-primary text-on-primary rounded-lg font-title-sm text-title-sm transition-colors shadow-sm"
+            type="button"
+          >
+            <span class="material-symbols-outlined text-lg">add</span
+            ><span>New Objective</span>
+          </button>
+          <div class="flex items-center gap-space-sm pl-space-xs">
+            <img
+              alt="Profile"
+              class="w-8 h-8 rounded-full object-cover"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSKKMdGnd5Vp-WgIfzUUZttdPzSjBGPyl2sO80zf6u6GuwIUQcjE9vWxN2g5pel9fZ8uv-y8y7WTzRqFZjqKlfZ64GPer4PLxnWxof4kUAxW-Q74babZ51-q8yciKOl4K8pkl8PPzNiu-PwXDHqSDng7uOwED6-iFxTTWfpqYRanICVThksAMEbKmFPw-ssphnkXJPfmQLPhXCqtPtePrY2qJOjvoVi5L0tH5wQ_ksTBQ63b5mnphKSA"
+            />
+            <div class="hidden md:block text-left">
+              <div
+                class="font-title-sm text-title-sm text-on-surface leading-tight"
+              >
+                Sarah Lin
+              </div>
+              <div
+                class="font-label-sm text-label-sm text-on-surface-variant leading-tight"
+              >
+                VP of Product
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <main class="w-full pt-16 bg-surface">
+        <div class="flex flex-col w-full">
+          <div class="px-space-lg py-space-lg space-y-space-lg">
+            <!-- Top Header & Actions Section -->
+            <div
+              class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md"
+            >
+              <div class="space-y-1">
+                <div class="flex items-center gap-space-sm">
+                  <span
+                    class="px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed font-label-sm text-label-sm uppercase tracking-wider"
+                    >Strategy Execution</span
+                  >
+                  <span
+                    class="text-on-surface-variant font-label-sm text-label-sm"
+                    >•</span
+                  >
+                  <span
+                    class="font-label-sm text-label-sm text-on-surface-variant"
+                    >Q3 FY25 Real-Time Roadmap</span
+                  >
+                </div>
+                <h1
+                  class="font-headline-lg text-headline-lg text-on-surface tracking-tight"
+                >
+                  Initiatives &amp; Milestone Execution Planner
+                </h1>
+                <p class="font-body-md text-body-md text-on-surface-variant">
+                  Connect day-to-day projects, sprints, and strategic
+                  deliverables directly to Key Results.
+                </p>
+              </div>
+              <!-- Action Buttons -->
+              <div class="flex flex-wrap items-center gap-space-sm shrink-0">
+                <button
+                  class="flex items-center gap-1.5 h-10 px-space-md rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-title-sm text-title-sm transition-colors shadow-sm"
+                  type="button"
+                >
+                  <span
+                    class="material-symbols-outlined text-lg text-on-surface-variant"
+                    >sync_alt</span
+                  >
+                  <span>Integrate Jira / Linear</span>
+                </button>
+                <button
+                  class="flex items-center gap-1.5 h-10 px-space-md rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-title-sm text-title-sm transition-colors shadow-sm"
+                  type="button"
+                >
+                  <span
+                    class="material-symbols-outlined text-lg text-on-surface-variant"
+                    >file_download</span
+                  >
+                  <span>Export Roadmap</span>
+                </button>
+                <button
+                  class="flex items-center gap-1.5 h-10 px-space-md rounded-lg bg-primary-container hover:bg-primary text-on-primary font-title-sm text-title-sm transition-all shadow-sm"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-lg"
+                    >add_circle</span
+                  >
+                  <span>New Initiative</span>
+                </button>
+              </div>
+            </div>
+            <!-- Filter Toolbar & View Switchers -->
+            <div
+              class="p-space-md rounded-xl bg-surface-container-low shadow-sm flex flex-col xl:flex-row xl:items-center justify-between gap-space-md"
+            >
+              <!-- Search & Filters -->
+              <div class="flex flex-wrap items-center gap-space-sm flex-1">
+                <div class="relative w-64 min-w-[200px]">
+                  <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-base"
+                    >search</span
+                  >
+                  <input
+                    class="w-full h-9 pl-9 pr-3 rounded-lg bg-surface-container-lowest text-on-surface font-body-sm text-body-sm placeholder:text-on-surface-variant shadow-sm focus:outline-none"
+                    placeholder="Search deliverables, tags..."
+                    type="text"
+                  />
+                </div>
+                <!-- Filter Dropdown 1: Linked OKR -->
+                <button
+                  class="flex items-center gap-1.5 h-9 px-space-sm rounded-lg bg-surface-container-lowest text-on-surface font-body-sm text-body-sm shadow-sm hover:bg-surface-container transition-colors"
+                  type="button"
+                >
+                  <span class="text-on-surface-variant">OKR:</span>
+                  <span class="font-medium">All Linked</span>
+                  <span
+                    class="material-symbols-outlined text-sm text-on-surface-variant"
+                    >expand_more</span
+                  >
+                </button>
+                <!-- Filter Dropdown 2: Status -->
+                <button
+                  class="flex items-center gap-1.5 h-9 px-space-sm rounded-lg bg-surface-container-lowest text-on-surface font-body-sm text-body-sm shadow-sm hover:bg-surface-container transition-colors"
+                  type="button"
+                >
+                  <span class="text-on-surface-variant">Status:</span>
+                  <span class="font-medium">Active (All)</span>
+                  <span
+                    class="material-symbols-outlined text-sm text-on-surface-variant"
+                    >expand_more</span
+                  >
+                </button>
+                <!-- Filter Dropdown 3: Priority -->
+                <button
+                  class="flex items-center gap-1.5 h-9 px-space-sm rounded-lg bg-surface-container-lowest text-on-surface font-body-sm text-body-sm shadow-sm hover:bg-surface-container transition-colors"
+                  type="button"
+                >
+                  <span class="text-on-surface-variant">Priority:</span>
+                  <span class="font-medium">P0 &amp; P1</span>
+                  <span
+                    class="material-symbols-outlined text-sm text-on-surface-variant"
+                    >expand_more</span
+                  >
+                </button>
+                <!-- Filter Dropdown 4: Team -->
+                <button
+                  class="flex items-center gap-1.5 h-9 px-space-sm rounded-lg bg-surface-container-lowest text-on-surface font-body-sm text-body-sm shadow-sm hover:bg-surface-container transition-colors"
+                  type="button"
+                >
+                  <span class="text-on-surface-variant">Team:</span>
+                  <span class="font-medium">All Engineering</span>
+                  <span
+                    class="material-symbols-outlined text-sm text-on-surface-variant"
+                    >expand_more</span
+                  >
+                </button>
+                <!-- Reset Button -->
+                <button
+                  class="h-9 px-space-xs rounded-lg text-primary hover:text-primary-container font-label-md text-label-md transition-colors"
+                  type="button"
+                >
+                  Clear Filters
+                </button>
+              </div>
+              <!-- View Switcher -->
+              <div
+                class="flex items-center p-1 rounded-lg bg-surface-container shrink-0 self-start xl:self-auto"
+              >
+                <button
+                  class="flex items-center gap-1.5 px-space-sm py-1.5 rounded text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-base"
+                    >view_kanban</span
+                  >
+                  <span>Kanban Board</span>
+                </button>
+                <button
+                  class="flex items-center gap-1.5 px-space-sm py-1.5 rounded-md bg-surface-container-lowest text-primary shadow-sm font-label-md text-label-md font-semibold transition-all"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-base"
+                    >timeline</span
+                  >
+                  <span>Interactive Timeline</span>
+                </button>
+                <button
+                  class="flex items-center gap-1.5 px-space-sm py-1.5 rounded text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors"
+                  type="button"
+                >
+                  <span class="material-symbols-outlined text-base"
+                    >grid_on</span
+                  >
+                  <span>Table Grid</span>
+                </button>
+              </div>
+            </div>
+            <!-- Main View - Interactive Timeline & Roadmap -->
+            <div
+              class="rounded-xl bg-surface-container-lowest shadow-sm overflow-hidden"
+            >
+              <!-- Timeline Header Controls Bar -->
+              <div
+                class="p-space-md bg-surface-container-low flex flex-col md:flex-row md:items-center justify-between gap-space-sm"
+              >
+                <div class="flex items-center gap-space-md">
+                  <div class="flex items-center gap-1">
+                    <button
+                      class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors"
+                      type="button"
+                    >
+                      <span class="material-symbols-outlined text-lg"
+                        >chevron_left</span
+                      >
+                    </button>
+                    <span class="font-title-md text-title-md text-on-surface"
+                      >Q3 FY2025</span
+                    >
+                    <button
+                      class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors"
+                      type="button"
+                    >
+                      <span class="material-symbols-outlined text-lg"
+                        >chevron_right</span
+                      >
+                    </button>
+                  </div>
+                  <span
+                    class="px-space-xs py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm"
+                    >Cycle Day 49 of 92</span
+                  >
+                </div>
+                <div class="flex items-center gap-space-sm">
+                  <div
+                    class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm"
+                  >
+                    <span
+                      class="inline-block w-3 h-3 rounded bg-tertiary-fixed-dim"
+                    ></span>
+                    <span>Done</span>
+                    <span
+                      class="inline-block w-3 h-3 rounded bg-primary-container ml-2"
+                    ></span>
+                    <span>In Progress</span>
+                    <span
+                      class="inline-block w-3 h-3 rounded bg-error ml-2"
+                    ></span>
+                    <span>Blocked</span>
+                    <span
+                      class="inline-block w-3 h-3 rounded bg-surface-container-highest ml-2"
+                    ></span>
+                    <span>Scheduled</span>
+                  </div>
+                  <button
+                    class="h-8 px-space-sm rounded-lg bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors"
+                    type="button"
+                  >
+                    Today
+                  </button>
+                </div>
+              </div>
+              <!-- Gantt / Timeline Matrix -->
+              <div class="overflow-x-auto relative">
+                <div class="min-w-[960px]">
+                  <!-- Month & Week Scales -->
+                  <div
+                    class="grid grid-cols-12 bg-surface-container text-on-surface"
+                  >
+                    <!-- Left Info Panel Header -->
+                    <div
+                      class="col-span-4 p-space-sm font-label-md text-label-md text-on-surface-variant uppercase tracking-wider"
+                    >
+                      Objective &amp; Initiatives
+                    </div>
+                    <!-- Timeline Months -->
+                    <div class="col-span-8 grid grid-cols-3 text-center">
+                      <div
+                        class="py-space-xs font-title-sm text-title-sm text-on-surface"
+                      >
+                        July 2025
+                      </div>
+                      <div
+                        class="py-space-xs font-title-sm text-title-sm text-on-surface bg-surface-container-high/50"
+                      >
+                        August 2025
+                      </div>
+                      <div
+                        class="py-space-xs font-title-sm text-title-sm text-on-surface"
+                      >
+                        September 2025
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Weekly Columns Header -->
+                  <div
+                    class="grid grid-cols-12 bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm"
+                  >
+                    <div
+                      class="col-span-4 px-space-sm py-1 flex items-center justify-between"
+                    >
+                      <span>Execution Spec</span>
+                      <span class="text-[10px] text-on-surface-variant"
+                        >Owner / Team</span
+                      >
+                    </div>
+                    <!-- 12-week breakdown (4 per month) -->
+                    <div class="col-span-8 grid grid-cols-12 text-center py-1">
+                      <span>W1</span><span>W2</span><span>W3</span
+                      ><span>W4</span>
+                      <span class="font-semibold text-primary">W5</span
+                      ><span>W6</span><span>W7</span><span>W8</span>
+                      <span>W9</span><span>W10</span><span>W11</span
+                      ><span>W12</span>
+                    </div>
+                  </div>
+                  <!-- Relative Container for Canvas and "Today" line -->
+                  <div class="relative">
+                    <!-- Red Dashed 'Today' Marker (Positioned around mid-August, week 6-7 = ~48%) -->
+                    <div
+                      class="absolute top-0 bottom-0 left-[67.5%] w-0 z-30 pointer-events-none flex flex-col items-center"
+                    >
+                      <div
+                        class="px-1.5 py-0.5 rounded-full bg-error text-on-error font-label-sm text-[10px] uppercase font-bold shadow-md -translate-x-1/2 -mt-2"
+                      >
+                        Today
+                      </div>
+                      <div
+                        class="w-px h-full bg-error/70 [stroke-dasharray:4_4] border-l border-dashed border-error"
+                      ></div>
+                    </div>
+                    <!-- Vertical Gridlines Backing Layer -->
+                    <div
+                      class="absolute inset-0 grid grid-cols-12 pointer-events-none z-0"
+                    >
+                      <div class="col-span-4 bg-transparent"></div>
+                      <div class="col-span-8 grid grid-cols-12 h-full">
+                        <div class="h-full bg-surface-container-lowest"></div>
+                        <div class="h-full bg-surface-container-low/30"></div>
+                        <div class="h-full bg-surface-container-lowest"></div>
+                        <div class="h-full bg-surface-container-low/30"></div>
+                        <div class="h-full bg-surface-container-lowest"></div>
+                        <div class="h-full bg-surface-container-low/30"></div>
+                        <div class="h-full bg-surface-container-lowest"></div>
+                        <div class="h-full bg-surface-container-low/30"></div>
+                        <div class="h-full bg-surface-container-lowest"></div>
+                        <div class="h-full bg-surface-container-low/30"></div>
+                        <div class="h-full bg-surface-container-lowest"></div>
+                        <div class="h-full bg-surface-container-low/30"></div>
+                      </div>
+                    </div>
+                    <!-- ================= SWINLANE 1 ================= -->
+                    <div class="relative z-10">
+                      <!-- Objective Header Swimlane Row -->
+                      <div
+                        class="grid grid-cols-12 bg-surface-container-high/60 items-center px-space-sm py-space-xs"
+                      >
+                        <div
+                          class="col-span-12 flex items-center justify-between"
+                        >
+                          <div class="flex items-center gap-space-xs">
+                            <span
+                              class="material-symbols-outlined text-primary text-lg"
+                              >unfold_less</span
+                            >
+                            <span
+                              class="px-space-xs py-0.5 rounded bg-primary-container text-on-primary font-label-sm text-label-sm font-semibold"
+                              >OBJ-1</span
+                            >
+                            <h3
+                              class="font-title-md text-title-md text-on-surface"
+                            >
+                              Accelerate Enterprise Platform Reliability
+                            </h3>
+                            <span
+                              class="text-on-surface-variant font-label-sm text-label-sm ml-2"
+                              >KR: Achieve 99.99% Global Uptime</span
+                            >
+                          </div>
+                          <div class="flex items-center gap-space-md">
+                            <div class="flex items-center gap-space-xs">
+                              <div
+                                class="w-24 h-2 rounded-full bg-surface-container-highest overflow-hidden"
+                              >
+                                <div
+                                  class="h-full bg-tertiary-fixed-dim"
+                                  style="width: 78%"
+                                ></div>
+                              </div>
+                              <span
+                                class="font-label-sm text-label-sm font-semibold text-tertiary"
+                                >78%</span
+                              >
+                            </div>
+                            <span
+                              class="px-space-xs py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm uppercase font-semibold"
+                              >On Track</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Initiative 1.1 -->
+                      <div
+                        class="grid grid-cols-12 items-center py-space-sm px-space-sm hover:bg-surface-container/40 transition-colors"
+                      >
+                        <div class="col-span-4 pr-space-md">
+                          <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-space-xs min-w-0">
+                              <span
+                                class="w-1.5 h-1.5 rounded-full bg-tertiary"
+                              ></span>
+                              <span
+                                class="font-title-sm text-title-sm text-on-surface truncate"
+                                >Multi-Region Kubernetes Failover Clusters</span
+                              >
+                            </div>
+                          </div>
+                          <div class="flex items-center gap-space-sm mt-1">
+                            <span
+                              class="px-1.5 py-0.2 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                              >P0</span
+                            >
+                            <span
+                              class="text-on-surface-variant font-body-sm text-body-sm"
+                              >DevOps</span
+                            >
+                            <span class="text-on-surface-variant text-[10px]"
+                              >•</span
+                            >
+                            <span
+                              class="text-on-surface-variant font-label-sm text-label-sm"
+                              >July 1 - Aug 15</span
+                            >
+                          </div>
+                        </div>
+                        <!-- Bar Column Area (8 cols = 12 weeks: W1 to W6 = 6 cols out of 12) -->
+                        <div class="col-span-8 relative h-10 flex items-center">
+                          <!-- Bar (W1 to middle of W6 => approx 45% width from start) -->
+                          <div
+                            class="h-8 rounded-lg bg-tertiary shadow-sm flex items-center justify-between px-space-sm text-on-tertiary cursor-pointer hover:shadow-md transition-all group"
+                            style="width: 48%; margin-left: 0%"
+                          >
+                            <div class="flex items-center gap-1.5 truncate">
+                              <span
+                                class="material-symbols-outlined text-sm text-on-tertiary-container"
+                                >check_circle</span
+                              >
+                              <span
+                                class="font-label-sm text-label-sm font-semibold truncate"
+                                >Completed 100%</span
+                              >
+                            </div>
+                            <div class="flex -space-x-1 shrink-0">
+                              <div
+                                class="w-5 h-5 rounded-full bg-tertiary-container text-[9px] flex items-center justify-center font-bold text-on-tertiary ring-1 ring-surface-container-lowest"
+                              >
+                                TL
+                              </div>
+                              <div
+                                class="w-5 h-5 rounded-full bg-primary-fixed text-[9px] flex items-center justify-center font-bold text-on-primary-fixed ring-1 ring-surface-container-lowest"
+                              >
+                                SK
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Initiative 1.2 -->
+                      <div
+                        class="grid grid-cols-12 items-center py-space-sm px-space-sm hover:bg-surface-container/40 transition-colors"
+                      >
+                        <div class="col-span-4 pr-space-md">
+                          <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-space-xs min-w-0">
+                              <span
+                                class="w-1.5 h-1.5 rounded-full bg-primary-container"
+                              ></span>
+                              <span
+                                class="font-title-sm text-title-sm text-on-surface truncate"
+                                >Automated Disaster Recovery Drills</span
+                              >
+                            </div>
+                          </div>
+                          <div class="flex items-center gap-space-sm mt-1">
+                            <span
+                              class="px-1.5 py-0.2 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                              >P1</span
+                            >
+                            <span
+                              class="text-on-surface-variant font-body-sm text-body-sm"
+                              >SRE Team</span
+                            >
+                            <span class="text-on-surface-variant text-[10px]"
+                              >•</span
+                            >
+                            <span
+                              class="text-on-surface-variant font-label-sm text-label-sm"
+                              >Aug 10 - Sep 12</span
+                            >
+                          </div>
+                        </div>
+                        <!-- Bar Column Area (From mid-August [W6] to mid-September [W10]) -->
+                        <div class="col-span-8 relative h-10 flex items-center">
+                          <div
+                            class="h-8 rounded-lg bg-primary-container shadow-sm flex items-center justify-between px-space-sm text-on-primary cursor-pointer hover:shadow-md transition-all"
+                            style="width: 38%; margin-left: 45%"
+                          >
+                            <div class="flex items-center gap-1.5 truncate">
+                              <span
+                                class="material-symbols-outlined text-sm animate-spin"
+                                >sync</span
+                              >
+                              <span
+                                class="font-label-sm text-label-sm font-semibold truncate"
+                                >In Progress (65%)</span
+                              >
+                            </div>
+                            <div
+                              class="w-5 h-5 rounded-full bg-on-primary text-primary text-[9px] flex items-center justify-center font-bold shrink-0"
+                            >
+                              MN
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Initiative 1.3 -->
+                      <div
+                        class="grid grid-cols-12 items-center py-space-sm px-space-sm hover:bg-surface-container/40 transition-colors"
+                      >
+                        <div class="col-span-4 pr-space-md">
+                          <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-space-xs min-w-0">
+                              <span
+                                class="w-1.5 h-1.5 rounded-full bg-secondary"
+                              ></span>
+                              <span
+                                class="font-title-sm text-title-sm text-on-surface truncate"
+                                >Zero-Downtime Database Migration</span
+                              >
+                            </div>
+                          </div>
+                          <div class="flex items-center gap-space-sm mt-1">
+                            <span
+                              class="px-1.5 py-0.2 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                              >P0</span
+                            >
+                            <span
+                              class="text-on-surface-variant font-body-sm text-body-sm"
+                              >Data Infra</span
+                            >
+                            <span class="text-on-surface-variant text-[10px]"
+                              >•</span
+                            >
+                            <span
+                              class="text-on-surface-variant font-label-sm text-label-sm"
+                              >Sep 1 - Sep 30</span
+                            >
+                          </div>
+                        </div>
+                        <!-- Bar Column Area (Sep 1 to Sep 30 = W9 through W12) -->
+                        <div class="col-span-8 relative h-10 flex items-center">
+                          <div
+                            class="h-8 rounded-lg bg-surface-container-high shadow-xs flex items-center justify-between px-space-sm text-on-surface-variant cursor-pointer hover:bg-surface-variant transition-all"
+                            style="width: 32%; margin-left: 68%"
+                          >
+                            <div class="flex items-center gap-1.5 truncate">
+                              <span class="material-symbols-outlined text-sm"
+                                >schedule</span
+                              >
+                              <span
+                                class="font-label-sm text-label-sm font-medium truncate"
+                                >Scheduled (Sep 1)</span
+                              >
+                            </div>
+                            <div
+                              class="w-5 h-5 rounded-full bg-surface-container-lowest text-on-surface text-[9px] flex items-center justify-center font-bold shrink-0"
+                            >
+                              ER
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- ================= SWINLANE 2 ================= -->
+                    <div class="relative z-10 mt-space-xs">
+                      <!-- Objective Header Swimlane Row -->
+                      <div
+                        class="grid grid-cols-12 bg-surface-container-high/60 items-center px-space-sm py-space-xs"
+                      >
+                        <div
+                          class="col-span-12 flex items-center justify-between"
+                        >
+                          <div class="flex items-center gap-space-xs">
+                            <span
+                              class="material-symbols-outlined text-primary text-lg"
+                              >unfold_less</span
+                            >
+                            <span
+                              class="px-space-xs py-0.5 rounded bg-primary-container text-on-primary font-label-sm text-label-sm font-semibold"
+                              >OBJ-2</span
+                            >
+                            <h3
+                              class="font-title-md text-title-md text-on-surface"
+                            >
+                              Expand AI-Powered Workflow Automations
+                            </h3>
+                            <span
+                              class="text-on-surface-variant font-label-sm text-label-sm ml-2"
+                              >KR: Deploy 5 In-App Copilots to Enterprise
+                              Users</span
+                            >
+                          </div>
+                          <div class="flex items-center gap-space-md">
+                            <div class="flex items-center gap-space-xs">
+                              <div
+                                class="w-24 h-2 rounded-full bg-surface-container-highest overflow-hidden"
+                              >
+                                <div
+                                  class="h-full bg-error"
+                                  style="width: 45%"
+                                ></div>
+                              </div>
+                              <span
+                                class="font-label-sm text-label-sm font-semibold text-error"
+                                >45%</span
+                              >
+                            </div>
+                            <span
+                              class="px-space-xs py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm uppercase font-semibold"
+                              >At Risk</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Initiative 2.1 -->
+                      <div
+                        class="grid grid-cols-12 items-center py-space-sm px-space-sm hover:bg-surface-container/40 transition-colors"
+                      >
+                        <div class="col-span-4 pr-space-md">
+                          <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-space-xs min-w-0">
+                              <span
+                                class="w-1.5 h-1.5 rounded-full bg-tertiary"
+                              ></span>
+                              <span
+                                class="font-title-sm text-title-sm text-on-surface truncate"
+                                >Copilot Fine-Tuning Pipeline v2</span
+                              >
+                            </div>
+                          </div>
+                          <div class="flex items-center gap-space-sm mt-1">
+                            <span
+                              class="px-1.5 py-0.2 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                              >P1</span
+                            >
+                            <span
+                              class="text-on-surface-variant font-body-sm text-body-sm"
+                              >ML Eng</span
+                            >
+                            <span class="text-on-surface-variant text-[10px]"
+                              >•</span
+                            >
+                            <span
+                              class="text-on-surface-variant font-label-sm text-label-sm"
+                              >July 15 - Aug 28</span
+                            >
+                          </div>
+                        </div>
+                        <!-- Bar Column Area (Mid-July to late Aug = W3 to W8) -->
+                        <div class="col-span-8 relative h-10 flex items-center">
+                          <div
+                            class="h-8 rounded-lg bg-tertiary shadow-sm flex items-center justify-between px-space-sm text-on-tertiary cursor-pointer hover:shadow-md transition-all"
+                            style="width: 48%; margin-left: 16%"
+                          >
+                            <div class="flex items-center gap-1.5 truncate">
+                              <span
+                                class="material-symbols-outlined text-sm text-on-tertiary-container"
+                                >verified</span
+                              >
+                              <span
+                                class="font-label-sm text-label-sm font-semibold truncate"
+                                >Completed 100%</span
+                              >
+                            </div>
+                            <div
+                              class="w-5 h-5 rounded-full bg-tertiary-container text-[9px] flex items-center justify-center font-bold text-on-tertiary"
+                            >
+                              AR
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Initiative 2.2 -->
+                      <div
+                        class="grid grid-cols-12 items-center py-space-sm px-space-sm hover:bg-surface-container/40 transition-colors"
+                      >
+                        <div class="col-span-4 pr-space-md">
+                          <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-space-xs min-w-0">
+                              <span
+                                class="w-1.5 h-1.5 rounded-full bg-error"
+                              ></span>
+                              <span
+                                class="font-title-sm text-title-sm text-on-surface truncate"
+                                >Enterprise Security &amp; SOC2 Compliance
+                                Validation</span
+                              >
+                            </div>
+                          </div>
+                          <div class="flex items-center gap-space-sm mt-1">
+                            <span
+                              class="px-1.5 py-0.2 rounded bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold"
+                              >P0 Blocked</span
+                            >
+                            <span
+                              class="text-on-surface-variant font-body-sm text-body-sm"
+                              >SecOps</span
+                            >
+                            <span class="text-on-surface-variant text-[10px]"
+                              >•</span
+                            >
+                            <span
+                              class="text-on-surface-variant font-label-sm text-label-sm"
+                              >Aug 20 - Sep 15</span
+                            >
+                          </div>
+                        </div>
+                        <!-- Bar Column Area (Aug 20 to Sep 15 = W7 to W10) -->
+                        <div class="col-span-8 relative h-10 flex items-center">
+                          <div
+                            class="h-8 rounded-lg bg-error shadow-sm flex items-center justify-between px-space-sm text-on-error cursor-pointer hover:brightness-110 transition-all"
+                            style="width: 32%; margin-left: 56%"
+                          >
+                            <div class="flex items-center gap-1.5 truncate">
+                              <span class="material-symbols-outlined text-sm"
+                                >block</span
+                              >
+                              <span
+                                class="font-label-sm text-label-sm font-bold truncate"
+                                >Audit Dependency Blocked</span
+                              >
+                            </div>
+                            <div
+                              class="w-5 h-5 rounded-full bg-white text-error text-[9px] flex items-center justify-center font-bold shrink-0"
+                            >
+                              JW
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Initiative 2.3 -->
+                      <div
+                        class="grid grid-cols-12 items-center py-space-sm px-space-sm hover:bg-surface-container/40 transition-colors"
+                      >
+                        <div class="col-span-4 pr-space-md">
+                          <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-space-xs min-w-0">
+                              <span
+                                class="w-1.5 h-1.5 rounded-full bg-primary-container"
+                              ></span>
+                              <span
+                                class="font-title-sm text-title-sm text-on-surface truncate"
+                                >Self-Serve Prompt Library in App</span
+                              >
+                            </div>
+                          </div>
+                          <div class="flex items-center gap-space-sm mt-1">
+                            <span
+                              class="px-1.5 py-0.2 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
+                              >P2</span
+                            >
+                            <span
+                              class="text-on-surface-variant font-body-sm text-body-sm"
+                              >Frontend</span
+                            >
+                            <span class="text-on-surface-variant text-[10px]"
+                              >•</span
+                            >
+                            <span
+                              class="text-on-surface-variant font-label-sm text-label-sm"
+                              >Sep 5 - Sep 28</span
+                            >
+                          </div>
+                        </div>
+                        <!-- Bar Column Area (Sep 5 to Sep 28 = W9 to W12) -->
+                        <div class="col-span-8 relative h-10 flex items-center">
+                          <div
+                            class="h-8 rounded-lg bg-primary-container shadow-sm flex items-center justify-between px-space-sm text-on-primary cursor-pointer hover:shadow-md transition-all"
+                            style="width: 26%; margin-left: 71%"
+                          >
+                            <div class="flex items-center gap-1.5 truncate">
+                              <span class="material-symbols-outlined text-sm"
+                                >trending_up</span
+                              >
+                              <span
+                                class="font-label-sm text-label-sm font-semibold truncate"
+                                >Active (40%)</span
+                              >
+                            </div>
+                            <div
+                              class="w-5 h-5 rounded-full bg-on-primary text-primary text-[9px] flex items-center justify-center font-bold shrink-0"
+                            >
+                              CL
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Execution Health & Operational Alignment Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+              <!-- Card 1: Initiative Execution Distribution -->
+              <div
+                class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between"
+              >
+                <div>
+                  <div class="flex items-center justify-between mb-space-sm">
+                    <span
+                      class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider"
+                      >Milestone Breakdown</span
+                    >
+                    <span class="material-symbols-outlined text-primary text-xl"
+                      >donut_small</span
+                    >
+                  </div>
+                  <div class="flex items-baseline gap-space-xs">
+                    <span
+                      class="font-metric-stat text-metric-stat text-on-surface"
+                      >34</span
+                    >
+                    <span
+                      class="font-body-md text-body-md text-on-surface-variant"
+                      >Total Initiatives</span
+                    >
+                  </div>
+                  <p
+                    class="font-body-sm text-body-sm text-on-surface-variant mt-1"
+                  >
+                    Directly aligned to 6 strategic Key Results.
+                  </p>
+                </div>
+                <div
+                  class="mt-space-md pt-space-md border-none space-y-space-xs"
+                >
+                  <!-- Stacked Bar representation -->
+                  <div
+                    class="w-full h-3 rounded-full bg-surface-container flex overflow-hidden"
+                  >
+                    <div
+                      class="h-full bg-tertiary"
+                      style="width: 53%"
+                      title="18 Completed"
+                    ></div>
+                    <div
+                      class="h-full bg-primary-container"
+                      style="width: 32%"
+                      title="11 In Progress"
+                    ></div>
+                    <div
+                      class="h-full bg-surface-container-highest"
+                      style="width: 9%"
+                      title="3 Scheduled"
+                    ></div>
+                    <div
+                      class="h-full bg-error"
+                      style="width: 6%"
+                      title="2 Blocked"
+                    ></div>
+                  </div>
+                  <div
+                    class="grid grid-cols-2 gap-y-1 pt-1 font-label-sm text-label-sm text-on-surface"
+                  >
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+                      <span>18 Completed</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                      <span
+                        class="w-2.5 h-2.5 rounded-full bg-primary-container"
+                      ></span>
+                      <span>11 In Progress</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                      <span
+                        class="w-2.5 h-2.5 rounded-full bg-surface-container-highest"
+                      ></span>
+                      <span>3 Scheduled</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-2.5 h-2.5 rounded-full bg-error"></span>
+                      <span class="font-semibold text-error">2 Blocked</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Card 2: Sprint Velocity Impact & Alignment Ratio -->
+              <div
+                class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between"
+              >
+                <div>
+                  <div class="flex items-center justify-between mb-space-sm">
+                    <span
+                      class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider"
+                      >Sprint Velocity Impact</span
+                    >
+                    <span
+                      class="material-symbols-outlined text-tertiary-container text-xl"
+                      >speed</span
+                    >
+                  </div>
+                  <div class="flex items-baseline gap-space-xs">
+                    <span
+                      class="font-metric-stat text-metric-stat text-on-surface"
+                      >92%</span
+                    >
+                    <span
+                      class="font-body-md text-body-md text-tertiary font-semibold"
+                      >Strategic Focus</span
+                    >
+                  </div>
+                  <p
+                    class="font-body-sm text-body-sm text-on-surface-variant mt-1"
+                  >
+                    Planned story points directly linked to Q3 OKRs.
+                  </p>
+                </div>
+                <div class="mt-space-md pt-space-md space-y-space-xs">
+                  <!-- Visual Sparkline Gauge -->
+                  <div
+                    class="p-space-sm rounded-lg bg-surface-container-low flex items-center justify-between"
+                  >
+                    <div class="flex items-center gap-space-sm">
+                      <span
+                        class="material-symbols-outlined text-tertiary text-2xl"
+                        >verified_user</span
+                      >
+                      <div>
+                        <div
+                          class="font-title-sm text-title-sm text-on-surface"
+                        >
+                          Zero Rogue Scope
+                        </div>
+                        <div
+                          class="font-label-sm text-label-sm text-on-surface-variant"
+                        >
+                          Only 8% sprint churn in unmapped tasks
+                        </div>
+                      </div>
+                    </div>
+                    <span
+                      class="px-space-xs py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-bold"
+                      >+14% vs Q2</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <!-- Card 3: Critical Path Dependencies -->
+              <div
+                class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between"
+              >
+                <div>
+                  <div class="flex items-center justify-between mb-space-sm">
+                    <span
+                      class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider"
+                      >Critical Path Handoffs</span
+                    >
+                    <span class="material-symbols-outlined text-error text-xl"
+                      >alt_route</span
+                    >
+                  </div>
+                  <div class="flex items-baseline gap-space-xs">
+                    <span
+                      class="font-metric-stat text-metric-stat text-on-surface"
+                      >3</span
+                    >
+                    <span
+                      class="font-body-md text-body-md text-on-surface-variant"
+                      >Remaining Cross-Team Handoffs</span
+                    >
+                  </div>
+                  <p
+                    class="font-body-sm text-body-sm text-on-surface-variant mt-1"
+                  >
+                    Immediate attention required prior to mid-cycle review.
+                  </p>
+                </div>
+                <div class="mt-space-md pt-space-md space-y-1.5">
+                  <div
+                    class="flex items-center justify-between p-2 rounded-lg bg-error-container/30"
+                  >
+                    <div class="flex items-center gap-2 min-w-0">
+                      <span
+                        class="material-symbols-outlined text-error text-base shrink-0"
+                        >report_problem</span
+                      >
+                      <span
+                        class="font-label-md text-label-md text-on-surface truncate"
+                        >SecOps → ML Eng SOC2 Signoff</span
+                      >
+                    </div>
+                    <span
+                      class="font-label-sm text-label-sm text-error font-semibold shrink-0"
+                      >Overdue 3d</span
+                    >
+                  </div>
+                  <div
+                    class="flex items-center justify-between p-2 rounded-lg bg-surface-container-low"
+                  >
+                    <div class="flex items-center gap-2 min-w-0">
+                      <span
+                        class="material-symbols-outlined text-on-surface-variant text-base shrink-0"
+                        >schedule</span
+                      >
+                      <span
+                        class="font-label-md text-label-md text-on-surface truncate"
+                        >DevOps → SRE Cluster Handover</span
+                      >
+                    </div>
+                    <span
+                      class="font-label-sm text-label-sm text-on-surface-variant shrink-0"
+                      >In 5 Days</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Active Initiatives Quick Reference Card Table -->
+            <div
+              class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm space-y-space-md"
+            >
+              <div
+                class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm"
+              >
+                <div>
+                  <h2 class="font-title-md text-title-md text-on-surface">
+                    Milestone Execution Log
+                  </h2>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">
+                    Real-time status synchronised with Jira epics &amp; Linear
+                    projects.
+                  </p>
+                </div>
+                <div class="flex items-center gap-space-xs">
+                  <button
+                    class="h-8 px-space-sm rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors"
+                    type="button"
+                  >
+                    Configure Webhooks
+                  </button>
+                  <button
+                    class="h-8 px-space-sm rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors"
+                    type="button"
+                  >
+                    View All (34)
+                  </button>
+                </div>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                  <thead>
+                    <tr
+                      class="bg-surface-container-low font-label-md text-label-md text-on-surface-variant uppercase tracking-wider"
+                    >
+                      <th class="py-space-sm px-space-md rounded-l-lg">
+                        Deliverable / Epic
+                      </th>
+                      <th class="py-space-sm px-space-md">Linked Key Result</th>
+                      <th class="py-space-sm px-space-md">Squad</th>
+                      <th class="py-space-sm px-space-md">Progress</th>
+                      <th class="py-space-sm px-space-md">Status</th>
+                      <th
+                        class="py-space-sm px-space-md rounded-r-lg text-right"
+                      >
+                        Target Window
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    class="divide-y-0 text-on-surface font-body-sm text-body-sm"
+                  >
+                    <tr
+                      class="hover:bg-surface-container-low/50 transition-colors"
+                    >
+                      <td class="py-space-md px-space-md">
+                        <div class="flex items-center gap-2">
+                          <span class="w-2 h-2 rounded-full bg-tertiary"></span>
+                          <span
+                            class="font-title-sm text-title-sm text-on-surface"
+                            >Multi-Region Kubernetes Failover Clusters</span
+                          >
+                        </div>
+                        <div
+                          class="font-label-sm text-label-sm text-on-surface-variant pl-4"
+                        >
+                          JIRA-8942 • Production Ready
+                        </div>
+                      </td>
+                      <td class="py-space-md px-space-md">
+                        <span class="font-medium text-on-surface"
+                          >99.99% Global Platform Uptime</span
+                        >
+                      </td>
+                      <td class="py-space-md px-space-md">
+                        <span
+                          class="px-space-xs py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-on-surface-variant"
+                          >DevOps</span
+                        >
+                      </td>
+                      <td class="py-space-md px-space-md">
+                        <div class="flex items-center gap-2">
+                          <div
+                            class="w-20 h-1.5 rounded-full bg-surface-container-highest overflow-hidden"
+                          >
+                            <div
+                              class="h-full bg-tertiary"
+                              style="width: 100%"
+                            ></div>
+                          </div>
+                          <span
+                            class="font-label-sm text-label-sm font-semibold"
+                            >100%</span
+                          >
+                        </div>
+                      </td>
+                      <td class="py-space-md px-space-md">
+                        <span
+                          class="px-space-xs py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm uppercase font-semibold"
+                          >Completed</span
+                        >
+                      </td>
+                      <td
+                        class="py-space-md px-space-md text-right text-on-surface-variant font-label-sm text-label-sm"
+                      >
+                        Jul 1 – Aug 15
+                      </td>
+                    </tr>
+                    <tr
+                      class="hover:bg-surface-container-low/50 transition-colors"
+                    >
+                      <td class="py-space-md px-space-md">
+                        <div class="flex items-center gap-2">
+                          <span
+                            class="w-2 h-2 rounded-full bg-primary-container"
+                          ></span>
+                          <span
+                            class="font-title-sm text-title-sm text-on-surface"
+                            >Automated Disaster Recovery Drills</span
+                          >
+                        </div>
+                        <div
+                          class="font-label-sm text-label-sm text-on-surface-variant pl-4"
+                        >
+                          LIN-412 • Runbook automation
+                        </div>
+                      </td>
+                      <td class="py-space-md px-space-md">
+                        <span class="font-medium text-on-surface"
+                          >MTTR reduced from 45m to &lt;5m</span
+                        >
+                      </td>
+                      <td class="py-space-md px-space-md">
+                        <span
+                          class="px-space-xs py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-on-surface-variant"
+                          >SRE</span
+                        >
+                      </td>
+                      <td class="py-space-md px-space-md">
+                        <div class="flex items-center gap-2">
+                          <div
+                            class="w-20 h-1.5 rounded-full bg-surface-container-highest overflow-hidden"
+                          >
+                            <div
+                              class="h-full bg-primary-container"
+                              style="width: 65%"
+                            ></div>
+                          </div>
+                          <span
+                            class="font-label-sm text-label-sm font-semibold"
+                            >65%</span
+                          >
+                        </div>
+                      </td>
+                      <td class="py-space-md px-space-md">
+                        <span
+                          class="px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed font-label-sm text-label-sm uppercase font-semibold"
+                          >In Progress</span
+                        >
+                      </td>
+                      <td
+                        class="py-space-md px-space-md text-right text-on-surface-variant font-label-sm text-label-sm"
+                      >
+                        Aug 10 – Sep 12
+                      </td>
+                    </tr>
+                    <tr
+                      class="hover:bg-surface-container-low/50 transition-colors"
+                    >
+                      <td class="py-space-md px-space-md">
+                        <div class="flex items-center gap-2">
+                          <span class="w-2 h-2 rounded-full bg-error"></span>
+                          <span
+                            class="font-title-sm text-title-sm text-on-surface"
+                            >Enterprise Security &amp; SOC2 Validation</span
+                          >
+                        </div>
+                        <div
+                          class="font-label-sm text-label-sm text-on-surface-variant pl-4"
+                        >
+                          SEC-109 • Pending third-party audit
+                        </div>
+                      </td>
+                      <td class="py-space-md px-space-md">
+                        <span class="font-medium text-on-surface"
+                          >Zero high-severity compliance findings</span
+                        >
+                      </td>
+                      <td class="py-space-md px-space-md">
+                        <span
+                          class="px-space-xs py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-on-surface-variant"
+                          >SecOps</span
+                        >
+                      </td>
+                      <td class="py-space-md px-space-md">
+                        <div class="flex items-center gap-2">
+                          <div
+                            class="w-20 h-1.5 rounded-full bg-surface-container-highest overflow-hidden"
+                          >
+                            <div
+                              class="h-full bg-error"
+                              style="width: 25%"
+                            ></div>
+                          </div>
+                          <span
+                            class="font-label-sm text-label-sm font-semibold text-error"
+                            >25%</span
+                          >
+                        </div>
+                      </td>
+                      <td class="py-space-md px-space-md">
+                        <span
+                          class="px-space-xs py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm uppercase font-semibold"
+                          >Blocked</span
+                        >
+                      </td>
+                      <td
+                        class="py-space-md px-space-md text-right text-on-surface-variant font-label-sm text-label-sm"
+                      >
+                        Aug 20 – Sep 15
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

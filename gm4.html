@@ -1,0 +1,1583 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="web_dashboard" name="shell-type" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @layer base {
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+        }
+
+        body {
+          overscroll-behavior: none;
+        }
+
+        main > :first-child {
+          margin-top: 0 !important;
+        }
+
+        main > :last-child {
+          margin-bottom: 0 !important;
+        }
+      }
+
+      ::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-on-surface": "#eaf1ff",
+              "outline-variant": "#c7c4d8",
+              outline: "#777587",
+              surface: "#f8f9ff",
+              "inverse-surface": "#213145",
+              "primary-fixed-dim": "#c3c0ff",
+              "on-primary-fixed-variant": "#3323cc",
+              "on-error-container": "#93000a",
+              "tertiary-fixed-dim": "#4edea3",
+              "error-container": "#ffdad6",
+              "on-primary-fixed": "#0f0069",
+              "primary-fixed": "#e2dfff",
+              tertiary: "#005338",
+              "on-error": "#ffffff",
+              "on-secondary-container": "#5c647a",
+              "on-primary-container": "#dad7ff",
+              "surface-dim": "#cbdbf5",
+              "on-primary": "#ffffff",
+              "surface-container-highest": "#d3e4fe",
+              "surface-container-high": "#dce9ff",
+              "on-secondary-fixed": "#131b2e",
+              error: "#ba1a1a",
+              "on-secondary": "#ffffff",
+              "on-background": "#0b1c30",
+              "surface-tint": "#4d44e3",
+              "surface-container": "#e5eeff",
+              "tertiary-container": "#006e4b",
+              "secondary-fixed-dim": "#bec6e0",
+              "on-secondary-fixed-variant": "#3f465c",
+              "on-surface": "#0b1c30",
+              "on-tertiary-fixed-variant": "#005236",
+              background: "#f8f9ff",
+              "tertiary-fixed": "#6ffbbe",
+              primary: "#3525cd",
+              "secondary-container": "#dae2fd",
+              "surface-variant": "#d3e4fe",
+              "on-tertiary-fixed": "#002113",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed": "#dae2fd",
+              "on-tertiary-container": "#67f4b7",
+              "surface-bright": "#f8f9ff",
+              secondary: "#565e74",
+              "surface-container-low": "#eff4ff",
+              "primary-container": "#4f46e5",
+              "on-tertiary": "#ffffff",
+              "on-surface-variant": "#464555",
+              "inverse-primary": "#c3c0ff",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+            spacing: {
+              "margin-mobile": "1rem",
+              "gutter-mobile": "1rem",
+              margin: "2rem",
+              "space-xs": "0.25rem",
+              "space-xl": "2rem",
+              gutter: "1.5rem",
+              "space-md": "1rem",
+              "space-lg": "1.5rem",
+              "space-sm": "0.5rem",
+            },
+            fontFamily: {
+              "label-md": ["Inter"],
+              "headline-lg-mobile": ["Plus Jakarta Sans"],
+              "body-md": ["Inter"],
+              "body-sm": ["Inter"],
+              "headline-md": ["Plus Jakarta Sans"],
+              "headline-sm": ["Plus Jakarta Sans"],
+              "label-sm": ["Inter"],
+              "display-lg-mobile": ["Plus Jakarta Sans"],
+              "body-lg": ["Inter"],
+              "title-sm": ["Inter"],
+              "title-md": ["Inter"],
+              "display-lg": ["Plus Jakarta Sans"],
+              "headline-lg": ["Plus Jakarta Sans"],
+              "metric-stat": ["Plus Jakarta Sans"],
+            },
+            fontSize: {
+              "label-md": [
+                "12px",
+                {
+                  lineHeight: "16px",
+                  letterSpacing: "0.02em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-lg-mobile": [
+                "24px",
+                {
+                  lineHeight: "32px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+              "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+              "headline-md": [
+                "22px",
+                {
+                  lineHeight: "28px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "600",
+                },
+              ],
+              "headline-sm": [
+                "18px",
+                {
+                  lineHeight: "24px",
+                  letterSpacing: "-0.005em",
+                  fontWeight: "600",
+                },
+              ],
+              "label-sm": [
+                "11px",
+                {
+                  lineHeight: "14px",
+                  letterSpacing: "0.03em",
+                  fontWeight: "500",
+                },
+              ],
+              "display-lg-mobile": [
+                "28px",
+                {
+                  lineHeight: "36px",
+                  letterSpacing: "-0.01em",
+                  fontWeight: "700",
+                },
+              ],
+              "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+              "title-sm": ["14px", { lineHeight: "20px", fontWeight: "600" }],
+              "title-md": ["16px", { lineHeight: "24px", fontWeight: "600" }],
+              "display-lg": [
+                "36px",
+                {
+                  lineHeight: "44px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+              "headline-lg": [
+                "30px",
+                {
+                  lineHeight: "38px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "600",
+                },
+              ],
+              "metric-stat": [
+                "28px",
+                {
+                  lineHeight: "32px",
+                  letterSpacing: "-0.02em",
+                  fontWeight: "700",
+                },
+              ],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body class="bg-surface font-body-md text-on-surface antialiased">
+    <aside
+      class="fixed left-0 top-0 h-full w-64 bg-surface-container-low z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]"
+    >
+      <div class="flex flex-col flex-1 min-h-0">
+        <div class="h-16 px-space-lg flex items-center gap-space-sm">
+          <img
+            alt="AlignWork Logo"
+            class="h-8 w-auto object-contain"
+            src="https://lh3.googleusercontent.com/aida/AEtjO1VEBnOYQx-vRxxC2qXaqH5e68U1Lp2dIQeo9njPGCdtRrc-YrkkaN8ngKCLthtQkGshzyw5zqd5_OuqwUV3ULQPnJ7UjzKW-Hii2g9GTKGwW4PazoPgQ9QfgccKH6kby4eZJPpO0P5MLOf7BpHsF82MeF3Emrd8GanoCNdXqtgUMvsf12m6Xyu_GZm4ucoLn6QWDVck8ilP_kc1LniGGVvDxFTzF9FrGrZYOYhuDrlNj9sz_23SzficaGlX"
+          /><span
+            class="font-headline-sm text-headline-sm text-on-surface tracking-tight"
+            >AlignWork</span
+          >
+        </div>
+        <div class="px-space-md py-space-xs">
+          <div
+            class="p-space-sm bg-surface-container rounded-xl flex items-center justify-between cursor-pointer hover:bg-surface-container-high transition-colors"
+          >
+            <div class="flex items-center gap-space-sm min-w-0">
+              <div
+                class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-title-sm text-title-sm shrink-0"
+              >
+                PE
+              </div>
+              <div class="min-w-0">
+                <div
+                  class="font-title-sm text-title-sm text-on-surface truncate"
+                >
+                  Product &amp; Eng
+                </div>
+                <div
+                  class="font-label-sm text-label-sm text-on-surface-variant truncate"
+                >
+                  Q3 2025 Cycle
+                </div>
+              </div>
+            </div>
+            <span
+              class="material-symbols-outlined text-on-surface-variant shrink-0"
+              >unfold_more</span
+            >
+          </div>
+        </div>
+        <nav
+          class="flex-1 px-space-md py-space-sm space-y-1 overflow-y-auto"
+          data-active-classes="bg-primary-container text-on-primary font-title-sm rounded-xl"
+        >
+          <a
+            aria-current="page"
+            class="flex items-center gap-space-sm px-space-md py-space-sm transition-colors bg-primary-container text-on-primary font-title-sm rounded-xl"
+            data-path="dashboard-overview"
+            href="/gm1.html"
+            ><span class="material-symbols-outlined text-xl">dashboard</span
+            ><span>Dashboard</span></a
+          ><a
+            class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm"
+            data-path="objective-hierarchy"
+            href="/gm2.html"
+            ><span class="material-symbols-outlined text-xl">account_tree</span
+            ><span>Objective Hierarchy</span></a
+          ><a
+            class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm"
+            data-path="weekly-check-ins"
+            href="/gm3.html"
+            ><span class="material-symbols-outlined text-xl">fact_check</span
+            ><span>Weekly Check-ins</span></a
+          ><a
+            class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm"
+            data-path="initiatives-and-milestones"
+            href="/gm4.html"
+            ><span class="material-symbols-outlined text-xl">flag</span
+            ><span>Initiatives &amp; Milestones</span></a
+          ><a
+            class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm"
+            data-path="team-and-performance-analytics"
+            href="#"
+            ><span class="material-symbols-outlined text-xl">query_stats</span
+            ><span>Team &amp; Analytics</span></a
+          ><a
+            class="flex items-center gap-space-sm px-space-md py-space-sm rounded-xl text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-title-sm text-title-sm"
+            data-path="settings"
+            href="#"
+            ><span class="material-symbols-outlined text-xl">settings</span
+            ><span>Settings</span></a
+          >
+        </nav>
+      </div>
+      <div class="p-space-md space-y-space-sm">
+        <div class="p-space-sm bg-surface-container rounded-xl">
+          <div class="flex items-center justify-between mb-space-xs">
+            <span class="font-label-sm text-label-sm text-on-surface-variant"
+              >Quarter OKR Target</span
+            ><span
+              class="font-label-sm text-label-sm text-primary font-semibold"
+              >78%</span
+            >
+          </div>
+          <div
+            class="w-full h-1.5 bg-surface-container-highest rounded-full overflow-hidden"
+          >
+            <div
+              class="h-full bg-primary-container rounded-full"
+              style="width: 78%"
+            ></div>
+          </div>
+          <div class="mt-space-xs flex justify-between items-center">
+            <span class="font-label-sm text-label-sm text-on-surface-variant"
+              >28 of 36 KRs Met</span
+            ><a
+              class="font-label-sm text-label-sm text-primary hover:underline"
+              data-path="help-center"
+              href="#"
+              >Help</a
+            >
+          </div>
+        </div>
+        <div
+          class="flex items-center justify-between px-space-sm py-space-xs text-on-surface-variant font-label-md text-label-md"
+        >
+          <span class="flex items-center gap-1.5"
+            ><span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span
+            >Cloud Sync Active</span
+          ><span class="material-symbols-outlined text-sm">cloud_done</span>
+        </div>
+      </div>
+    </aside>
+    <div class="pl-64">
+      <header
+        class="fixed top-0 left-64 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-space-lg flex items-center justify-between gap-space-md"
+      >
+        <div class="flex items-center gap-space-md flex-1 max-w-xl">
+          <div class="relative w-full">
+            <span
+              class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg"
+              >search</span
+            ><input
+              class="w-full h-10 pl-10 pr-4 bg-surface-container-low rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary-container/20"
+              placeholder="Search OKRs, key results, team members..."
+              type="text"
+            />
+          </div>
+          <div
+            class="hidden xl:flex items-center gap-1.5 px-space-sm py-1 bg-surface-container rounded-full shrink-0"
+          >
+            <span class="w-2 h-2 rounded-full bg-primary"></span
+            ><span
+              class="font-label-sm text-label-sm text-on-surface font-medium"
+              >Q3 FY25 • 42 Days Remaining</span
+            >
+          </div>
+        </div>
+        <div class="flex items-center gap-space-md shrink-0">
+          <button
+            class="relative p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors"
+            type="button"
+          >
+            <span class="material-symbols-outlined">notifications</span
+            ><span
+              class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error"
+            ></span></button
+          ><button
+            class="hidden sm:flex items-center gap-1.5 h-10 px-space-md bg-primary-container hover:bg-primary text-on-primary rounded-lg font-title-sm text-title-sm transition-colors shadow-sm"
+            type="button"
+          >
+            <span class="material-symbols-outlined text-lg">add</span
+            ><span>New Objective</span>
+          </button>
+          <div class="flex items-center gap-space-sm pl-space-xs">
+            <img
+              alt="Profile"
+              class="w-8 h-8 rounded-full object-cover"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSKKMdGnd5Vp-WgIfzUUZttdPzSjBGPyl2sO80zf6u6GuwIUQcjE9vWxN2g5pel9fZ8uv-y8y7WTzRqFZjqKlfZ64GPer4PLxnWxof4kUAxW-Q74babZ51-q8yciKOl4K8pkl8PPzNiu-PwXDHqSDng7uOwED6-iFxTTWfpqYRanICVThksAMEbKmFPw-ssphnkXJPfmQLPhXCqtPtePrY2qJOjvoVi5L0tH5wQ_ksTBQ63b5mnphKSA"
+            />
+            <div class="hidden md:block text-left">
+              <div
+                class="font-title-sm text-title-sm text-on-surface leading-tight"
+              >
+                Sarah Lin
+              </div>
+              <div
+                class="font-label-sm text-label-sm text-on-surface-variant leading-tight"
+              >
+                VP of Product
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <main class="w-full pt-16 bg-surface">
+        <div class="flex flex-col w-full">
+          <div
+            class="p-space-lg max-w-[1440px] w-full mx-auto space-y-space-lg"
+          >
+            <!-- Header Banner & Executive Digest -->
+            <div
+              class="relative overflow-hidden bg-surface-container-low rounded-xl p-space-lg shadow-sm"
+            >
+              <div
+                class="absolute -right-16 -top-16 w-80 h-80 rounded-full bg-primary-fixed/30 blur-3xl pointer-events-none"
+              ></div>
+              <div
+                class="absolute right-40 -bottom-10 w-56 h-56 rounded-full bg-tertiary-fixed-dim/20 blur-2xl pointer-events-none"
+              ></div>
+              <div
+                class="relative flex flex-col xl:flex-row xl:items-center justify-between gap-space-lg"
+              >
+                <div class="space-y-space-xs max-w-2xl">
+                  <div
+                    class="inline-flex items-center gap-2 px-space-sm py-0.5 rounded-full bg-surface-container text-primary font-label-sm text-label-sm"
+                  >
+                    <span
+                      class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"
+                    ></span>
+                    Current Cycle: Week 9 of 12 (Q3 FY25) • Closes Friday 5:00
+                    PM EST (22h remaining)
+                  </div>
+                  <h1
+                    class="font-headline-lg text-headline-lg text-on-surface tracking-tight"
+                  >
+                    Weekly OKR Check-ins &amp; Cadence Review
+                  </h1>
+                  <p class="font-body-md text-body-md text-on-surface-variant">
+                    Friday sync: Submit current metrics, update confidence
+                    ratings, and document blockers for leadership review.
+                  </p>
+                </div>
+                <!-- Quick Metrical Snapshot -->
+                <div
+                  class="grid grid-cols-1 sm:grid-cols-3 gap-space-sm shrink-0"
+                >
+                  <div
+                    class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between min-w-[180px]"
+                  >
+                    <div class="flex items-center justify-between mb-1">
+                      <span
+                        class="font-label-sm text-label-sm text-on-surface-variant"
+                        >Team Submission Rate</span
+                      >
+                      <span
+                        class="material-symbols-outlined text-tertiary-container text-base"
+                        >task_alt</span
+                      >
+                    </div>
+                    <div
+                      class="font-metric-stat text-metric-stat text-on-surface"
+                    >
+                      89%
+                    </div>
+                    <div
+                      class="font-label-sm text-label-sm text-on-surface-variant mt-1"
+                    >
+                      32 of 36 Teams Submitted
+                    </div>
+                    <div
+                      class="w-full bg-surface-container h-1.5 rounded-full mt-2 overflow-hidden"
+                    >
+                      <div
+                        class="bg-tertiary-container h-full rounded-full"
+                        style="width: 89%"
+                      ></div>
+                    </div>
+                  </div>
+                  <div
+                    class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between min-w-[180px]"
+                  >
+                    <div class="flex items-center justify-between mb-1">
+                      <span
+                        class="font-label-sm text-label-sm text-on-surface-variant"
+                        >Pending Reviews</span
+                      >
+                      <span
+                        class="material-symbols-outlined text-primary text-base"
+                        >pending_actions</span
+                      >
+                    </div>
+                    <div
+                      class="font-metric-stat text-metric-stat text-on-surface"
+                    >
+                      4
+                    </div>
+                    <div
+                      class="font-label-sm text-label-sm text-on-surface-variant mt-1"
+                    >
+                      Direct reports waiting
+                    </div>
+                    <div
+                      class="flex items-center gap-1 mt-2 text-primary font-label-sm text-label-sm"
+                    >
+                      <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                      2 require sign-off
+                    </div>
+                  </div>
+                  <div
+                    class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col justify-between min-w-[180px]"
+                  >
+                    <div class="flex items-center justify-between mb-1">
+                      <span
+                        class="font-label-sm text-label-sm text-on-surface-variant"
+                        >Critical Blockers</span
+                      >
+                      <span
+                        class="material-symbols-outlined text-error text-base"
+                        >report_problem</span
+                      >
+                    </div>
+                    <div class="font-metric-stat text-metric-stat text-error">
+                      2
+                    </div>
+                    <div
+                      class="font-label-sm text-label-sm text-on-surface-variant mt-1"
+                    >
+                      Escalated to VP level
+                    </div>
+                    <div
+                      class="flex items-center gap-1 mt-2 text-error font-label-sm text-label-sm"
+                    >
+                      <span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                      Needs Platform triage
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Main Content Layout -->
+            <div
+              class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-start"
+            >
+              <!-- Left / Main Column (Check-in Form & Pending Key Results) -->
+              <section class="xl:col-span-8 space-y-space-lg min-w-0">
+                <!-- User Pending Review Card -->
+                <div
+                  class="bg-surface-container-lowest rounded-xl shadow-sm p-space-lg space-y-space-lg"
+                >
+                  <div
+                    class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-sm"
+                  >
+                    <div class="flex items-center gap-space-sm">
+                      <div
+                        class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-title-md text-title-md"
+                      >
+                        <span class="material-symbols-outlined">edit_note</span>
+                      </div>
+                      <div>
+                        <h2
+                          class="font-headline-sm text-headline-sm text-on-surface"
+                        >
+                          Your Pending Check-ins
+                        </h2>
+                        <p
+                          class="font-label-sm text-label-sm text-on-surface-variant"
+                        >
+                          3 Key Results require your periodic Friday update
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      class="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container-low rounded-full self-start sm:self-auto font-label-sm text-label-sm text-on-surface"
+                    >
+                      <span
+                        class="w-2 h-2 rounded-full bg-primary animate-ping"
+                      ></span>
+                      Draft Auto-saved 3m ago
+                    </div>
+                  </div>
+                  <!-- KR Item 1: Onboard Enterprise Customers -->
+                  <div
+                    class="bg-surface rounded-xl p-space-lg space-y-space-md shadow-sm transition-all hover:shadow-md"
+                  >
+                    <div
+                      class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-sm"
+                    >
+                      <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                          <span
+                            class="px-2 py-0.5 rounded bg-primary-container text-on-primary font-label-sm text-label-sm"
+                            >Objective 2</span
+                          >
+                          <span
+                            class="px-2 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-on-surface-variant"
+                            >Enterprise GTM</span
+                          >
+                        </div>
+                        <h3 class="font-title-md text-title-md text-on-surface">
+                          KR 2.1: Onboard 150 Enterprise tier pilot customers
+                        </h3>
+                      </div>
+                      <!-- Status Selection Pills -->
+                      <div
+                        class="flex items-center gap-1 bg-surface-container-low p-1 rounded-xl shrink-0"
+                      >
+                        <button
+                          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-tertiary-container text-on-tertiary font-label-sm text-label-sm shadow-sm transition-all"
+                          type="button"
+                        >
+                          <span
+                            class="w-1.5 h-1.5 rounded-full bg-on-tertiary"
+                          ></span>
+                          On Track
+                        </button>
+                        <button
+                          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm transition-all"
+                          type="button"
+                        >
+                          <span
+                            class="w-1.5 h-1.5 rounded-full bg-secondary"
+                          ></span>
+                          Needs Attention
+                        </button>
+                        <button
+                          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm transition-all"
+                          type="button"
+                        >
+                          <span
+                            class="w-1.5 h-1.5 rounded-full bg-error"
+                          ></span>
+                          At Risk
+                        </button>
+                      </div>
+                    </div>
+                    <!-- Metric Inputs & Confidence Bar -->
+                    <div
+                      class="grid grid-cols-1 md:grid-cols-12 gap-space-md pt-2"
+                    >
+                      <div
+                        class="md:col-span-4 bg-surface-container-low p-space-sm rounded-xl space-y-1"
+                      >
+                        <label
+                          class="font-label-sm text-label-sm text-on-surface-variant block"
+                          >Current Metric Value</label
+                        >
+                        <div class="flex items-baseline gap-2">
+                          <input
+                            class="font-metric-stat text-metric-stat text-on-surface w-24 bg-surface-container-lowest px-2 py-0.5 rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-primary-container/30"
+                            type="text"
+                            value="118"
+                          />
+                          <span
+                            class="font-label-md text-label-md text-on-surface-variant"
+                            >/ 150 Target</span
+                          >
+                        </div>
+                        <div
+                          class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm pt-1"
+                        >
+                          <span>Previous: 104</span>
+                          <span class="text-tertiary-container font-semibold"
+                            >+14 (Δ 13.4%)</span
+                          >
+                        </div>
+                      </div>
+                      <!-- Pacing Progress Track -->
+                      <div
+                        class="md:col-span-8 bg-surface-container-low p-space-sm rounded-xl flex flex-col justify-between"
+                      >
+                        <div
+                          class="flex items-center justify-between font-label-sm text-label-sm"
+                        >
+                          <span class="text-on-surface-variant"
+                            >Pacing vs Q3 Target Cadence</span
+                          >
+                          <span class="text-on-surface font-semibold"
+                            >78.6% Accomplished</span
+                          >
+                        </div>
+                        <!-- Dual-track architecture with calendar pacing mark -->
+                        <div
+                          class="relative w-full h-3 bg-surface-container rounded-full overflow-visible my-2"
+                        >
+                          <div
+                            class="h-full bg-tertiary-container rounded-full"
+                            style="width: 78.6%"
+                          ></div>
+                          <!-- Expected time marker: week 9 of 12 = 75% -->
+                          <div
+                            class="absolute top-[-3px] bottom-[-3px] w-[2px] bg-primary z-10"
+                            style="left: 75%"
+                            title="Expected pace for Week 9 (75%)"
+                          ></div>
+                        </div>
+                        <div
+                          class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm"
+                        >
+                          <span>Week 9 Expected: 75.0%</span>
+                          <span class="text-tertiary-container font-semibold"
+                            >+3.6% ahead of schedule</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Confidence Rating Segment -->
+                    <div
+                      class="bg-surface-container-lowest p-space-md rounded-xl space-y-space-xs shadow-sm"
+                    >
+                      <div class="flex items-center justify-between">
+                        <span
+                          class="font-title-sm text-title-sm text-on-surface"
+                          >Confidence Score (1 to 10)</span
+                        >
+                        <span
+                          class="px-2.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-md text-label-md"
+                        >
+                          8 / 10 • High Confidence
+                        </span>
+                      </div>
+                      <div
+                        class="grid grid-cols-10 gap-1.5 pt-1"
+                        id="confidence-pills-kr1"
+                      >
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                          type="button"
+                        >
+                          1
+                        </button>
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                          type="button"
+                        >
+                          2
+                        </button>
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                          type="button"
+                        >
+                          3
+                        </button>
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                          type="button"
+                        >
+                          4
+                        </button>
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                          type="button"
+                        >
+                          5
+                        </button>
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                          type="button"
+                        >
+                          6
+                        </button>
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                          type="button"
+                        >
+                          7
+                        </button>
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-primary-container text-on-primary font-semibold shadow-sm"
+                          type="button"
+                        >
+                          8
+                        </button>
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                          type="button"
+                        >
+                          9
+                        </button>
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors"
+                          type="button"
+                        >
+                          10
+                        </button>
+                      </div>
+                    </div>
+                    <!-- Notes & Blockers Toggle -->
+                    <div class="space-y-space-xs">
+                      <label
+                        class="font-title-sm text-title-sm text-on-surface flex items-center justify-between"
+                      >
+                        <span>Reflection &amp; Qualitative Progress Notes</span>
+                        <span
+                          class="font-label-sm text-label-sm text-on-surface-variant"
+                          >Visible in Executive Summary</span
+                        >
+                      </label>
+                      <textarea
+                        class="w-full p-space-sm bg-surface-container-low rounded-xl font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary-container/20"
+                        rows="3"
+                      >
+Added 14 logos this week including Acme Corp and Global Retailers. Pilot feedback is overwhelmingly positive with zero churn risk in this cohort.</textarea
+                      >
+                    </div>
+                    <div class="flex items-center justify-between pt-1">
+                      <div class="flex items-center gap-2">
+                        <button
+                          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container text-on-surface-variant font-label-sm text-label-sm hover:bg-surface-container-high transition-colors"
+                          type="button"
+                        >
+                          <span class="material-symbols-outlined text-base"
+                            >check_circle</span
+                          >
+                          No Blockers
+                        </button>
+                        <button
+                          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-low text-on-surface font-label-sm text-label-sm hover:bg-surface-container transition-colors"
+                          type="button"
+                        >
+                          <span class="material-symbols-outlined text-base"
+                            >add_circle</span
+                          >
+                          Add Milestone Blocker
+                        </button>
+                      </div>
+                      <div
+                        class="flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm"
+                      >
+                        <span class="material-symbols-outlined text-sm"
+                          >history</span
+                        >
+                        Last checked in Sep 12 by Sarah Lin
+                      </div>
+                    </div>
+                  </div>
+                  <!-- KR Item 2: Weekly Active Usage (WAU) - AT RISK -->
+                  <div
+                    class="bg-surface rounded-xl p-space-lg space-y-space-md shadow-sm transition-all hover:shadow-md"
+                  >
+                    <div
+                      class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-sm"
+                    >
+                      <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                          <span
+                            class="px-2 py-0.5 rounded bg-primary-container text-on-primary font-label-sm text-label-sm"
+                            >Objective 2</span
+                          >
+                          <span
+                            class="px-2 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-on-surface-variant"
+                            >Product Engagement</span
+                          >
+                        </div>
+                        <h3 class="font-title-md text-title-md text-on-surface">
+                          KR 2.2: Achieve weekly active usage (WAU) of 65% among
+                          pilot accounts
+                        </h3>
+                      </div>
+                      <!-- Status Selection Pills (At Risk Selected) -->
+                      <div
+                        class="flex items-center gap-1 bg-surface-container-low p-1 rounded-xl shrink-0"
+                      >
+                        <button
+                          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm transition-all"
+                          type="button"
+                        >
+                          <span
+                            class="w-1.5 h-1.5 rounded-full bg-secondary"
+                          ></span>
+                          On Track
+                        </button>
+                        <button
+                          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm transition-all"
+                          type="button"
+                        >
+                          <span
+                            class="w-1.5 h-1.5 rounded-full bg-secondary"
+                          ></span>
+                          Needs Attention
+                        </button>
+                        <button
+                          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-error-container text-on-error-container font-label-sm text-label-sm shadow-sm transition-all"
+                          type="button"
+                        >
+                          <span
+                            class="w-1.5 h-1.5 rounded-full bg-error"
+                          ></span>
+                          At Risk (Selected)
+                        </button>
+                      </div>
+                    </div>
+                    <!-- Metric Inputs & Gauge Bar -->
+                    <div
+                      class="grid grid-cols-1 md:grid-cols-12 gap-space-md pt-2"
+                    >
+                      <div
+                        class="md:col-span-4 bg-surface-container-low p-space-sm rounded-xl space-y-1"
+                      >
+                        <label
+                          class="font-label-sm text-label-sm text-on-surface-variant block"
+                          >Current Metric Value</label
+                        >
+                        <div class="flex items-baseline gap-2">
+                          <input
+                            class="font-metric-stat text-metric-stat text-error w-24 bg-surface-container-lowest px-2 py-0.5 rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-error/30"
+                            type="text"
+                            value="52%"
+                          />
+                          <span
+                            class="font-label-md text-label-md text-on-surface-variant"
+                            >/ 65% Target</span
+                          >
+                        </div>
+                        <div
+                          class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm pt-1"
+                        >
+                          <span>Previous: 54%</span>
+                          <span class="text-error font-semibold"
+                            >-2.0% (Lagging)</span
+                          >
+                        </div>
+                      </div>
+                      <!-- Pacing Track Lagging -->
+                      <div
+                        class="md:col-span-8 bg-surface-container-low p-space-sm rounded-xl flex flex-col justify-between"
+                      >
+                        <div
+                          class="flex items-center justify-between font-label-sm text-label-sm"
+                        >
+                          <span class="text-on-surface-variant"
+                            >Pacing vs Q3 Target Cadence</span
+                          >
+                          <span class="text-error font-semibold"
+                            >80.0% of goal (Pacing behind schedule)</span
+                          >
+                        </div>
+                        <!-- Dual-track architecture with calendar pacing mark -->
+                        <div
+                          class="relative w-full h-3 bg-surface-container rounded-full overflow-visible my-2"
+                        >
+                          <div
+                            class="h-full bg-error rounded-full"
+                            style="width: 52%"
+                          ></div>
+                          <!-- Expected mark for W9 is ~58% -->
+                          <div
+                            class="absolute top-[-3px] bottom-[-3px] w-[2px] bg-primary z-10"
+                            style="left: 65%"
+                            title="Target Baseline (65%)"
+                          ></div>
+                        </div>
+                        <div
+                          class="flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm"
+                        >
+                          <span>Baseline Target: 65%</span>
+                          <span class="text-error font-semibold"
+                            >Current gap: -13.0%</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Confidence Rating Segment (5/10) -->
+                    <div
+                      class="bg-surface-container-lowest p-space-md rounded-xl space-y-space-xs shadow-sm"
+                    >
+                      <div class="flex items-center justify-between">
+                        <span
+                          class="font-title-sm text-title-sm text-on-surface"
+                          >Confidence Score (1 to 10)</span
+                        >
+                        <span
+                          class="px-2.5 py-0.5 rounded-full bg-error-container text-on-error-container font-label-md text-label-md"
+                        >
+                          5 / 10 • Moderate Risk
+                        </span>
+                      </div>
+                      <div
+                        class="grid grid-cols-10 gap-1.5 pt-1"
+                        id="confidence-pills-kr2"
+                      >
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant"
+                          type="button"
+                        >
+                          1
+                        </button>
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant"
+                          type="button"
+                        >
+                          2
+                        </button>
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant"
+                          type="button"
+                        >
+                          3
+                        </button>
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant"
+                          type="button"
+                        >
+                          4
+                        </button>
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-error text-on-error font-semibold shadow-sm"
+                          type="button"
+                        >
+                          5
+                        </button>
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant"
+                          type="button"
+                        >
+                          6
+                        </button>
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant"
+                          type="button"
+                        >
+                          7
+                        </button>
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant"
+                          type="button"
+                        >
+                          8
+                        </button>
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant"
+                          type="button"
+                        >
+                          9
+                        </button>
+                        <button
+                          class="h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant"
+                          type="button"
+                        >
+                          10
+                        </button>
+                      </div>
+                    </div>
+                    <!-- Active Blocker Escalation Box -->
+                    <div
+                      class="p-space-md rounded-xl bg-error-container/40 space-y-space-xs"
+                    >
+                      <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                          <span
+                            class="px-2 py-0.5 rounded-full bg-error text-on-error font-label-sm text-label-sm font-semibold uppercase"
+                          >
+                            Blocker Logged
+                          </span>
+                          <span class="font-title-sm text-title-sm text-error"
+                            >Latency spike during peak European hours</span
+                          >
+                        </div>
+                        <span
+                          class="material-symbols-outlined text-error text-lg"
+                          >warning</span
+                        >
+                      </div>
+                      <p class="font-body-sm text-body-sm text-on-surface">
+                        European enterprise pilots experienced 4.2s API response
+                        times on Monday and Tuesday, causing drop-offs during
+                        core workflow completions.
+                      </p>
+                      <div
+                        class="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+                      >
+                        <div
+                          class="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-surface-container-lowest text-on-surface font-label-sm text-label-sm shadow-sm"
+                        >
+                          <span
+                            class="material-symbols-outlined text-primary text-sm"
+                            >support_agent</span
+                          >
+                          Help Requested: DevOps support requested from Platform
+                          Squad
+                        </div>
+                        <span
+                          class="font-label-sm text-label-sm text-on-surface-variant"
+                          >Assigned to: Marcus Vance (Platform Lead)</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <!-- KR Item 3: Secondary Pending Update -->
+                  <div
+                    class="bg-surface rounded-xl p-space-lg space-y-space-sm shadow-sm opacity-95"
+                  >
+                    <div
+                      class="flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+                    >
+                      <div>
+                        <span
+                          class="px-2 py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-on-surface-variant"
+                          >Product Infra</span
+                        >
+                        <h3
+                          class="font-title-md text-title-md text-on-surface mt-1"
+                        >
+                          KR 2.4: 99.95% API Availability SLA across 3 Regions
+                        </h3>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <span
+                          class="font-title-sm text-title-sm text-tertiary-container"
+                          >99.98% current</span
+                        >
+                        <span
+                          class="px-2.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm"
+                          >On Track</span
+                        >
+                      </div>
+                    </div>
+                    <p
+                      class="font-body-sm text-body-sm text-on-surface-variant"
+                    >
+                      All regional clusters operational. No incidents logged in
+                      the past 7 days.
+                    </p>
+                  </div>
+                  <!-- Submission Action Bar -->
+                  <div
+                    class="pt-space-sm flex flex-col sm:flex-row items-center justify-between gap-space-md"
+                  >
+                    <div
+                      class="flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm"
+                    >
+                      <span class="material-symbols-outlined text-base"
+                        >info</span
+                      >
+                      Submitting marks your key results as reviewed for the
+                      executive Friday summary.
+                    </div>
+                    <div
+                      class="flex items-center gap-space-sm w-full sm:w-auto"
+                    >
+                      <button
+                        class="w-full sm:w-auto px-space-md py-2.5 bg-surface-container hover:bg-surface-container-high text-on-surface rounded-lg font-title-sm text-title-sm transition-colors shadow-sm"
+                        type="button"
+                      >
+                        Save Draft
+                      </button>
+                      <button
+                        class="w-full sm:w-auto px-space-lg py-2.5 bg-primary-container hover:bg-primary text-on-primary rounded-lg font-title-sm text-title-sm shadow-md transition-all flex items-center justify-center gap-2"
+                        type="button"
+                      >
+                        <span class="material-symbols-outlined text-base"
+                          >send</span
+                        >
+                        Submit All Weekly Check-ins
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <!-- Right Column (Team Submissions & Review Log + Blocker Triage) -->
+              <aside class="xl:col-span-4 space-y-space-lg min-w-0">
+                <!-- Department & Squad Submissions Log -->
+                <div
+                  class="bg-surface-container-lowest rounded-xl shadow-sm p-space-lg space-y-space-md"
+                >
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <h2
+                        class="font-headline-sm text-headline-sm text-on-surface"
+                      >
+                        Submissions by Squad
+                      </h2>
+                      <p
+                        class="font-label-sm text-label-sm text-on-surface-variant"
+                      >
+                        Product &amp; Engineering Division
+                      </p>
+                    </div>
+                    <button
+                      class="text-primary hover:text-on-primary-fixed-variant font-label-sm text-label-sm font-semibold"
+                      type="button"
+                    >
+                      Filter by Lead
+                    </button>
+                  </div>
+                  <div class="space-y-space-sm">
+                    <!-- Team 1 -->
+                    <div
+                      class="p-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors flex items-center justify-between gap-3"
+                    >
+                      <div class="flex items-center gap-space-sm min-w-0">
+                        <img
+                          class="w-8 h-8 rounded-full object-cover shrink-0"
+                          data-alt="Close up corporate portrait photograph of Marcus Vance, a software engineering manager wearing glasses and a minimalist sweater, soft office lighting in the background with AlignWork cool slate colors"
+                          src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkB2Ww0R94wKB4-cEy8BrpudVZw8qCrlIfK_h4FWBr1F1slhMCBwPuxe1yvkXwDvBNYw9wDt_CMts9BZ9SgMfKn6VpJx7DuOmFkYssY2oKHtOHRXrCOnitHDz_8pAEL5qhU6Ap-RbWzpakpAT_5xUvEJikRlEdCpV4-i7duh8RikItLZcDff6AByTqkIwAmZAnzjtl5NHY8uMxSutJoHGiAY9O_pqmgChQ8X6qeDzdO0nfVTNOAt5fsw"
+                        />
+                        <div class="min-w-0">
+                          <div
+                            class="font-title-sm text-title-sm text-on-surface truncate"
+                          >
+                            Product Squad A
+                          </div>
+                          <div
+                            class="font-label-sm text-label-sm text-on-surface-variant truncate"
+                          >
+                            Submitted 2h ago by Marcus
+                          </div>
+                        </div>
+                      </div>
+                      <span
+                        class="px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm shrink-0"
+                      >
+                        On Track
+                      </span>
+                    </div>
+                    <!-- Team 2 -->
+                    <div
+                      class="p-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors flex items-center justify-between gap-3"
+                    >
+                      <div class="flex items-center gap-space-sm min-w-0">
+                        <img
+                          class="w-8 h-8 rounded-full object-cover shrink-0"
+                          data-alt="Portrait photo of Priya Sharma, infrastructure lead engineer, smiling professionally in an agile tech office setting with clean ambient light"
+                          src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmeBSe2gxOWBA3K3I88XQKDjexs6hV1KAfEvejql8fgevDivQE80oV--IFOIqrZ0Z7vWwY0IQgrHN_flODDx2cEskTLXwtnRqzmDnc322Um5lcPWv3NuRF8J9fcrSbCV4VWJVj0JtLL4eZs5Nfxv--V1ojztEiEIN4Le70g2kxxNvxNKrBDJyP4-s2dcBvNQClrvctmFC2IFSS9K4VH2JrkzsJvr2cG66FR-XtgBJ0LlEcGf8Puy6ong"
+                        />
+                        <div class="min-w-0">
+                          <div
+                            class="font-title-sm text-title-sm text-on-surface truncate"
+                          >
+                            Infrastructure Squad
+                          </div>
+                          <div
+                            class="font-label-sm text-label-sm text-on-surface-variant truncate"
+                          >
+                            Submitted 4h ago by Priya
+                          </div>
+                        </div>
+                      </div>
+                      <span
+                        class="px-2 py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-label-sm shrink-0"
+                      >
+                        Needs Attention
+                      </span>
+                    </div>
+                    <!-- Team 3 -->
+                    <div
+                      class="p-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors flex items-center justify-between gap-3"
+                    >
+                      <div class="flex items-center gap-space-sm min-w-0">
+                        <img
+                          class="w-8 h-8 rounded-full object-cover shrink-0"
+                          data-alt="Candid studio portrait photograph of Alex Chen, head of data analytics, crisp focus, neutral background with hints of deep indigo and modern corporate office"
+                          src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoGJ47VDnTj1V7CkQKz517oZUHy2RgCfS1I6JAtCp1WDicFxn_Qwhv5MKIYZwdVqydky2Tf6EQ9xIJYO7GuQQbFg2mDhUksWFgk08JX3itBhFcOi7_AJmGmZZ4Ru0nH4DeURkBAPJo9qIXBEsXIiV37JnoBBd8YRp3ukZOF_U_axtvIdgutYRmH-aVoE-Q9Ib-BXpurDJV88YT8Zk4eA1VvlEWX3bJLltK1j1LwoLjmWsg7Vxo-C8YBQ"
+                        />
+                        <div class="min-w-0">
+                          <div
+                            class="font-title-sm text-title-sm text-on-surface truncate"
+                          >
+                            Data &amp; Analytics
+                          </div>
+                          <div
+                            class="font-label-sm text-label-sm text-on-surface-variant truncate"
+                          >
+                            Submitted yesterday by Alex
+                          </div>
+                        </div>
+                      </div>
+                      <span
+                        class="px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm shrink-0"
+                      >
+                        On Track
+                      </span>
+                    </div>
+                    <!-- Team 4: Pending -->
+                    <div
+                      class="p-space-sm rounded-xl bg-error-container/20 flex items-center justify-between gap-3"
+                    >
+                      <div class="flex items-center gap-space-sm min-w-0">
+                        <div
+                          class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-label-sm text-label-sm font-bold shrink-0"
+                        >
+                          GA
+                        </div>
+                        <div class="min-w-0">
+                          <div
+                            class="font-title-sm text-title-sm text-on-surface truncate"
+                          >
+                            Growth &amp; Activation
+                          </div>
+                          <div
+                            class="font-label-sm text-label-sm text-error truncate"
+                          >
+                            Pending • Reminder sent 1h ago
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        class="px-2 py-1 rounded bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-sm text-label-sm shrink-0 shadow-sm"
+                        type="button"
+                      >
+                        Nudge
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Executive Summary & Blocker Triage Section -->
+                <div
+                  class="bg-surface-container-lowest rounded-xl shadow-sm p-space-lg space-y-space-md"
+                >
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <div class="w-2 h-2 rounded-full bg-error"></div>
+                      <h2
+                        class="font-headline-sm text-headline-sm text-on-surface"
+                      >
+                        Blocker Triage
+                      </h2>
+                    </div>
+                    <span
+                      class="font-label-sm text-label-sm text-on-surface-variant"
+                      >2 Open Requests</span
+                    >
+                  </div>
+                  <!-- Blocker Card 1 -->
+                  <div
+                    class="bg-surface-container-low rounded-xl p-space-md space-y-2"
+                  >
+                    <div class="flex items-start justify-between gap-2">
+                      <span
+                        class="px-2 py-0.5 rounded bg-error text-on-error font-label-sm text-label-sm"
+                        >High Priority</span
+                      >
+                      <span
+                        class="font-label-sm text-label-sm text-on-surface-variant"
+                        >Infra &amp; Platform</span
+                      >
+                    </div>
+                    <h4 class="font-title-sm text-title-sm text-on-surface">
+                      EU Data Residency Provisioning Lag
+                    </h4>
+                    <p
+                      class="font-body-sm text-body-sm text-on-surface-variant"
+                    >
+                      AWS Frankfurt VPC readiness delayed by compliance audit.
+                      Impacting 3 tier-1 pilot conversions.
+                    </p>
+                    <div class="pt-1 flex items-center justify-between">
+                      <span
+                        class="font-label-sm text-label-sm text-on-surface font-medium"
+                        >Owner: DevSecOps</span
+                      >
+                      <button
+                        class="text-primary hover:underline font-label-sm text-label-sm font-semibold"
+                        type="button"
+                      >
+                        Assign Unblocker →
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Blocker Card 2 -->
+                  <div
+                    class="bg-surface-container-low rounded-xl p-space-md space-y-2"
+                  >
+                    <div class="flex items-start justify-between gap-2">
+                      <span
+                        class="px-2 py-0.5 rounded bg-surface-container-highest text-on-surface font-label-sm text-label-sm"
+                        >Medium</span
+                      >
+                      <span
+                        class="font-label-sm text-label-sm text-on-surface-variant"
+                        >Design Systems</span
+                      >
+                    </div>
+                    <h4 class="font-title-sm text-title-sm text-on-surface">
+                      Component Spec Sign-off for v2 SDK
+                    </h4>
+                    <p
+                      class="font-body-sm text-body-sm text-on-surface-variant"
+                    >
+                      Design review pending Sarah Lin approval. Awaiting final
+                      confirmation on token schemas.
+                    </p>
+                    <div class="pt-1 flex items-center justify-between">
+                      <span
+                        class="font-label-sm text-label-sm text-on-surface font-medium"
+                        >Owner: Design Squad</span
+                      >
+                      <button
+                        class="text-primary hover:underline font-label-sm text-label-sm font-semibold"
+                        type="button"
+                      >
+                        Quick Approve →
+                      </button>
+                    </div>
+                  </div>
+                  <!-- Leadership Comment / Quick Reaction Box -->
+                  <div
+                    class="pt-2 border-t-0 bg-surface-container-low p-space-md rounded-xl space-y-space-xs"
+                  >
+                    <label
+                      class="font-title-sm text-title-sm text-on-surface block"
+                    >
+                      VP Product Feedback / Guidance
+                    </label>
+                    <div class="relative">
+                      <input
+                        class="w-full h-10 px-3 pr-10 bg-surface-container-lowest rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary-container/20"
+                        placeholder="Add guidance for Friday leadership deck..."
+                        type="text"
+                      />
+                      <button
+                        class="absolute right-2 top-1/2 -translate-y-1/2 text-primary hover:text-on-primary-fixed-variant"
+                        type="button"
+                      >
+                        <span class="material-symbols-outlined text-xl"
+                          >send</span
+                        >
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Weekly Cadence Distribution Visualization Card -->
+                <div
+                  class="bg-surface-container-lowest rounded-xl shadow-sm p-space-lg space-y-space-sm"
+                >
+                  <div class="flex items-center justify-between">
+                    <span class="font-title-sm text-title-sm text-on-surface"
+                      >Division Confidence Distribution</span
+                    >
+                    <span
+                      class="font-label-sm text-label-sm text-on-surface-variant"
+                      >W9 Average: 7.6 / 10</span
+                    >
+                  </div>
+                  <!-- Custom SVG Sparkline / Bar Distribution -->
+                  <div class="py-2">
+                    <svg
+                      class="w-full h-16"
+                      fill="none"
+                      viewbox="0 0 280 60"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <!-- Grid hint -->
+                      <line
+                        class="text-surface-container"
+                        stroke="currentColor"
+                        stroke-width="1"
+                        x1="0"
+                        x2="280"
+                        y1="55"
+                        y2="55"
+                      ></line>
+                      <!-- Bars representing confidence spectrum 1-10 -->
+                      <rect
+                        class="fill-surface-container"
+                        height="5"
+                        rx="2"
+                        width="18"
+                        x="5"
+                        y="50"
+                      ></rect>
+                      <rect
+                        class="fill-surface-container"
+                        height="7"
+                        rx="2"
+                        width="18"
+                        x="33"
+                        y="48"
+                      ></rect>
+                      <rect
+                        class="fill-surface-container"
+                        height="13"
+                        rx="2"
+                        width="18"
+                        x="61"
+                        y="42"
+                      ></rect>
+                      <rect
+                        class="fill-surface-container"
+                        height="17"
+                        rx="2"
+                        width="18"
+                        x="89"
+                        y="38"
+                      ></rect>
+                      <rect
+                        class="fill-error-container"
+                        height="27"
+                        rx="2"
+                        width="18"
+                        x="117"
+                        y="28"
+                      ></rect>
+                      <rect
+                        class="fill-secondary-container"
+                        height="33"
+                        rx="2"
+                        width="18"
+                        x="145"
+                        y="22"
+                      ></rect>
+                      <rect
+                        class="fill-primary-container"
+                        height="45"
+                        rx="2"
+                        width="18"
+                        x="173"
+                        y="10"
+                      ></rect>
+                      <rect
+                        class="fill-primary-container"
+                        height="51"
+                        rx="2"
+                        width="18"
+                        x="201"
+                        y="4"
+                      ></rect>
+                      <rect
+                        class="fill-tertiary-container"
+                        height="41"
+                        rx="2"
+                        width="18"
+                        x="229"
+                        y="14"
+                      ></rect>
+                      <rect
+                        class="fill-tertiary-container"
+                        height="29"
+                        rx="2"
+                        width="18"
+                        x="257"
+                        y="26"
+                      ></rect>
+                    </svg>
+                    <div
+                      class="flex justify-between text-on-surface-variant font-label-sm text-label-sm mt-1 px-1"
+                    >
+                      <span>Score 1 (High Risk)</span>
+                      <span>Score 10 (Max)</span>
+                    </div>
+                  </div>
+                  <div
+                    class="p-space-sm bg-surface-container-low rounded-lg flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm"
+                  >
+                    <span>Overall OKR Health Status</span>
+                    <span
+                      class="font-semibold text-tertiary-container flex items-center gap-1"
+                    >
+                      <span
+                        class="w-1.5 h-1.5 rounded-full bg-tertiary-container"
+                      ></span>
+                      Healthy Execution
+                    </span>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+        <script>
+          // Simple micro-interaction for confidence score pill selection
+          document
+            .querySelectorAll("#confidence-pills-kr1 button")
+            .forEach((btn) => {
+              btn.addEventListener("click", function () {
+                document
+                  .querySelectorAll("#confidence-pills-kr1 button")
+                  .forEach((b) => {
+                    b.className =
+                      "h-8 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors";
+                  });
+                this.className =
+                  "h-8 rounded font-label-sm text-label-sm bg-primary-container text-on-primary font-semibold shadow-sm";
+              });
+            });
+        </script>
+      </main>
+    </div>
+  </body>
+</html>
