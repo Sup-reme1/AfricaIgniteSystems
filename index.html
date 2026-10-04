@@ -58,7 +58,8 @@
                   <p
                     class="font-body-md text-body-md text-on-surface-variant max-w-3xl"
                   >
-                    Tracking 5 company objectives, 18 team key results, and 34
+                    Tracking <span data-stat="objectives">5</span> company objectives,
+                    <span data-stat="key-results">18</span> team key results, and 34
                     cross-functional initiatives across 14 teams.
                   </p>
                 </div>
@@ -91,29 +92,39 @@
                   class="flex flex-wrap items-center gap-1.5 p-1 bg-surface-container-low rounded-xl"
                 >
                   <button
+                    type="button"
                     class="px-space-md py-1 rounded-lg font-title-sm text-title-sm bg-surface-container-lowest text-on-surface shadow-sm"
-                  >
-                    All Departments
+                    data-department="all"
+                    >
+                      All Departments
                   </button>
                   <button
+                    type="button"
                     class="px-space-md py-1 rounded-lg font-title-sm text-title-sm text-on-surface-variant hover:text-on-surface transition-colors"
-                  >
-                    Product
+                    data-department="Product"
+                    >
+                      Product
                   </button>
                   <button
+                    type="button"
                     class="px-space-md py-1 rounded-lg font-title-sm text-title-sm text-on-surface-variant hover:text-on-surface transition-colors"
-                  >
-                    Engineering
+                    data-department="Engineering"
+                    >
+                      Engineering
                   </button>
                   <button
+                    type="button"
                     class="px-space-md py-1 rounded-lg font-title-sm text-title-sm text-on-surface-variant hover:text-on-surface transition-colors"
-                  >
-                    Design
+                    data-department="Design"
+                    >
+                      Design
                   </button>
                   <button
+                    type="button"
                     class="px-space-md py-1 rounded-lg font-title-sm text-title-sm text-on-surface-variant hover:text-on-surface transition-colors"
-                  >
-                    Data
+                    data-department="Data"
+                    >
+                      Data
                   </button>
                 </div>
                 <!-- Metric Health Status Filter Chips -->
@@ -123,39 +134,47 @@
                     >Filter:</span
                   >
                   <button
+                    type="button"
                     class="flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-surface-container font-label-md text-label-md text-on-surface"
-                  >
+                    data-status="all"
+                    >
                     <span>All</span>
                     <span
                       class="px-1.5 py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-label-sm"
-                      >18</span
+                       data-status-count>18</span
                     >
                   </button>
                   <button
+                    type="button"
                     class="flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-tertiary-container/10 text-tertiary font-label-md text-label-md hover:bg-tertiary-container/20 transition-colors"
-                  >
+                    data-status="on-track"
+                    >
                     <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
                     <span>On Track</span>
                     <span class="font-label-sm text-label-sm font-semibold"
-                      >12</span
+                       data-status-count>12</span
                     >
                   </button>
                   <button
+                    type="button"
                     class="flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-secondary-container/60 text-on-secondary-fixed font-label-md text-label-md hover:bg-secondary-container transition-colors"
-                  >
+                    data-status="needs-attention"
+                    >
                     <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
                     <span>Needs Attention</span>
                     <span class="font-label-sm text-label-sm font-semibold"
-                      >4</span
+                       data-status-count>4</span
                     >
                   </button>
                   <button
+                    type="button"
                     class="flex items-center gap-1.5 px-space-sm py-1 rounded-full bg-error-container text-on-error-container font-label-md text-label-md hover:bg-error-container/80 transition-colors"
-                  >
+                    data-status="at-risk"
+                    >
                     <span class="w-1.5 h-1.5 rounded-full bg-error"></span>
                     <span>At Risk</span>
                     <span class="font-label-sm text-label-sm font-semibold"
-                      >2</span
+                       data-status-count>2</span
                     >
                   </button>
                 </div>
@@ -379,601 +398,24 @@
                     </h2>
                     <span
                       class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm"
-                      >3 of 5 Shown</span
+                       data-shown-count>3 of 5 Shown</span
                     >
                   </div>
                   <button
+                    type="button"
                     class="font-title-sm text-title-sm text-primary hover:underline flex items-center gap-1"
+                    data-expand-all
                   >
-                    <span>Expand All KRs</span>
+                    <span data-expand-all-label>Expand All KRs</span>
                     <span class="material-symbols-outlined text-sm"
                       >unfold_more</span
                     >
                   </button>
                 </div>
-                <!-- Objective 1 Card Accordion -->
-                <div
-                  class="bg-surface-container-lowest rounded-xl shadow-sm transition-all overflow-hidden"
-                  id="obj-1"
-                >
-                  <div
-                    class="p-space-lg flex flex-col md:flex-row md:items-center justify-between gap-space-md cursor-pointer hover:bg-surface-container-low/40 transition-colors"
-                    data-toggle-krs="obj-1-krs"
-                  >
-                    <div class="space-y-2 min-w-0">
-                      <div class="flex flex-wrap items-center gap-space-xs">
-                        <span
-                          class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-semibold tracking-wider uppercase"
-                          >OBJ-01</span
-                        >
-                        <span
-                          class="px-2.5 py-0.5 rounded-full bg-tertiary-container/10 text-tertiary font-label-sm text-label-sm font-semibold inline-flex items-center gap-1"
-                        >
-                          <span
-                            class="w-1.5 h-1.5 rounded-full bg-tertiary"
-                          ></span>
-                          On Track
-                        </span>
-                        <span
-                          class="font-label-sm text-label-sm text-on-surface-variant"
-                          >DevOps &amp; Core Platform</span
-                        >
-                      </div>
-                      <h3
-                        class="font-headline-sm text-headline-sm text-on-surface tracking-tight"
-                      >
-                        Accelerate Enterprise Platform Reliability &amp;
-                        Zero-Downtime Releases
-                      </h3>
-                    </div>
-                    <div class="flex items-center gap-space-lg shrink-0">
-                      <div class="text-right">
-                        <div
-                          class="font-title-md text-title-md text-on-surface font-bold"
-                        >
-                          82%
-                        </div>
-                        <div
-                          class="font-label-sm text-label-sm text-on-surface-variant"
-                        >
-                          Avg Progress
-                        </div>
-                      </div>
-                      <div
-                        class="w-24 h-2 bg-surface-container rounded-full overflow-hidden hidden sm:block"
-                      >
-                        <div
-                          class="h-full bg-tertiary-container rounded-full"
-                          style="width: 82%"
-                        ></div>
-                      </div>
-                      <span
-                        class="material-symbols-outlined text-on-surface-variant transition-transform"
-                        id="obj-1-icon"
-                        >expand_more</span
-                      >
-                    </div>
-                  </div>
-                  <!-- KR Nested Tree Container -->
-                  <div
-                    class="px-space-lg pb-space-lg pt-space-xs space-y-space-sm"
-                    id="obj-1-krs"
-                  >
-                    <!-- KR 1.1 -->
-                    <div
-                      class="p-space-md bg-surface-container-low rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-space-md hover:bg-surface-container transition-all"
-                    >
-                      <div class="space-y-1 min-w-0">
-                        <div class="flex items-center gap-2">
-                          <span
-                            class="font-label-sm text-label-sm text-primary font-semibold"
-                            >KR 1.1</span
-                          >
-                          <span
-                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary-container/10 text-tertiary font-label-sm text-label-sm font-medium"
-                          >
-                            <span
-                              class="w-1.5 h-1.5 rounded-full bg-tertiary"
-                            ></span>
-                            On Track
-                          </span>
-                        </div>
-                        <div
-                          class="font-title-sm text-title-sm text-on-surface"
-                        >
-                          Maintain 99.99% uptime across US-East and EU-West
-                          regions
-                        </div>
-                        <div
-                          class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-3"
-                        >
-                          <span
-                            >Owner:
-                            <strong class="text-on-surface font-medium"
-                              >David K.</strong
-                            ></span
-                          >
-                          <span>•</span>
-                          <span>Target: 99.99%</span>
-                        </div>
-                      </div>
-                      <div
-                        class="flex items-center gap-space-md shrink-0 sm:w-48 justify-between sm:justify-end"
-                      >
-                        <div class="text-left sm:text-right">
-                          <div
-                            class="font-title-sm text-title-sm text-on-surface font-bold"
-                          >
-                            99.98%
-                          </div>
-                          <div
-                            class="font-label-sm text-label-sm text-tertiary font-medium"
-                          >
-                            Lagging 0.01%
-                          </div>
-                        </div>
-                        <div
-                          class="w-16 h-1.5 bg-surface-container-highest rounded-full overflow-hidden"
-                        >
-                          <div
-                            class="h-full bg-tertiary-container rounded-full"
-                            style="width: 98%"
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- KR 1.2 -->
-                    <div
-                      class="p-space-md bg-surface-container-low rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-space-md hover:bg-surface-container transition-all"
-                    >
-                      <div class="space-y-1 min-w-0">
-                        <div class="flex items-center gap-2">
-                          <span
-                            class="font-label-sm text-label-sm text-primary font-semibold"
-                            >KR 1.2</span
-                          >
-                          <span
-                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-medium"
-                          >
-                            <span
-                              class="w-1.5 h-1.5 rounded-full bg-secondary"
-                            ></span>
-                            Needs Attention
-                          </span>
-                        </div>
-                        <div
-                          class="font-title-sm text-title-sm text-on-surface"
-                        >
-                          Reduce mean time to recover (MTTR) under 15 minutes
-                        </div>
-                        <div
-                          class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-3"
-                        >
-                          <span
-                            >Owner:
-                            <strong class="text-on-surface font-medium"
-                              >Alex R.</strong
-                            ></span
-                          >
-                          <span>•</span>
-                          <span>Target: &lt; 15 min</span>
-                        </div>
-                      </div>
-                      <div
-                        class="flex items-center gap-space-md shrink-0 sm:w-48 justify-between sm:justify-end"
-                      >
-                        <div class="text-left sm:text-right">
-                          <div
-                            class="font-title-sm text-title-sm text-on-surface font-bold"
-                          >
-                            18 min
-                          </div>
-                          <div
-                            class="font-label-sm text-label-sm text-error font-medium"
-                          >
-                            +3 min buffer
-                          </div>
-                        </div>
-                        <div
-                          class="w-16 h-1.5 bg-surface-container-highest rounded-full overflow-hidden"
-                        >
-                          <div
-                            class="h-full bg-secondary rounded-full"
-                            style="width: 65%"
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- KR 1.3 -->
-                    <div
-                      class="p-space-md bg-surface-container-low rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-space-md hover:bg-surface-container transition-all"
-                    >
-                      <div class="space-y-1 min-w-0">
-                        <div class="flex items-center gap-2">
-                          <span
-                            class="font-label-sm text-label-sm text-primary font-semibold"
-                            >KR 1.3</span
-                          >
-                          <span
-                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary-container/10 text-tertiary font-label-sm text-label-sm font-medium"
-                          >
-                            <span
-                              class="w-1.5 h-1.5 rounded-full bg-tertiary"
-                            ></span>
-                            On Track
-                          </span>
-                        </div>
-                        <div
-                          class="font-title-sm text-title-sm text-on-surface"
-                        >
-                          Achieve zero P0 incidents for 60 consecutive days
-                        </div>
-                        <div
-                          class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-3"
-                        >
-                          <span
-                            >Owner:
-                            <strong class="text-on-surface font-medium"
-                              >Platform Guild</strong
-                            ></span
-                          >
-                          <span>•</span>
-                          <span>Target: 60 Days</span>
-                        </div>
-                      </div>
-                      <div
-                        class="flex items-center gap-space-md shrink-0 sm:w-48 justify-between sm:justify-end"
-                      >
-                        <div class="text-left sm:text-right">
-                          <div
-                            class="font-title-sm text-title-sm text-on-surface font-bold"
-                          >
-                            44 / 60 Days
-                          </div>
-                          <div
-                            class="font-label-sm text-label-sm text-tertiary font-medium"
-                          >
-                            73% Complete
-                          </div>
-                        </div>
-                        <div
-                          class="w-16 h-1.5 bg-surface-container-highest rounded-full overflow-hidden"
-                        >
-                          <div
-                            class="h-full bg-tertiary-container rounded-full"
-                            style="width: 73%"
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Objective 2 Card Accordion -->
-                <div
-                  class="bg-surface-container-lowest rounded-xl shadow-sm transition-all overflow-hidden"
-                  id="obj-2"
-                >
-                  <div
-                    class="p-space-lg flex flex-col md:flex-row md:items-center justify-between gap-space-md cursor-pointer hover:bg-surface-container-low/40 transition-colors"
-                    data-toggle-krs="obj-2-krs"
-                  >
-                    <div class="space-y-2 min-w-0">
-                      <div class="flex flex-wrap items-center gap-space-xs">
-                        <span
-                          class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-semibold tracking-wider uppercase"
-                          >OBJ-02</span
-                        >
-                        <span
-                          class="px-2.5 py-0.5 rounded-full bg-tertiary-container/10 text-tertiary font-label-sm text-label-sm font-semibold inline-flex items-center gap-1"
-                        >
-                          <span
-                            class="w-1.5 h-1.5 rounded-full bg-tertiary"
-                          ></span>
-                          On Track
-                        </span>
-                        <span
-                          class="font-label-sm text-label-sm text-on-surface-variant"
-                          >AI Product Squad</span
-                        >
-                      </div>
-                      <h3
-                        class="font-headline-sm text-headline-sm text-on-surface tracking-tight"
-                      >
-                        Expand AI-Powered Workflow Automations for Global
-                        Accounts
-                      </h3>
-                    </div>
-                    <div class="flex items-center gap-space-lg shrink-0">
-                      <div class="text-right">
-                        <div
-                          class="font-title-md text-title-md text-on-surface font-bold"
-                        >
-                          68%
-                        </div>
-                        <div
-                          class="font-label-sm text-label-sm text-on-surface-variant"
-                        >
-                          Avg Progress
-                        </div>
-                      </div>
-                      <div
-                        class="w-24 h-2 bg-surface-container rounded-full overflow-hidden hidden sm:block"
-                      >
-                        <div
-                          class="h-full bg-primary-container rounded-full"
-                          style="width: 68%"
-                        ></div>
-                      </div>
-                      <span
-                        class="material-symbols-outlined text-on-surface-variant transition-transform"
-                        id="obj-2-icon"
-                        >expand_more</span
-                      >
-                    </div>
-                  </div>
-                  <!-- KR Nested Tree Container -->
-                  <div
-                    class="px-space-lg pb-space-lg pt-space-xs space-y-space-sm"
-                    id="obj-2-krs"
-                  >
-                    <!-- KR 2.1 -->
-                    <div
-                      class="p-space-md bg-surface-container-low rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-space-md hover:bg-surface-container transition-all"
-                    >
-                      <div class="space-y-1 min-w-0">
-                        <div class="flex items-center gap-2">
-                          <span
-                            class="font-label-sm text-label-sm text-primary font-semibold"
-                            >KR 2.1</span
-                          >
-                          <span
-                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary-container/10 text-tertiary font-label-sm text-label-sm font-medium"
-                          >
-                            <span
-                              class="w-1.5 h-1.5 rounded-full bg-tertiary"
-                            ></span>
-                            On Track
-                          </span>
-                        </div>
-                        <div
-                          class="font-title-sm text-title-sm text-on-surface"
-                        >
-                          Onboard 150 Enterprise tier pilot customers to AI
-                          Copilot
-                        </div>
-                        <div
-                          class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-3"
-                        >
-                          <span
-                            >Owner:
-                            <strong class="text-on-surface font-medium"
-                              >Sarah Lin</strong
-                            ></span
-                          >
-                          <span>•</span>
-                          <span>Target: 150 Accounts</span>
-                        </div>
-                      </div>
-                      <div
-                        class="flex items-center gap-space-md shrink-0 sm:w-48 justify-between sm:justify-end"
-                      >
-                        <div class="text-left sm:text-right">
-                          <div
-                            class="font-title-sm text-title-sm text-on-surface font-bold"
-                          >
-                            118 / 150
-                          </div>
-                          <div
-                            class="font-label-sm text-label-sm text-tertiary font-medium"
-                          >
-                            78% Delivered
-                          </div>
-                        </div>
-                        <div
-                          class="w-16 h-1.5 bg-surface-container-highest rounded-full overflow-hidden"
-                        >
-                          <div
-                            class="h-full bg-tertiary-container rounded-full"
-                            style="width: 78%"
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- KR 2.2 -->
-                    <div
-                      class="p-space-md bg-surface-container-low rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-space-md hover:bg-surface-container transition-all"
-                    >
-                      <div class="space-y-1 min-w-0">
-                        <div class="flex items-center gap-2">
-                          <span
-                            class="font-label-sm text-label-sm text-primary font-semibold"
-                            >KR 2.2</span
-                          >
-                          <span
-                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-medium"
-                          >
-                            <span
-                              class="w-1.5 h-1.5 rounded-full bg-error"
-                            ></span>
-                            At Risk
-                          </span>
-                        </div>
-                        <div
-                          class="font-title-sm text-title-sm text-on-surface"
-                        >
-                          Achieve weekly active usage (WAU) of 65% among pilot
-                          accounts
-                        </div>
-                        <div
-                          class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-3"
-                        >
-                          <span
-                            >Owner:
-                            <strong class="text-on-surface font-medium"
-                              >Elena M.</strong
-                            ></span
-                          >
-                          <span>•</span>
-                          <span>Target: 65% WAU</span>
-                        </div>
-                      </div>
-                      <div
-                        class="flex items-center gap-space-md shrink-0 sm:w-48 justify-between sm:justify-end"
-                      >
-                        <div class="text-left sm:text-right">
-                          <div
-                            class="font-title-sm text-title-sm text-error font-bold"
-                          >
-                            52%
-                          </div>
-                          <div
-                            class="font-label-sm text-label-sm text-error font-medium"
-                          >
-                            13% under pace
-                          </div>
-                        </div>
-                        <div
-                          class="w-16 h-1.5 bg-surface-container-highest rounded-full overflow-hidden"
-                        >
-                          <div
-                            class="h-full bg-error rounded-full"
-                            style="width: 52%"
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Objective 3 Card Accordion -->
-                <div
-                  class="bg-surface-container-lowest rounded-xl shadow-sm transition-all overflow-hidden"
-                  id="obj-3"
-                >
-                  <div
-                    class="p-space-lg flex flex-col md:flex-row md:items-center justify-between gap-space-md cursor-pointer hover:bg-surface-container-low/40 transition-colors"
-                    data-toggle-krs="obj-3-krs"
-                  >
-                    <div class="space-y-2 min-w-0">
-                      <div class="flex flex-wrap items-center gap-space-xs">
-                        <span
-                          class="px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-semibold tracking-wider uppercase"
-                          >OBJ-03</span
-                        >
-                        <span
-                          class="px-2.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-semibold inline-flex items-center gap-1"
-                        >
-                          <span class="material-symbols-outlined text-xs"
-                            >rocket_launch</span
-                          >
-                          Ahead of Target
-                        </span>
-                        <span
-                          class="font-label-sm text-label-sm text-on-surface-variant"
-                          >Growth &amp; UX</span
-                        >
-                      </div>
-                      <h3
-                        class="font-headline-sm text-headline-sm text-on-surface tracking-tight"
-                      >
-                        Streamline Customer Onboarding Time-to-Value
-                      </h3>
-                    </div>
-                    <div class="flex items-center gap-space-lg shrink-0">
-                      <div class="text-right">
-                        <div
-                          class="font-title-md text-title-md text-on-surface font-bold"
-                        >
-                          88%
-                        </div>
-                        <div
-                          class="font-label-sm text-label-sm text-on-surface-variant"
-                        >
-                          Avg Progress
-                        </div>
-                      </div>
-                      <div
-                        class="w-24 h-2 bg-surface-container rounded-full overflow-hidden hidden sm:block"
-                      >
-                        <div
-                          class="h-full bg-tertiary-container rounded-full"
-                          style="width: 88%"
-                        ></div>
-                      </div>
-                      <span
-                        class="material-symbols-outlined text-on-surface-variant transition-transform"
-                        id="obj-3-icon"
-                        >expand_more</span
-                      >
-                    </div>
-                  </div>
-                  <!-- KR Nested Tree Container -->
-                  <div
-                    class="px-space-lg pb-space-lg pt-space-xs space-y-space-sm"
-                    id="obj-3-krs"
-                  >
-                    <!-- KR 3.1 -->
-                    <div
-                      class="p-space-md bg-surface-container-low rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-space-md hover:bg-surface-container transition-all"
-                    >
-                      <div class="space-y-1 min-w-0">
-                        <div class="flex items-center gap-2">
-                          <span
-                            class="font-label-sm text-label-sm text-primary font-semibold"
-                            >KR 3.1</span
-                          >
-                          <span
-                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary-container text-on-tertiary font-label-sm text-label-sm font-medium"
-                          >
-                            <span class="material-symbols-outlined text-xs"
-                              >check</span
-                            >
-                            Complete / Exceeded
-                          </span>
-                        </div>
-                        <div
-                          class="font-title-sm text-title-sm text-on-surface"
-                        >
-                          Cut self-serve provisioning time from 14 days to under
-                          48 hours
-                        </div>
-                        <div
-                          class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-3"
-                        >
-                          <span
-                            >Owner:
-                            <strong class="text-on-surface font-medium"
-                              >Priya N.</strong
-                            ></span
-                          >
-                          <span>•</span>
-                          <span>Target: &lt; 48 hours</span>
-                        </div>
-                      </div>
-                      <div
-                        class="flex items-center gap-space-md shrink-0 sm:w-48 justify-between sm:justify-end"
-                      >
-                        <div class="text-left sm:text-right">
-                          <div
-                            class="font-title-sm text-title-sm text-tertiary font-bold"
-                          >
-                            36 Hours
-                          </div>
-                          <div
-                            class="font-label-sm text-label-sm text-tertiary font-medium"
-                          >
-                            Exceeded goal
-                          </div>
-                        </div>
-                        <div
-                          class="w-16 h-1.5 bg-surface-container-highest rounded-full overflow-hidden"
-                        >
-                          <div
-                            class="h-full bg-tertiary-container rounded-full"
-                            style="width: 100%"
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
+                <!-- Rendered from data/objectives.json by assets/js/pages/dashboard.js -->
+                <div class="space-y-space-md" data-objectives-list aria-live="polite">
+                  <div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm font-body-md text-body-md text-on-surface-variant">
+                    Loading objectives…
                   </div>
                 </div>
               </div>
@@ -1263,6 +705,8 @@
 
     <script src="assets/js/layout.js"></script>
     <script src="assets/js/app.js"></script>
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/router.js"></script>
     <script src="assets/js/pages/dashboard.js"></script>
   </body>
 </html>

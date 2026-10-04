@@ -1,5 +1,5 @@
 // Objective hierarchy: zoom, inspector panel, collapse, node search and view switcher.
-(function initHierarchyView() {
+AIS.definePage("objectives", () => {
   let currentZoom = 100;
   const treeCanvas = document.getElementById("tree-root-canvas");
   const zoomIndicator = document.getElementById("zoom-indicator");
@@ -106,4 +106,4 @@
       btn.classList.remove("text-on-surface-variant");
     });
   });
-})();
+});

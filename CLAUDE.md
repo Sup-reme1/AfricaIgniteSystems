@@ -45,10 +45,14 @@ assets/
   css/base.css        global resets
   css/layout.css      app shell: sidebar/header/content/footer positioning + responsive behaviour
   js/tailwind-theme.js  Tailwind theme tokens (colors, spacing, type scale), shared by all pages
-  js/layout.js        injects partials, marks active nav link, exposes AIS.layoutReady
-  js/app.js           shared behaviour (mobile sidebar, footer year)
+  js/layout.js        injects partials, marks active nav link, exposes AIS.layoutReady / AIS.setActiveNav
+  js/app.js           shared behaviour + helpers (mobile sidebar, footer year, AIS.escape)
+  js/data.js          AIS.data.load(name): loads data/<name>.json, cached for the session
+  js/router.js        client-side navigation (swaps <main> only) + page lifecycle (AIS.definePage)
   js/pages/*.js       one script per page, named after its data-page
   img/                logo.svg, avatar.jpg
+data/
+  objectives.json     objectives + key results (rendered by the dashboard)
 ```
 
 ### Page skeleton
@@ -65,17 +69,38 @@ Every page has the same shell; only `<title>`, `data-page`, the `<main>` content
   </div>
   <script src="assets/js/layout.js"></script>
   <script src="assets/js/app.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/router.js"></script>
   <script src="assets/js/pages/dashboard.js"></script>
 </body>
 ```
 
-The `<head>` loads fonts, then the Tailwind CDN, then `assets/js/tailwind-theme.js`, then `base.css` and `layout.css`. Copy it from an existing page.
+The `<head>` loads fonts, then the Tailwind CDN, then `assets/js/tailwind-theme.js`, then `base.css` and `layout.css`. Copy it from an existing page. Keep the shared script order: page scripts come last.
+
+### Page navigation and page scripts
+
+`router.js` intercepts clicks on links to other portal pages (`*.html`), fetches the target, and swaps in only its `<main>`, title and `data-page`, using a short View Transition where supported. The sidebar, header and footer stay mounted, so they don't flash or re-render. It also prefetches on hover, handles back/forward with scroll restore, closes the mobile drawer, and fires a `page:change` event. If anything fails it falls back to a normal page load. Add `data-no-router` to a link to force a full load.
+
+Because a page can be entered without a full load, **page scripts must not run at top level**. Register an init instead:
+
+```js
+AIS.definePage("dashboard", async (main) => {
+  // set up listeners / render inside `main`; may be async
+  return () => { /* optional cleanup: remove document/window listeners, timers */ };
+});
+```
+
+The init runs on a full page load and on every client-side visit. Page scripts are loaded once per session, so keep their top level to constants and function definitions. Attach listeners to elements inside `main` (they're discarded with it). Anything attached to `document` or `window` needs a cleanup.
+
+### Data
+
+Pages get data through `AIS.data.load("<name>")`, which reads `data/<name>.json`, caches it for the session, and is the single place to switch to a real API later. Build HTML from data with template strings, and pass every data value through `AIS.escape()`. Render loading, empty and error states.
 
 ### Adding a page
 
 1. Copy an existing page and set `<title>` and `data-page`.
 2. Add a nav link in `partials/sidebar.html` with a matching `data-page`.
-3. Put page-specific JS in `assets/js/pages/<data-page>.js`. Don't use inline `<script>` or `onclick=`.
+3. Put page-specific JS in `assets/js/pages/<data-page>.js`, registered with `AIS.definePage`. Don't use inline `<script>` or `onclick=`.
 
 ---
 
@@ -140,10 +165,12 @@ node dev-server.js screenshot check-ins.html screenshots/menu-390.png --width=39
 - Objective Hierarchy (`objectives.html`): at 1440px the tree canvas is clipped on the left and partly sits under the Node Inspector panel.
 - Pages are not yet tuned for narrow screens beyond the shell (some content grids are desktop-first).
 - Header actions (search, notifications, New Objective, workspace switcher) are visual only.
+- Dashboard KPI cards and right-hand panels (blockers, confidence, activity) are still hard-coded; their numbers don't match `data/objectives.json`.
+- Some content images (team avatars) still load from remote Google URLs.
 
 ## Roadmap
 
-1. Mock data layer: `data/*.json` (objectives, key results, check-ins, initiatives) and a `data.js` service, so pages render from data.
+1. Mock data layer: `data.js` and the dashboard's objectives are done. Next: check-ins, initiatives and the objective hierarchy from data, and the dashboard KPI cards and side panels.
 2. Persistence: localStorage for creating/editing objectives and submitting check-ins.
 3. Shared UI components: modal, toast, dropdown, tabs (New Objective, notifications, workspace switcher).
 4. Auth and roles (individual, team lead, admin), then a backend API.

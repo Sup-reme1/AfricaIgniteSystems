@@ -30,16 +30,19 @@
     }
   }
 
-  function markActiveNavLink() {
-    const currentPage = document.body.dataset.page;
+  // Highlights the nav link whose data-page matches `page`. Safe to call again
+  // after client-side navigation (see router.js).
+  function setActiveNav(page) {
     document.querySelectorAll("nav[data-active-classes]").forEach((nav) => {
       const active = nav.dataset.activeClasses.split(" ");
       const inactive = (nav.dataset.inactiveClasses || "").split(" ").filter(Boolean);
 
       nav.querySelectorAll("a[data-page]").forEach((link) => {
-        const isActive = link.dataset.page === currentPage;
+        const isActive = link.dataset.page === page;
+        link.classList.remove(...active, ...inactive);
         link.classList.add(...(isActive ? active : inactive));
         if (isActive) link.setAttribute("aria-current", "page");
+        else link.removeAttribute("aria-current");
       });
     });
   }
@@ -47,8 +50,9 @@
   const placeholders = document.querySelectorAll("[data-include]");
 
   window.AIS = window.AIS || {};
+  window.AIS.setActiveNav = setActiveNav;
   window.AIS.layoutReady = Promise.all([...placeholders].map(loadPartial)).then(() => {
-    markActiveNavLink();
+    setActiveNav(document.body.dataset.page);
     document.dispatchEvent(new CustomEvent("layout:ready"));
   });
 })();

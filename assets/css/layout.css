@@ -41,6 +41,16 @@ body.sidebar-open {
   flex: 1;
 }
 
+/* Client-side page changes (router.js): keep the cross-fade short. */
+.is-navigating {
+  cursor: progress;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 150ms;
+}
+
 @media (min-width: 1024px) {
   .app-sidebar,
   body.sidebar-open .app-sidebar {

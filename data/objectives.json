@@ -1,0 +1,160 @@
+{
+  "cycle": "Q3 FY25",
+  "objectives": [
+    {
+      "id": "obj-01",
+      "code": "OBJ-01",
+      "title": "Accelerate Enterprise Platform Reliability & Zero-Downtime Releases",
+      "team": "DevOps & Core Platform",
+      "department": "Engineering",
+      "status": "on-track",
+      "progress": 82,
+      "keyResults": [
+        {
+          "code": "KR 1.1",
+          "title": "Maintain 99.99% uptime across US-East and EU-West regions",
+          "owner": "David K.",
+          "target": "99.99%",
+          "value": "99.98%",
+          "note": "Lagging 0.01%",
+          "progress": 98,
+          "status": "on-track"
+        },
+        {
+          "code": "KR 1.2",
+          "title": "Reduce mean time to recover (MTTR) under 15 minutes",
+          "owner": "Alex R.",
+          "target": "< 15 min",
+          "value": "18 min",
+          "note": "+3 min buffer",
+          "progress": 65,
+          "status": "needs-attention"
+        },
+        {
+          "code": "KR 1.3",
+          "title": "Achieve zero P0 incidents for 60 consecutive days",
+          "owner": "Platform Guild",
+          "target": "60 Days",
+          "value": "44 / 60 Days",
+          "note": "73% Complete",
+          "progress": 73,
+          "status": "on-track"
+        }
+      ]
+    },
+    {
+      "id": "obj-02",
+      "code": "OBJ-02",
+      "title": "Expand AI-Powered Workflow Automations for Global Accounts",
+      "team": "AI Product Squad",
+      "department": "Product",
+      "status": "on-track",
+      "progress": 68,
+      "keyResults": [
+        {
+          "code": "KR 2.1",
+          "title": "Onboard 150 Enterprise tier pilot customers to AI Copilot",
+          "owner": "Sarah Lin",
+          "target": "150 Accounts",
+          "value": "118 / 150",
+          "note": "78% Delivered",
+          "progress": 78,
+          "status": "on-track"
+        },
+        {
+          "code": "KR 2.2",
+          "title": "Achieve weekly active usage (WAU) of 65% among pilot accounts",
+          "owner": "Elena M.",
+          "target": "65% WAU",
+          "value": "52%",
+          "note": "13% under pace",
+          "progress": 52,
+          "status": "at-risk"
+        }
+      ]
+    },
+    {
+      "id": "obj-03",
+      "code": "OBJ-03",
+      "title": "Streamline Customer Onboarding Time-to-Value",
+      "team": "Growth & UX",
+      "department": "Design",
+      "status": "ahead",
+      "progress": 88,
+      "keyResults": [
+        {
+          "code": "KR 3.1",
+          "title": "Cut self-serve provisioning time from 14 days to under 48 hours",
+          "owner": "Priya N.",
+          "target": "< 48 hours",
+          "value": "36 Hours",
+          "note": "Exceeded goal",
+          "progress": 100,
+          "status": "complete"
+        }
+      ]
+    },
+    {
+      "id": "obj-04",
+      "code": "OBJ-04",
+      "title": "Unify Customer Analytics into a Single Source of Truth",
+      "team": "Data Platform",
+      "department": "Data",
+      "status": "needs-attention",
+      "progress": 54,
+      "keyResults": [
+        {
+          "code": "KR 4.1",
+          "title": "Migrate 12 legacy reporting pipelines to the central warehouse",
+          "owner": "Kenji T.",
+          "target": "12 Pipelines",
+          "value": "7 / 12",
+          "note": "2 behind plan",
+          "progress": 58,
+          "status": "needs-attention"
+        },
+        {
+          "code": "KR 4.2",
+          "title": "Publish certified revenue and retention dashboards for leadership",
+          "owner": "Amara O.",
+          "target": "6 Dashboards",
+          "value": "4 / 6",
+          "note": "67% Published",
+          "progress": 67,
+          "status": "on-track"
+        }
+      ]
+    },
+    {
+      "id": "obj-05",
+      "code": "OBJ-05",
+      "title": "Launch Self-Serve Billing in Two New West African Markets",
+      "team": "Payments Squad",
+      "department": "Product",
+      "status": "at-risk",
+      "progress": 31,
+      "keyResults": [
+        {
+          "code": "KR 5.1",
+          "title": "Integrate local mobile-money providers in Ghana and Senegal",
+          "owner": "Kwame A.",
+          "target": "2 Markets",
+          "value": "0 / 2",
+          "note": "Licensing delayed",
+          "progress": 20,
+          "status": "at-risk"
+        },
+        {
+          "code": "KR 5.2",
+          "title": "Reach 500 paying self-serve workspaces in new markets",
+          "owner": "Fatou D.",
+          "target": "500 Workspaces",
+          "value": "210 / 500",
+          "note": "42% of goal",
+          "progress": 42,
+          "status": "needs-attention"
+        }
+      ]
+    }
+  ]
+}

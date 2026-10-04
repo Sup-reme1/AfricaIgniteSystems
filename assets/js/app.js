@@ -1,4 +1,12 @@
-// Behaviour shared by every page. Runs once the layout partials are in place.
+// Behaviour and helpers shared by every page.
+
+// Escapes a value for safe use inside HTML built with template strings.
+AIS.escape = function (value) {
+  const entities = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+  return String(value == null ? "" : value).replace(/[&<>"']/g, (char) => entities[char]);
+};
+
+// Runs once the layout partials are in place.
 AIS.layoutReady.then(() => {
   initMobileSidebar();
   initCurrentYear();
@@ -21,6 +29,9 @@ function initMobileSidebar() {
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") setOpen(false);
   });
+
+  // Close the drawer after a client-side page change (see router.js).
+  document.addEventListener("page:change", () => setOpen(false));
 }
 
 function initCurrentYear() {
