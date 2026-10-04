@@ -16,7 +16,6 @@
 (function () {
   const AIS = (window.AIS = window.AIS || {});
   const pageInits = {};
-  const loadedScripts = new Set([...document.scripts].map((script) => script.src).filter(Boolean));
   const prefetched = new Map();
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -160,10 +159,12 @@
   // Shared scripts are already loaded; page scripts are loaded once and their
   // AIS.definePage() call mounts them.
   async function loadPageScripts(doc) {
+    // Checked at navigation time: scripts after router.js in the first page
+    // weren't parsed yet when this file ran.
+    const loaded = new Set([...document.scripts].map((script) => script.src).filter(Boolean));
     for (const source of doc.body.querySelectorAll("script[src]")) {
       const src = new URL(source.getAttribute("src"), location.href).href;
-      if (loadedScripts.has(src)) continue;
-      loadedScripts.add(src);
+      if (loaded.has(src)) continue;
       await new Promise((resolve) => {
         const script = document.createElement("script");
         script.src = src;

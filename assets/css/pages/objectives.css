@@ -1,0 +1,53 @@
+/* Objective hierarchy: the node inspector is a side column from 1280px up and
+   a slide-over drawer (with backdrop) below that. */
+
+.hierarchy-inspector {
+  position: fixed;
+  top: var(--header-height);
+  right: 0;
+  bottom: 0;
+  z-index: 35;
+  width: min(24rem, 100vw);
+  transform: translateX(100%);
+  visibility: hidden;
+  transition: transform 200ms ease, visibility 200ms;
+}
+
+.hierarchy-inspector.is-open {
+  transform: none;
+  visibility: visible;
+}
+
+.hierarchy-backdrop {
+  display: none;
+  position: fixed;
+  inset: var(--header-height) 0 0 0;
+  z-index: 34;
+  background: rgb(33 49 69 / 0.4);
+}
+
+.hierarchy-backdrop.is-open {
+  display: block;
+}
+
+@media (min-width: 1280px) {
+  .hierarchy-inspector {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    z-index: 1;
+    flex-shrink: 0;
+    width: 24rem;
+    transform: none;
+    transition: none;
+  }
+
+  .hierarchy-inspector:not(.is-open) {
+    display: none;
+  }
+
+  .hierarchy-backdrop.is-open {
+    display: none;
+  }
+}

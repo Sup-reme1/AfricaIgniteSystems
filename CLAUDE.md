@@ -44,15 +44,17 @@ partials/
 assets/
   css/base.css        global resets
   css/layout.css      app shell: sidebar/header/content/footer positioning + responsive behaviour
+  css/pages/*.css     page-specific CSS Tailwind can't express (linked in that page's <head>)
   js/tailwind-theme.js  Tailwind theme tokens (colors, spacing, type scale), shared by all pages
   js/layout.js        injects partials, marks active nav link, exposes AIS.layoutReady / AIS.setActiveNav
   js/app.js           shared behaviour + helpers (mobile sidebar, footer year, AIS.escape)
-  js/data.js          AIS.data.load(name): loads data/<name>.json, cached for the session
+  js/data.js          AIS.data.load/save/reset/isModified: data/<name>.json + edits saved in localStorage
   js/router.js        client-side navigation (swaps <main> only) + page lifecycle (AIS.definePage)
   js/pages/*.js       one script per page, named after its data-page
   img/                logo.svg, avatar.jpg
 data/
   objectives.json     objectives + key results (rendered by the dashboard)
+  hierarchy.json      alignment tree for objectives.html (flat node list linked by parentId)
 ```
 
 ### Page skeleton
@@ -95,6 +97,24 @@ The init runs on a full page load and on every client-side visit. Page scripts a
 ### Data
 
 Pages get data through `AIS.data.load("<name>")`, which reads `data/<name>.json`, caches it for the session, and is the single place to switch to a real API later. Build HTML from data with template strings, and pass every data value through `AIS.escape()`. Render loading, empty and error states.
+
+Edits persist in this browser only:
+- `AIS.data.save(name, value)` writes the whole dataset to localStorage under `ais:data:<name>`. A saved copy takes precedence over the JSON file.
+- `AIS.data.reset(name)` drops it, so the next load reads the file again.
+- `AIS.data.isModified(name)` tells whether there's a saved copy.
+
+When you change a JSON file's shape, bump its `version` and have the page reset older saved copies, as `objectives.js` does with `SCHEMA_VERSION`. Otherwise browsers holding the old shape keep using it.
+
+### Objective Hierarchy (`objectives.html` + `assets/js/pages/objectives.js`)
+
+- **Data:** `data/hierarchy.json` is a flat list of nodes linked by `parentId`. The tile type comes from depth: North Star → Pillar Objective → Key Result → Initiative. Initiatives can't have children.
+- **Progress:** a tile with children shows the average of its children, each capped at 100%. Only leaf tiles store `progress`.
+- **Tree:** the North Star, its pillars, then the children of the selected tile on each level. Connector lines are an SVG drawn from measured tile positions. A `ResizeObserver` redraws them.
+- **Inspector:** has view, edit, audit and confirm-delete modes.
+  - `+` (or `+ Add`) creates an unsaved draft tile (`isDraft`) and opens the form. Discarding removes it.
+  - Unsaved edits are guarded by an inline "Discard changes / Keep editing" prompt. Don't use `confirm()`/`alert()`: they block the screenshot tool.
+- **History:** every save and delete appends to the node's `history`, and the Audit Log shows it. Entries with `note` are structural changes (a child added or deleted).
+- **Layout:** the work area is fixed to the viewport height, so the tree and inspector scroll independently. The inspector is a side column from 1280px and a slide-over drawer below (`assets/css/pages/objectives.css`).
 
 ### Adding a page
 
@@ -162,7 +182,7 @@ node dev-server.js screenshot check-ins.html screenshots/menu-390.png --width=39
 
 ## Known issues (inherited from the original designs)
 
-- Objective Hierarchy (`objectives.html`): at 1440px the tree canvas is clipped on the left and partly sits under the Node Inspector panel.
+- Objective Hierarchy: the Indented List and Matrix views, the Team and Status filters, and Export SVG aren't built yet (the views are disabled as "coming soon"). `data/hierarchy.json` and `data/objectives.json` describe overlapping objectives and should be merged into one dataset.
 - Pages are not yet tuned for narrow screens beyond the shell (some content grids are desktop-first).
 - Header actions (search, notifications, New Objective, workspace switcher) are visual only.
 - Dashboard KPI cards and right-hand panels (blockers, confidence, activity) are still hard-coded; their numbers don't match `data/objectives.json`.
@@ -170,7 +190,7 @@ node dev-server.js screenshot check-ins.html screenshots/menu-390.png --width=39
 
 ## Roadmap
 
-1. Mock data layer: `data.js` and the dashboard's objectives are done. Next: check-ins, initiatives and the objective hierarchy from data, and the dashboard KPI cards and side panels.
-2. Persistence: localStorage for creating/editing objectives and submitting check-ins.
+1. Mock data layer: `data.js`, the dashboard's objectives and the objective hierarchy are done. Next: check-ins and initiatives from data, the dashboard KPI cards and side panels, and one shared objectives dataset.
+2. Persistence: localStorage saving exists (`AIS.data.save`), and the hierarchy uses it. Next: dashboard edits and check-in submissions.
 3. Shared UI components: modal, toast, dropdown, tabs (New Objective, notifications, workspace switcher).
 4. Auth and roles (individual, team lead, admin), then a backend API.
