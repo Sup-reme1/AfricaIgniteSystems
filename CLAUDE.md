@@ -47,14 +47,17 @@ assets/
   css/pages/*.css     page-specific CSS Tailwind can't express (linked in that page's <head>)
   js/tailwind-theme.js  Tailwind theme tokens (colors, spacing, type scale), shared by all pages
   js/layout.js        injects partials, marks active nav link, exposes AIS.layoutReady / AIS.setActiveNav
-  js/app.js           shared behaviour + helpers (mobile sidebar, footer year, AIS.escape)
+  js/app.js           shared behaviour + helpers (mobile sidebar, footer year, AIS.escape, AIS.toast,
+                      opens the New Objective form for any [data-add-objective])
   js/data.js          AIS.data.load/save/reset/isModified: data/<name>.json + edits saved in localStorage
+  js/okrs.js          AIS.okrs: shared OKR model (tree helpers, progress roll-up, add/update/remove, validation)
+  js/drawer.js        AIS.drawer: right-hand slide-over modal (focus trap, Esc, backdrop, beforeClose)
+  js/objective-form.js  AIS.objectiveForm: "New objective" form in the slide-over
   js/router.js        client-side navigation (swaps <main> only) + page lifecycle (AIS.definePage)
   js/pages/*.js       one script per page, named after its data-page
   img/                logo.svg, avatar.jpg
 data/
-  objectives.json     objectives + key results (rendered by the dashboard)
-  hierarchy.json      alignment tree for objectives.html (flat node list linked by parentId)
+  okrs.json           the one OKR dataset: flat node list linked by parentId (dashboard + hierarchy)
 ```
 
 ### Page skeleton
@@ -72,6 +75,9 @@ Every page has the same shell; only `<title>`, `data-page`, the `<main>` content
   <script src="assets/js/layout.js"></script>
   <script src="assets/js/app.js"></script>
   <script src="assets/js/data.js"></script>
+  <script src="assets/js/okrs.js"></script>
+  <script src="assets/js/drawer.js"></script>
+  <script src="assets/js/objective-form.js"></script>
   <script src="assets/js/router.js"></script>
   <script src="assets/js/pages/dashboard.js"></script>
 </body>
@@ -103,15 +109,43 @@ Edits persist in this browser only:
 - `AIS.data.reset(name)` drops it, so the next load reads the file again.
 - `AIS.data.isModified(name)` tells whether there's a saved copy.
 
-When you change a JSON file's shape, bump its `version` and have the page reset older saved copies, as `objectives.js` does with `SCHEMA_VERSION`. Otherwise browsers holding the old shape keep using it.
+When you change a JSON file's shape, bump its `version` and reset older saved copies, as `okrs.js` does with `SCHEMA_VERSION`. Otherwise browsers holding the old shape keep using it.
+
+### OKR data (`data/okrs.json` + `assets/js/okrs.js`)
+
+- **Levels** (from depth, see `AIS.okrs.TYPES`):
+
+  | Level | Type | Fields | Progress |
+  |---|---|---|---|
+  | 1 | Objective / Goal (`parentId: null`) | code `OBJ-01`, title, description, department, owner, team, status, `targetDate`, `expectedPacing`, `confidenceTrend`, dependencies | average of its milestones |
+  | 2 | Milestone | code `M1.2`, title, description, owner, `dueDate`, status, dependencies | share of its smallest steps done; with no steps, 100% only if status is Complete |
+  | 3 | Checklist item | title, notes, assignee, optional `dueDate`, `done` | 0/100 when ticked, or share of sub-steps done |
+  | 4+ | Sub-step (no depth limit) | same as a checklist item | same |
+
+- **Progress is never stored:** use `progressOf`, `stepCounts` and `isDone`. Only items with no sub-steps can be ticked (`toggleDone`). A parent item is done when all of its sub-steps are. `statusOf` shows a milestone as Complete once every step is done.
+- **Dates:** stored as `YYYY-MM-DD`. Use `AIS.okrs.formatDate` and `AIS.okrs.dueLabel` ("Due in 4 days", "Overdue 2 days").
+- **One source of truth:** the dashboard and the Objective Hierarchy both read and edit it through `await AIS.okrs.load()`. Don't fetch `okrs.json` directly, and don't copy its tree logic into page scripts.
+- **Shared object:** every load returns a model over the same cached object, so a change made on one page is visible on the others without reloading.
+- **Event:** code that changes the data from outside the current page (the New Objective form) dispatches `okrs:change` on `document` with `{ action, id }`. Pages listen for it and re-render, and remove the listener in their cleanup.
+- **Slide-over and messages:** `AIS.drawer` is the shared slide-over; build new right-hand forms on it. `AIS.toast(message, { actionLabel, href, tone })` shows a confirmation message.
 
 ### Objective Hierarchy (`objectives.html` + `assets/js/pages/objectives.js`)
 
-- **Data:** `data/hierarchy.json` is a flat list of nodes linked by `parentId`. The tile type comes from depth: North Star → Pillar Objective → Key Result → Initiative. Initiatives can't have children.
-- **Progress:** a tile with children shows the average of its children, each capped at 100%. Only leaf tiles store `progress`.
-- **Tree:** the North Star, its pillars, then the children of the selected tile on each level. Connector lines are an SVG drawn from measured tile positions. A `ResizeObserver` redraws them.
-- **Inspector:** has view, edit, audit and confirm-delete modes.
-  - `+` (or `+ Add`) creates an unsaved draft tile (`isDraft`) and opens the form. Discarding removes it.
+- **Panel:** closed on load; it opens when an item is clicked. `objectives.html?focus=<id>` selects an item on arrival (the dashboard's "Set up hierarchy" link, and each milestone row on the dashboard).
+- **Tree (follows the selected path):**
+  - a row of objectives (plus an "Add objective" tile that opens the New Objective form);
+  - a row with the selected objective's milestones;
+  - then vertical **checklist columns**: the selected milestone's checklist, then the sub-steps of the selected item, and so on to the right.
+  - Connector lines are an SVG drawn from measured tile positions: a bus line above the milestone row, and a spine down the left of each column. A `ResizeObserver` redraws them. "Collapse All" clears the selection, so only the objectives row shows.
+- **Checkboxes:** items are ticked on the tile or in the panel without entering edit mode. Each tick is saved and logged ("Marked done").
+- **Panel content depends on the level:**
+  - objective: milestones list;
+  - milestone: checklist with checkboxes;
+  - item: Done toggle and sub-steps.
+
+  The edit form shows only that level's fields (see the table above).
+- **Panel modes:** view, edit, audit and confirm-delete.
+  - `+` (on tiles, column footers, or `+ Add` in the panel) creates an unsaved draft (`isDraft`) and opens the form. Discarding removes it.
   - Unsaved edits are guarded by an inline "Discard changes / Keep editing" prompt. Don't use `confirm()`/`alert()`: they block the screenshot tool.
 - **History:** every save and delete appends to the node's `history`, and the Audit Log shows it. Entries with `note` are structural changes (a child added or deleted).
 - **Layout:** the work area is fixed to the viewport height, so the tree and inspector scroll independently. The inspector is a side column from 1280px and a slide-over drawer below (`assets/css/pages/objectives.css`).
@@ -182,11 +216,12 @@ node dev-server.js screenshot check-ins.html screenshots/menu-390.png --width=39
 
 ## Known issues (inherited from the original designs)
 
-- Objective Hierarchy: the Indented List and Matrix views, the Team and Status filters, and Export SVG aren't built yet (the views are disabled as "coming soon"). `data/hierarchy.json` and `data/objectives.json` describe overlapping objectives and should be merged into one dataset.
+- Objective Hierarchy: the Indented List and Matrix views, the Team and Status filters, and Export SVG aren't built yet (the views are disabled as "coming soon").
 - Pages are not yet tuned for narrow screens beyond the shell (some content grids are desktop-first).
-- Header actions (search, notifications, New Objective, workspace switcher) are visual only.
-- Dashboard KPI cards and right-hand panels (blockers, confidence, activity) are still hard-coded; their numbers don't match `data/objectives.json`.
+- Header actions other than New Objective (search, notifications, workspace switcher) are visual only.
+- Dashboard KPI cards and right-hand panels (blockers, confidence, activity) are still hard-coded; their numbers don't match `data/okrs.json`.
 - Some content images (team avatars) still load from remote Google URLs.
+- Weekly Check-ins and the header search placeholder still talk about "key results". The OKR model is now Objective → Milestone → Checklist.
 
 ## Roadmap
 

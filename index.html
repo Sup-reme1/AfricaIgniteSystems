@@ -59,8 +59,8 @@
                     class="font-body-md text-body-md text-on-surface-variant max-w-3xl"
                   >
                     Tracking <span data-stat="objectives">5</span> company objectives,
-                    <span data-stat="key-results">18</span> team key results, and 34
-                    cross-functional initiatives across 14 teams.
+                    <span data-stat="milestones">12</span> milestones and
+                    <span data-stat="steps">50</span> checklist steps.
                   </p>
                 </div>
                 <div class="flex flex-wrap items-center gap-space-sm shrink-0">
@@ -389,7 +389,7 @@
             >
               <!-- Primary Column (Left 8 Cols) -->
               <div class="lg:col-span-8 space-y-space-md">
-                <div class="flex items-center justify-between pb-1">
+                <div class="flex flex-wrap items-center justify-between gap-space-sm pb-1">
                   <div class="flex items-center gap-space-xs">
                     <h2
                       class="font-headline-sm text-headline-sm text-on-surface"
@@ -401,18 +401,28 @@
                        data-shown-count>3 of 5 Shown</span
                     >
                   </div>
-                  <button
-                    type="button"
-                    class="font-title-sm text-title-sm text-primary hover:underline flex items-center gap-1"
-                    data-expand-all
-                  >
-                    <span data-expand-all-label>Expand All KRs</span>
-                    <span class="material-symbols-outlined text-sm"
-                      >unfold_more</span
+                  <div class="flex items-center gap-space-md">
+                    <button
+                      type="button"
+                      class="font-title-sm text-title-sm text-primary hover:underline flex items-center gap-1"
+                      data-expand-all
                     >
-                  </button>
+                      <span data-expand-all-label>Expand all</span>
+                      <span class="material-symbols-outlined text-sm"
+                        >unfold_more</span
+                      >
+                    </button>
+                    <button
+                      type="button"
+                      class="flex items-center gap-1 h-9 px-space-md rounded-lg bg-primary-container hover:bg-primary text-on-primary font-title-sm text-title-sm shadow-sm transition-colors"
+                      data-add-objective
+                    >
+                      <span class="material-symbols-outlined text-lg">add</span>
+                      <span>Add objective</span>
+                    </button>
+                  </div>
                 </div>
-                <!-- Rendered from data/objectives.json by assets/js/pages/dashboard.js -->
+                <!-- Rendered from data/okrs.json (AIS.okrs) by assets/js/pages/dashboard.js -->
                 <div class="space-y-space-md" data-objectives-list aria-live="polite">
                   <div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm font-body-md text-body-md text-on-surface-variant">
                     Loading objectives…
@@ -706,6 +716,9 @@
     <script src="assets/js/layout.js"></script>
     <script src="assets/js/app.js"></script>
     <script src="assets/js/data.js"></script>
+    <script src="assets/js/okrs.js"></script>
+    <script src="assets/js/drawer.js"></script>
+    <script src="assets/js/objective-form.js"></script>
     <script src="assets/js/router.js"></script>
     <script src="assets/js/pages/dashboard.js"></script>
   </body>
