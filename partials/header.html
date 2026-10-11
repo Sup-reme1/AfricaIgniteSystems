@@ -44,11 +44,40 @@
     >
       <span class="material-symbols-outlined text-lg">add</span><span>New Objective</span>
     </button>
-    <div class="flex items-center gap-space-sm pl-space-xs">
-      <img alt="Sarah Lin" class="w-8 h-8 rounded-full object-cover" src="assets/img/avatar.jpg" />
-      <div class="hidden md:block text-left">
-        <div class="font-title-sm text-title-sm text-on-surface leading-tight">Sarah Lin</div>
-        <div class="font-label-sm text-label-sm text-on-surface-variant leading-tight">VP of Product</div>
+    <!-- Signed-in user (filled in by app.js from AIS.auth) -->
+    <div class="relative" data-user-menu>
+      <button
+        type="button"
+        class="flex items-center gap-space-sm pl-space-xs pr-1 py-1 rounded-lg hover:bg-surface-container-high transition-colors"
+        aria-haspopup="menu"
+        aria-expanded="false"
+        aria-controls="user-menu"
+        data-user-menu-toggle
+      >
+        <span class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-label-md text-label-md" data-user-initials>?</span>
+        <span class="hidden md:block text-left max-w-[12rem]">
+          <span class="block font-title-sm text-title-sm text-on-surface leading-tight truncate" data-user-name></span>
+          <span class="block font-label-sm text-label-sm text-on-surface-variant leading-tight truncate" data-user-email></span>
+        </span>
+        <span class="material-symbols-outlined text-on-surface-variant text-lg">expand_more</span>
+      </button>
+      <div
+        id="user-menu"
+        role="menu"
+        class="hidden absolute right-0 mt-2 w-64 bg-surface-container-lowest rounded-xl shadow-lg ring-1 ring-outline-variant/40 p-space-xs z-50"
+      >
+        <div class="px-space-sm py-space-sm border-b border-outline-variant/40 mb-space-xs">
+          <div class="font-label-sm text-label-sm text-on-surface-variant">Signed in as</div>
+          <div class="font-title-sm text-title-sm text-on-surface truncate" data-user-email></div>
+        </div>
+        <button
+          type="button"
+          role="menuitem"
+          class="w-full flex items-center gap-2 px-space-sm py-2 rounded-lg text-left font-body-md text-body-md text-on-surface hover:bg-surface-container-high"
+          data-sign-out
+        >
+          <span class="material-symbols-outlined text-lg text-on-surface-variant">logout</span>Sign out
+        </button>
       </div>
     </div>
   </div>

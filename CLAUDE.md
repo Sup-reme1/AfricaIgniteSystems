@@ -37,6 +37,7 @@ check-ins.html        Weekly Check-ins              data-page="check-ins"
 initiatives.html      Initiatives & Milestones      data-page="initiatives"
 analytics.html        Team & Analytics (stub)       data-page="analytics"
 settings.html         Settings (stub)               data-page="settings"
+login.html            Sign in / Create account      public page (<html data-auth="public">), no portal shell
 partials/
   sidebar.html        logo, workspace switcher, main nav, OKR progress, mobile backdrop
   header.html         menu button (mobile), search, cycle badge, notifications, CTA, profile
@@ -46,6 +47,8 @@ assets/
   css/layout.css      app shell: sidebar/header/content/footer positioning + responsive behaviour
   css/pages/*.css     page-specific CSS Tailwind can't express (linked in that page's <head>)
   js/tailwind-theme.js  Tailwind theme tokens (colors, spacing, type scale), shared by all pages
+  js/config.js        AIS.config: API base URL and request timings (loaded in <head>)
+  js/auth.js          AIS.auth: sign up / sign in / sign out, session storage, page guard (loaded in <head>)
   js/layout.js        injects partials, marks active nav link, exposes AIS.layoutReady / AIS.setActiveNav
   js/app.js           shared behaviour + helpers (mobile sidebar, footer year, AIS.escape, AIS.toast,
                       opens the New Objective form for any [data-add-objective])
@@ -83,7 +86,23 @@ Every page has the same shell; only `<title>`, `data-page`, the `<main>` content
 </body>
 ```
 
-The `<head>` loads fonts, then the Tailwind CDN, then `assets/js/tailwind-theme.js`, then `base.css` and `layout.css`. Copy it from an existing page. Keep the shared script order: page scripts come last.
+The `<head>` loads `assets/js/config.js` and `assets/js/auth.js` first (the sign-in guard), then fonts, the Tailwind CDN, `assets/js/tailwind-theme.js`, and `base.css` and `layout.css`. Copy it from an existing page. Keep the shared script order: page scripts come last.
+
+### Authentication (`login.html` + `assets/js/auth.js` + `assets/js/pages/login.js`)
+
+- **API:** `AIS.config.apiBase` (`https://brevomailapi.onrender.com/api`), an Express + Supabase backend.
+  - `POST /auth/signup` and `POST /auth/login` take `{ email, password }` and return Supabase's `{ user, session }`. Signup answers `201`, login `200`.
+  - CORS allows any origin.
+  - It's hosted on Render and can be asleep: the first request may take up to a minute, and the sign-in page shows a "waking up" message after 5 seconds.
+- **Session:** `{ access_token, refresh_token, expires_at, user: { id, email } }`, stored under `ais:auth:session`.
+  - With "Keep me signed in" it goes in `localStorage`, otherwise in `sessionStorage`.
+  - Expired sessions count as signed out. There's no refresh or logout endpoint yet.
+- **Guard:** `auth.js` redirects any page not marked `<html data-auth="public">` to `login.html?next=<page>` before it renders. It checks again on each `page:change`. `AIS.auth.safeNext()` only allows portal pages as `next`.
+- **Sign-up with email confirmation on:** Supabase returns no session, and the page shows "Check your inbox". An existing email comes back as a user with empty `identities`, which is treated as "already registered".
+- **Error messages:** `friendlyMessage()` in `auth.js` turns API and network errors into plain language. The server's text is read from `error`, `message` or `msg`.
+- **Header:** `app.js` shows the user's name (from the email), email and initials, plus a Sign out menu.
+- **Limits:** this guards the screens only. Data access must be enforced by the API (check the `access_token`) once data moves to Supabase.
+- **Local demo session:** on `localhost` / `127.0.0.1`, any page opened with `?demo=1` gets a temporary demo session (`demo@localhost`, 12 hours, `sessionStorage`). It's ignored on other hosts.
 
 ### Page navigation and page scripts
 
@@ -212,12 +231,15 @@ node dev-server.js screenshot <page.html> [out.png] [--width=1440] [--height=900
 - `--click=<selector>` clicks before capturing (repeatable) to show interactive states.
 - It starts its own server on a free port, so `npm run dev` doesn't need to be running.
 - It exits non-zero and lists problems if the page has JS errors, failed requests, or HTTP 4xx/5xx responses.
+- **Portal pages need `?demo=1`.** The screenshot browser is never signed in, so without it every portal page redirects to the sign-in page. Use a quoted page argument, e.g. `"index.html?demo=1"` or `"objectives.html?demo=1&focus=obj-02"`.
+- The tool can't type. Forms that need input (sign in, create account, New Objective) can only be checked for their empty-form errors and screen states. Real sign-in and sign-up need a manual test. Don't create accounts against the real API without asking.
 
 Examples:
 
 ```bash
-node dev-server.js screenshot index.html
-node dev-server.js screenshot check-ins.html screenshots/menu-390.png --width=390 --height=844 --viewport --click=[data-sidebar-open]
+node dev-server.js screenshot "index.html?demo=1"
+node dev-server.js screenshot "check-ins.html?demo=1" screenshots/menu-390.png --width=390 --height=844 --viewport --click=[data-sidebar-open]
+node dev-server.js screenshot login.html
 ```
 
 ---
@@ -245,4 +267,4 @@ node dev-server.js screenshot check-ins.html screenshots/menu-390.png --width=39
 1. Mock data layer: `data.js`, the shared OKR dataset, the dashboard (objectives, stat cards, Blockers & Milestones) and the objective hierarchy are done. Next: check-ins and initiatives from data, and the sidebar progress box.
 2. Persistence: localStorage saving exists (`AIS.data.save`), and the hierarchy uses it. Next: dashboard edits and check-in submissions.
 3. Shared UI components: modal, toast, dropdown, tabs (New Objective, notifications, workspace switcher).
-4. Auth and roles (individual, team lead, admin), then a backend API.
+4. Auth: sign-up and sign-in against the Supabase auth API are done. Next: move the OKR data from localStorage to Supabase (per user), add refresh and logout endpoints, then roles (individual, team lead, admin).

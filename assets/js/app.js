@@ -46,7 +46,53 @@ document.addEventListener("click", (event) => {
 AIS.layoutReady.then(() => {
   initMobileSidebar();
   initCurrentYear();
+  initUserMenu();
 });
+
+// Header: signed-in user's name/email/initials and the Sign out menu.
+function initUserMenu() {
+  const root = document.querySelector("[data-user-menu]");
+  const user = AIS.auth && AIS.auth.user();
+  if (!root || !user) return;
+
+  // "ada.obi@company.com" → "Ada Obi"
+  const name = String(user.email || "Signed in")
+    .split("@")[0]
+    .split(/[._-]+/)
+    .filter(Boolean)
+    .map((part) => part[0].toUpperCase() + part.slice(1))
+    .join(" ");
+  const initials = name
+    .split(" ")
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
+
+  root.querySelector("[data-user-initials]").textContent = initials || "?";
+  root.querySelector("[data-user-name]").textContent = name;
+  root.querySelectorAll("[data-user-email]").forEach((el) => (el.textContent = user.email || ""));
+
+  const toggle = root.querySelector("[data-user-menu-toggle]");
+  const menu = root.querySelector('[role="menu"]');
+  const setOpen = (isOpen) => {
+    menu.classList.toggle("hidden", !isOpen);
+    toggle.setAttribute("aria-expanded", String(isOpen));
+    if (isOpen) menu.querySelector('[role="menuitem"]').focus();
+  };
+
+  toggle.addEventListener("click", () => setOpen(menu.classList.contains("hidden")));
+  root.querySelector("[data-sign-out]").addEventListener("click", () => AIS.auth.signOut());
+  document.addEventListener("click", (event) => {
+    if (!root.contains(event.target)) setOpen(false);
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !menu.classList.contains("hidden")) {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+}
 
 function initMobileSidebar() {
   const openButton = document.querySelector("[data-sidebar-open]");

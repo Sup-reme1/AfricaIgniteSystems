@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en" data-auth="public">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign in · Africa Ignite Systems</title>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="assets/js/tailwind-theme.js"></script>
+    <link rel="stylesheet" href="assets/css/base.css" />
+  </head>
+
+  <body class="bg-surface font-body-md text-on-surface antialiased">
+    <div class="min-h-screen grid lg:grid-cols-2">
+      <!-- Brand panel (desktop) -->
+      <section class="hidden lg:flex relative overflow-hidden bg-primary-container text-on-primary p-12 flex-col justify-between">
+        <div class="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-primary blur-3xl opacity-60 pointer-events-none"></div>
+        <div class="absolute -left-24 bottom-0 w-80 h-80 rounded-full bg-tertiary-fixed-dim/20 blur-3xl pointer-events-none"></div>
+
+        <a href="login.html" class="relative flex items-center gap-space-sm">
+          <img alt="" class="h-10 w-10" src="assets/img/logo.svg" />
+          <span class="leading-none">
+            <span class="block font-headline-sm text-headline-sm tracking-tight">Africa Ignite</span>
+            <span class="block font-label-sm text-label-sm uppercase tracking-widest text-on-primary-container">Systems</span>
+          </span>
+        </a>
+
+        <div class="relative max-w-md space-y-space-lg">
+          <h1 class="font-display-lg text-display-lg">Turn goals into finished work.</h1>
+          <p class="font-body-lg text-body-lg text-on-primary-container">
+            Set objectives, break them into milestones and checklists, and see every team's progress in one place.
+          </p>
+          <ul class="space-y-space-md font-title-sm text-title-sm">
+            <li class="flex items-center gap-space-sm">
+              <span class="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center"><span class="material-symbols-outlined">flag</span></span>
+              Objectives and dated milestones
+            </li>
+            <li class="flex items-center gap-space-sm">
+              <span class="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center"><span class="material-symbols-outlined">checklist</span></span>
+              Checklists broken down to the smallest step
+            </li>
+            <li class="flex items-center gap-space-sm">
+              <span class="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center"><span class="material-symbols-outlined">monitoring</span></span>
+              Live progress and blockers for every team
+            </li>
+          </ul>
+        </div>
+
+        <p class="relative font-body-sm text-body-sm text-on-primary-container">&copy; 2026 Africa Ignite Systems</p>
+      </section>
+
+      <!-- Form -->
+      <main class="flex items-center justify-center px-space-md py-space-xl sm:p-10">
+        <div class="w-full max-w-md space-y-space-lg">
+          <a href="login.html" class="lg:hidden flex items-center gap-space-sm">
+            <img alt="" class="h-9 w-9" src="assets/img/logo.svg" />
+            <span class="leading-none">
+              <span class="block font-headline-sm text-headline-sm text-on-surface tracking-tight">Africa Ignite</span>
+              <span class="block font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Systems</span>
+            </span>
+          </a>
+
+          <div class="space-y-1">
+            <h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight" data-auth-heading>Welcome back</h2>
+            <p class="font-body-md text-body-md text-on-surface-variant" data-auth-subheading>Sign in to continue to your workspace.</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-1 p-1 bg-surface-container-low rounded-xl" role="tablist" aria-label="Sign in or create an account" data-auth-tabs>
+            <button type="button" role="tab" id="tab-login" aria-controls="auth-panel" class="h-10 rounded-lg font-title-sm text-title-sm transition-colors" data-auth-tab="login">Sign in</button>
+            <button type="button" role="tab" id="tab-signup" aria-controls="auth-panel" class="h-10 rounded-lg font-title-sm text-title-sm transition-colors" data-auth-tab="signup">Create account</button>
+          </div>
+
+          <div id="auth-panel" role="tabpanel" class="space-y-space-lg">
+            <div class="hidden p-space-sm rounded-lg bg-error-container text-on-error-container font-body-sm text-body-sm flex items-start gap-2" role="alert" data-auth-alert>
+              <span class="material-symbols-outlined text-lg text-error">error</span>
+              <span class="flex-1" data-auth-alert-text></span>
+            </div>
+
+            <form class="space-y-space-md" novalidate data-auth-form>
+              <div>
+                <label for="auth-email" class="block mb-1 font-label-md text-label-md text-on-surface-variant">Email</label>
+                <input id="auth-email" name="email" type="email" autocomplete="email" required placeholder="you@company.com"
+                  class="w-full h-11 px-3 bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary-container/40" />
+                <p class="hidden mt-1 font-label-sm text-label-sm text-error" id="auth-email-error"></p>
+              </div>
+
+              <div>
+                <label for="auth-password" class="block mb-1 font-label-md text-label-md text-on-surface-variant">Password</label>
+                <div class="relative">
+                  <input id="auth-password" name="password" type="password" autocomplete="current-password" required
+                    class="w-full h-11 pl-3 pr-11 bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container/40" />
+                  <button type="button" class="absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high"
+                    aria-label="Show password" aria-pressed="false" data-toggle-password>
+                    <span class="material-symbols-outlined text-xl">visibility</span>
+                  </button>
+                </div>
+                <p class="mt-1 font-label-sm text-label-sm text-on-surface-variant" data-signup-only>At least 6 characters.</p>
+                <p class="hidden mt-1 font-label-sm text-label-sm text-error" id="auth-password-error"></p>
+              </div>
+
+              <div data-signup-only>
+                <label for="auth-confirm" class="block mb-1 font-label-md text-label-md text-on-surface-variant">Confirm password</label>
+                <input id="auth-confirm" name="confirm" type="password" autocomplete="new-password"
+                  class="w-full h-11 px-3 bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container/40" />
+                <p class="hidden mt-1 font-label-sm text-label-sm text-error" id="auth-confirm-error"></p>
+              </div>
+
+              <label class="flex items-center gap-2 font-body-sm text-body-sm text-on-surface" data-login-only>
+                <input id="auth-remember" type="checkbox" checked class="w-4 h-4 rounded accent-[#4f46e5]" />
+                Keep me signed in
+              </label>
+
+              <button type="submit"
+                class="w-full h-11 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-title-sm text-title-sm shadow-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-wait"
+                data-auth-submit>
+                <span class="hidden w-4 h-4 rounded-full border-2 border-on-primary border-t-transparent animate-spin" data-auth-spinner></span>
+                <span data-auth-submit-label>Sign in</span>
+              </button>
+
+              <p class="hidden font-body-sm text-body-sm text-on-surface-variant text-center" role="status" data-auth-slow>
+                Waking up the server, this can take up to a minute…
+              </p>
+            </form>
+
+            <p class="font-body-sm text-body-sm text-on-surface-variant text-center">
+              <span data-auth-switch-text>Don't have an account?</span>
+              <button type="button" class="font-title-sm text-title-sm text-primary hover:underline" data-auth-switch>Create one</button>
+            </p>
+          </div>
+
+          <!-- Shown after sign-up when the email must be confirmed -->
+          <div class="hidden p-space-lg rounded-xl bg-surface-container-lowest shadow-sm text-center space-y-space-sm" data-auth-confirm>
+            <span class="material-symbols-outlined text-5xl text-primary">mark_email_read</span>
+            <h3 class="font-headline-sm text-headline-sm text-on-surface">Check your inbox</h3>
+            <p class="font-body-md text-body-md text-on-surface-variant">
+              We sent a confirmation link to <strong class="text-on-surface" data-auth-confirm-email></strong>. Open it, then sign in.
+            </p>
+            <button type="button" class="h-10 px-space-lg rounded-lg bg-primary-container hover:bg-primary text-on-primary font-title-sm text-title-sm shadow-sm transition-colors" data-auth-tab="login">
+              Back to sign in
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="assets/js/pages/login.js"></script>
+  </body>
+</html>
