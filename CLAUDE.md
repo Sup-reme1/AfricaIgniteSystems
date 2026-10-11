@@ -129,6 +129,23 @@ When you change a JSON file's shape, bump its `version` and reset older saved co
 - **Event:** code that changes the data from outside the current page (the New Objective form) dispatches `okrs:change` on `document` with `{ action, id }`. Pages listen for it and re-render, and remove the listener in their cleanup.
 - **Slide-over and messages:** `AIS.drawer` is the shared slide-over; build new right-hand forms on it. `AIS.toast(message, { actionLabel, href, tone })` shows a confirmation message.
 
+### Dashboard (`index.html` + `assets/js/pages/dashboard.js`)
+
+Everything on the dashboard comes from `AIS.okrs`. The stat cards and the Blockers & Milestones panel follow the department tab (`"all"` or a department name).
+
+- **Stat cards** (`okrs.summary(department)`):
+  - **Overall progress:** average of the objectives, against average expected pacing.
+  - **Objectives:** count by status.
+  - **Milestones:** done of total, how many are due within 7 days, how many are overdue.
+  - **Checklist steps:** done of total, how many are overdue.
+- **Blockers** (`okrs.blockers(department)`): blocking dependencies on objectives and milestones come first, then overdue milestones and overdue unfinished steps, latest first. The panel shows up to 6.
+  - **Mark resolved:** `okrs.resolveDependency` clears `blocking` and logs it.
+  - **Mark done:** `okrs.toggleDone`, for steps that have no sub-steps.
+  - Both save, re-render and show a toast.
+- **Upcoming milestones** (`okrs.upcomingMilestones(department, 4)`): open milestones due today or later, soonest first. Overdue ones appear under Blockers instead.
+- **Links:** objective cards, milestone rows, blockers and upcoming milestones all link to `objectives.html?focus=<id>`.
+- **Layout:** the panel stays in view while you scroll on `lg` and up, and sits above the objectives list on narrow screens.
+
 ### Objective Hierarchy (`objectives.html` + `assets/js/pages/objectives.js`)
 
 - **Panel:** closed on load; it opens when an item is clicked. `objectives.html?focus=<id>` selects an item on arrival (the dashboard's "Set up hierarchy" link, and each milestone row on the dashboard).
@@ -219,13 +236,13 @@ node dev-server.js screenshot check-ins.html screenshots/menu-390.png --width=39
 - Objective Hierarchy: the Indented List and Matrix views, the Team and Status filters, and Export SVG aren't built yet (the views are disabled as "coming soon").
 - Pages are not yet tuned for narrow screens beyond the shell (some content grids are desktop-first).
 - Header actions other than New Objective (search, notifications, workspace switcher) are visual only.
-- Dashboard KPI cards and right-hand panels (blockers, confidence, activity) are still hard-coded; their numbers don't match `data/okrs.json`.
+- The sidebar's "Quarter OKR Target / KRs Met" box is still hard-coded. It could use `okrs.summary()`.
 - Some content images (team avatars) still load from remote Google URLs.
 - Weekly Check-ins and the header search placeholder still talk about "key results". The OKR model is now Objective → Milestone → Checklist.
 
 ## Roadmap
 
-1. Mock data layer: `data.js`, the dashboard's objectives and the objective hierarchy are done. Next: check-ins and initiatives from data, the dashboard KPI cards and side panels, and one shared objectives dataset.
+1. Mock data layer: `data.js`, the shared OKR dataset, the dashboard (objectives, stat cards, Blockers & Milestones) and the objective hierarchy are done. Next: check-ins and initiatives from data, and the sidebar progress box.
 2. Persistence: localStorage saving exists (`AIS.data.save`), and the hierarchy uses it. Next: dashboard edits and check-in submissions.
 3. Shared UI components: modal, toast, dropdown, tabs (New Objective, notifications, workspace switcher).
 4. Auth and roles (individual, team lead, admin), then a backend API.

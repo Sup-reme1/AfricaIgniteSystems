@@ -160,6 +160,225 @@
       Objectives could not be loaded. Refresh the page to try again.
     </div>`;
 
+  // ---- Stat cards -----------------------------------------------------------
+
+  const CARD = "bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-all";
+  const CARD_LABEL = "font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider";
+  const plural = (count, word) => `${count} ${word}${count === 1 ? "" : "s"}`;
+
+  function cardIcon(icon, colors) {
+    return `<div class="w-10 h-10 shrink-0 rounded-lg ${colors} flex items-center justify-center"><span class="material-symbols-outlined text-xl">${icon}</span></div>`;
+  }
+
+  function cardBar(done, total, color) {
+    const width = total ? Math.round((done / total) * 100) : 0;
+    return `<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden"><div class="h-full ${color} rounded-full" style="width: ${width}%"></div></div>`;
+  }
+
+  function statCardsHtml(summary) {
+    const delta = summary.progress - summary.expected;
+    const ahead = delta >= 0;
+    const { statusCounts, milestones, steps } = summary;
+
+    const statusParts = [
+      ["on-track", "on track", "bg-tertiary-container"],
+      ["complete", "complete", "bg-tertiary"],
+      ["needs-attention", "need attention", "bg-secondary"],
+      ["at-risk", "at risk", "bg-error"],
+    ].filter(([key]) => statusCounts[key]);
+
+    const progressCard = `
+      <div class="${CARD}">
+        <div class="flex items-start justify-between gap-2">
+          <div class="space-y-0.5">
+            <span class="${CARD_LABEL}">Overall progress</span>
+            <div class="font-metric-stat text-metric-stat text-on-surface pt-1">${summary.progress}%</div>
+          </div>
+          <div class="relative w-12 h-12 shrink-0">
+            <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36" aria-hidden="true">
+              <path class="text-surface-container" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+              <path class="${ahead ? "text-tertiary-container" : "text-error"}" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="${summary.progress}, 100" stroke-linecap="round" stroke-width="3.5"></path>
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center font-label-sm text-label-sm font-bold ${ahead ? "text-tertiary" : "text-error"}">${ahead ? "+" : ""}${delta}%</div>
+          </div>
+        </div>
+        <div class="pt-space-md space-y-1">
+          <div class="flex items-center justify-between gap-2 font-label-sm text-label-sm text-on-surface-variant">
+            <span>Average of ${plural(summary.objectives, "objective")}</span>
+            <span class="font-semibold ${ahead ? "text-tertiary" : "text-error"}">${ahead ? `+${delta}% ahead` : `${delta}% behind`}</span>
+          </div>
+          ${cardBar(summary.progress, 100, ahead ? "bg-tertiary-container" : "bg-error")}
+        </div>
+      </div>`;
+
+    const objectivesCard = `
+      <div class="${CARD}">
+        <div class="flex items-start justify-between gap-2">
+          <div class="space-y-0.5">
+            <span class="${CARD_LABEL}">Objectives</span>
+            <div class="font-metric-stat text-metric-stat text-on-surface pt-1">${summary.objectives}</div>
+          </div>
+          ${cardIcon("flag", "bg-surface-container-low text-primary")}
+        </div>
+        <div class="pt-space-md space-y-1">
+          <div class="font-label-sm text-label-sm text-on-surface-variant truncate">
+            ${statusParts.length ? statusParts.map(([key, label]) => `${statusCounts[key]} ${label}`).join(" · ") : "No objectives yet"}
+          </div>
+          <div class="flex gap-1 h-1.5 w-full">
+            ${statusParts.map(([key, , color]) => `<div class="${color} rounded-full" style="flex: ${statusCounts[key]}"></div>`).join("") || '<div class="flex-1 bg-surface-container rounded-full"></div>'}
+          </div>
+        </div>
+      </div>`;
+
+    const milestonesCard = `
+      <div class="${CARD}">
+        <div class="flex items-start justify-between gap-2">
+          <div class="space-y-0.5">
+            <span class="${CARD_LABEL}">Milestones</span>
+            <div class="font-metric-stat text-metric-stat text-on-surface pt-1">${milestones.done}<span class="font-body-lg text-body-lg text-on-surface-variant"> / ${milestones.total} done</span></div>
+          </div>
+          ${cardIcon("event", "bg-tertiary-fixed/30 text-tertiary")}
+        </div>
+        <div class="pt-space-md space-y-1">
+          <div class="flex items-center justify-between gap-2 font-label-sm text-label-sm text-on-surface-variant">
+            <span>${milestones.dueThisWeek} due this week</span>
+            <span class="font-semibold ${milestones.overdue ? "text-error" : "text-tertiary"}">${milestones.overdue ? `${milestones.overdue} overdue` : "None overdue"}</span>
+          </div>
+          ${cardBar(milestones.done, milestones.total, "bg-primary-container")}
+        </div>
+      </div>`;
+
+    const stepsPercent = steps.total ? Math.round((steps.done / steps.total) * 100) : 0;
+    const stepsCard = `
+      <div class="${CARD}">
+        <div class="flex items-start justify-between gap-2">
+          <div class="space-y-0.5">
+            <span class="${CARD_LABEL}">Checklist steps</span>
+            <div class="font-metric-stat text-metric-stat text-on-surface pt-1">${steps.done}<span class="font-body-lg text-body-lg text-on-surface-variant"> / ${steps.total} done</span></div>
+          </div>
+          ${cardIcon("checklist", "bg-surface-container-low text-on-surface-variant")}
+        </div>
+        <div class="pt-space-md space-y-1">
+          <div class="flex items-center justify-between gap-2 font-label-sm text-label-sm text-on-surface-variant">
+            <span>${stepsPercent}% complete</span>
+            <span class="font-semibold ${steps.overdue ? "text-error" : "text-tertiary"}">${steps.overdue ? `${plural(steps.overdue, "overdue step")}` : "None overdue"}</span>
+          </div>
+          ${cardBar(steps.done, steps.total, "bg-tertiary-container")}
+        </div>
+      </div>`;
+
+    return progressCard + objectivesCard + milestonesCard + stepsCard;
+  }
+
+  // ---- Blockers & Milestones panel -----------------------------------------
+
+  const MAX_BLOCKERS = 6;
+  const SECTION_LABEL = "font-label-sm text-label-sm uppercase tracking-wider font-semibold text-on-surface-variant";
+
+  function scopeLabel(item) {
+    if (item.milestone) return `${item.objective.code} · ${item.milestone.code}`;
+    return item.node.code && item.node.code !== item.objective.code ? `${item.objective.code} · ${item.node.code}` : item.objective.code;
+  }
+
+  function blockerHtml(item, okrs) {
+    const { node } = item;
+    if (item.kind === "dependency") {
+      const { dependency } = item;
+      return `
+        <div class="p-space-sm rounded-xl bg-error-container/40 space-y-1">
+          <div class="flex items-center justify-between gap-2">
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold uppercase">
+              <span class="material-symbols-outlined text-xs">block</span>Blocking
+            </span>
+            <span class="font-label-sm text-label-sm text-on-surface-variant">${esc(scopeLabel(item))}</span>
+          </div>
+          <a href="${hierarchyUrl(node.id)}" class="block font-title-sm text-title-sm text-on-surface hover:text-primary">${esc(dependency.title)}</a>
+          ${dependency.detail ? `<p class="font-body-sm text-body-sm text-on-surface-variant">${esc(dependency.detail)}</p>` : ""}
+          <div class="flex items-center justify-between gap-2 pt-1 font-label-sm text-label-sm">
+            <span class="text-on-surface-variant truncate">Blocks: <strong class="text-on-surface font-medium">${esc(node.title)}</strong></span>
+            <button type="button" class="shrink-0 font-label-md text-label-md text-primary hover:underline" data-resolve-dependency="${esc(node.id)}" data-index="${item.index}">Mark resolved</button>
+          </div>
+        </div>`;
+    }
+
+    const isStep = okrs.isStep(node);
+    const canTick = isStep && !okrs.savedChildrenOf(node.id).length;
+    return `
+      <div class="p-space-sm rounded-xl bg-surface-container-low space-y-1">
+        <div class="flex items-center justify-between gap-2">
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold">
+            <span class="material-symbols-outlined text-xs">event_busy</span>Overdue ${plural(item.days, "day")}
+          </span>
+          <span class="font-label-sm text-label-sm text-on-surface-variant">${esc(scopeLabel(item))}</span>
+        </div>
+        <a href="${hierarchyUrl(node.id)}" class="block font-title-sm text-title-sm text-on-surface hover:text-primary">${esc(node.title)}</a>
+        <div class="flex items-center justify-between gap-2 pt-1 font-label-sm text-label-sm">
+          <span class="text-on-surface-variant truncate">${isStep ? "Assignee" : "Owner"}: <strong class="text-on-surface font-medium">${esc((isStep ? node.assignee : node.owner) || "Unassigned")}</strong></span>
+          ${
+            canTick
+              ? `<button type="button" class="shrink-0 font-label-md text-label-md text-primary hover:underline" data-mark-done="${esc(node.id)}">Mark done</button>`
+              : `<a href="${hierarchyUrl(node.id)}" class="shrink-0 font-label-md text-label-md text-primary hover:underline">${isStep ? "Open" : "Reschedule"}</a>`
+          }
+        </div>
+      </div>`;
+  }
+
+  function upcomingHtml({ milestone, objective }, okrs) {
+    const due = AIS.okrs.dueLabel(milestone.dueDate);
+    const progress = okrs.progressOf(milestone);
+    const { done, total } = okrs.stepCounts(milestone);
+    return `
+      <a href="${hierarchyUrl(milestone.id)}" class="block p-space-sm rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors">
+        <div class="flex items-center justify-between gap-2 mb-1">
+          <span class="font-label-sm text-label-sm font-semibold text-primary">${esc(milestone.code)} <span class="text-on-surface-variant font-medium">· ${esc(objective.code)}</span></span>
+          <span class="font-label-sm text-label-sm ${DUE_TONES[due.tone]}">${esc(due.text)}</span>
+        </div>
+        <div class="font-title-sm text-title-sm text-on-surface mb-1.5">${esc(milestone.title)}</div>
+        ${cardBar(progress, 100, statusMeta(okrs.statusOf(milestone)).bar)}
+        <div class="flex items-center justify-between gap-2 mt-1 text-[11px] text-on-surface-variant">
+          <span>${total ? `${done} / ${total} steps` : "No checklist yet"}</span>
+          <span class="truncate">${esc(milestone.owner || "Unassigned")}</span>
+        </div>
+      </a>`;
+  }
+
+  function blockersPanelHtml(okrs, department) {
+    const blockers = okrs.blockers(department);
+    const upcoming = okrs.upcomingMilestones(department);
+    const shown = blockers.slice(0, MAX_BLOCKERS);
+    const hidden = blockers.length - shown.length;
+
+    const blockersSection = `
+      <div class="space-y-space-sm">
+        <div class="flex items-center justify-between">
+          <span class="${SECTION_LABEL}">Blockers</span>
+          ${blockers.length ? `<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm text-label-sm font-semibold">${blockers.length}</span>` : ""}
+        </div>
+        ${
+          blockers.length
+            ? shown.map((item) => blockerHtml(item, okrs)).join("") +
+              (hidden ? `<a href="objectives.html" class="block font-label-md text-label-md text-primary hover:underline">${hidden} more in the hierarchy</a>` : "")
+            : `<div class="p-space-sm rounded-xl bg-tertiary-fixed/30 text-on-surface flex items-center gap-2 font-body-sm text-body-sm"><span class="material-symbols-outlined text-tertiary">task_alt</span>No blockers right now.</div>`
+        }
+      </div>`;
+
+    const upcomingSection = `
+      <div class="space-y-space-sm">
+        <span class="${SECTION_LABEL}">Upcoming milestones</span>
+        ${
+          upcoming.length
+            ? upcoming.map((item) => upcomingHtml(item, okrs)).join("")
+            : `<p class="font-body-sm text-body-sm text-outline italic">No upcoming milestones with a due date.</p>`
+        }
+        <a href="objectives.html" class="inline-flex items-center gap-1 font-label-md text-label-md text-primary hover:underline">View all in hierarchy<span class="material-symbols-outlined text-sm">arrow_forward</span></a>
+      </div>`;
+
+    return {
+      body: blockersSection + upcomingSection,
+      summary: `${plural(blockers.length, "blocker")} · ${upcoming.length} upcoming`,
+    };
+  }
+
   AIS.definePage("dashboard", async (main) => {
     const list = main.querySelector("[data-objectives-list]");
     const state = { department: "all", status: "all", collapsed: new Set(), visibleIds: [] };
@@ -243,6 +462,21 @@
       const allExpanded = state.visibleIds.every((id) => !state.collapsed.has(id));
       main.querySelector("[data-expand-all-label]").textContent = allExpanded ? "Collapse all" : "Expand all";
       main.querySelector("[data-expand-all]").classList.toggle("invisible", !visible.length);
+
+      // Stat cards and the Blockers & Milestones panel follow the department tab.
+      main.querySelector("[data-stat-cards]").innerHTML = statCardsHtml(okrs.summary(state.department));
+      const panel = blockersPanelHtml(okrs, state.department);
+      main.querySelector("[data-blockers-body]").innerHTML = panel.body;
+      main.querySelector("[data-blockers-summary]").textContent = panel.summary;
+    }
+
+    // "Mark resolved" / "Mark done" in the Blockers panel: save, re-render, confirm.
+    function applyQuickAction(changed, message) {
+      if (!changed) return;
+      const saved = okrs.save();
+      render();
+      AIS.toast(message);
+      if (!saved) AIS.toast("This browser blocked saving, so the change will be lost when the page reloads.", { tone: "error" });
     }
 
     // Scrolls to an objective card and briefly rings it.
@@ -277,6 +511,20 @@
     main.addEventListener("click", (event) => {
       const target = event.target;
       if (target.closest("a, [data-add-objective]")) return; // links and the form are handled elsewhere
+
+      const resolve = target.closest("[data-resolve-dependency]");
+      if (resolve) {
+        const node = okrs.byId(resolve.dataset.resolveDependency);
+        const title = node && (node.dependencies || [])[Number(resolve.dataset.index)]?.title;
+        applyQuickAction(okrs.resolveDependency(resolve.dataset.resolveDependency, Number(resolve.dataset.index)), `“${title}” marked resolved.`);
+        return;
+      }
+      const markDone = target.closest("[data-mark-done]");
+      if (markDone) {
+        const node = okrs.byId(markDone.dataset.markDone);
+        applyQuickAction(okrs.toggleDone(markDone.dataset.markDone) === true, `“${node.title}” marked done.`);
+        return;
+      }
 
       const objective = target.closest("[data-toggle-objective]");
       const department = target.closest("[data-department]");

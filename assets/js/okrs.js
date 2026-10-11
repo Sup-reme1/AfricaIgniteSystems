@@ -74,14 +74,20 @@
     return date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: sameYear ? undefined : "numeric" });
   }
 
-  // "Due in 4 days" / "Due today" / "Overdue 2 days", with a tone for colour.
-  function dueLabel(iso, isDone = false) {
+  // Whole days from today until the date (negative when past), or null without a date.
+  function daysUntil(iso) {
     const date = parseDate(iso);
     if (!date) return null;
-    if (isDone) return { text: `Done · ${formatDate(iso)}`, tone: "done" };
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const days = Math.round((date - today) / DAY);
+    return Math.round((date - today) / DAY);
+  }
+
+  // "Due in 4 days" / "Due today" / "Overdue 2 days", with a tone for colour.
+  function dueLabel(iso, isDone = false) {
+    const days = daysUntil(iso);
+    if (days === null) return null;
+    if (isDone) return { text: `Done · ${formatDate(iso)}`, tone: "done" };
     if (days < 0) return { text: `Overdue ${-days} day${days === -1 ? "" : "s"}`, tone: "overdue" };
     if (days === 0) return { text: "Due today", tone: "soon" };
     if (days <= 7) return { text: `Due in ${days} day${days === 1 ? "" : "s"}`, tone: "soon" };
@@ -298,6 +304,99 @@
         return errors;
       },
 
+      // ---- Dashboard summaries ("all" or a department name) ------------------
+
+      objectivesIn: (department = "all") =>
+        model.objectives().filter((objective) => department === "all" || objective.department === department),
+
+      // Numbers for the dashboard's stat cards.
+      summary(department = "all") {
+        const objectives = model.objectivesIn(department);
+        const average = (values) => (values.length ? Math.round(values.reduce((sum, value) => sum + value, 0) / values.length) : 0);
+        const statusCounts = { "on-track": 0, "needs-attention": 0, "at-risk": 0, complete: 0 };
+        objectives.forEach((objective) => (statusCounts[model.statusOf(objective)] += 1));
+
+        const milestones = objectives.flatMap((objective) => model.savedChildrenOf(objective.id));
+        const openMilestones = milestones.filter((milestone) => model.statusOf(milestone) !== "complete");
+        const steps = objectives.flatMap((objective) => model.leafStepsOf(objective));
+        const isLate = (node) => {
+          const days = daysUntil(node.dueDate);
+          return days !== null && days < 0;
+        };
+
+        return {
+          objectives: objectives.length,
+          progress: average(objectives.map((objective) => model.progressOf(objective))),
+          expected: average(objectives.map((objective) => Number(objective.expectedPacing) || 0)),
+          statusCounts,
+          milestones: {
+            total: milestones.length,
+            done: milestones.length - openMilestones.length,
+            dueThisWeek: openMilestones.filter((milestone) => {
+              const days = daysUntil(milestone.dueDate);
+              return days !== null && days >= 0 && days <= 7;
+            }).length,
+            overdue: openMilestones.filter(isLate).length,
+          },
+          steps: {
+            total: steps.length,
+            done: steps.filter((step) => step.done).length,
+            overdue: steps.filter((step) => !step.done && isLate(step)).length,
+          },
+        };
+      },
+
+      // What's stopping progress, most urgent first: blocking dependencies on
+      // objectives and milestones, then overdue milestones and steps (latest first).
+      blockers(department = "all") {
+        const dependencies = [];
+        const overdue = [];
+        model.objectivesIn(department).forEach((objective) => {
+          [objective, ...model.savedChildrenOf(objective.id)].forEach((node) => {
+            (node.dependencies || []).forEach((dependency, index) => {
+              if (dependency.blocking) dependencies.push({ kind: "dependency", node, objective, index, dependency });
+            });
+          });
+          model.savedChildrenOf(objective.id).forEach((milestone) => {
+            const late = -daysUntil(milestone.dueDate);
+            if (late > 0 && model.statusOf(milestone) !== "complete") overdue.push({ kind: "overdue", node: milestone, objective, days: late });
+            model
+              .descendantsOf(milestone.id)
+              .filter((step) => !step.isDraft && !model.isDone(step))
+              .forEach((step) => {
+                const stepLate = -daysUntil(step.dueDate);
+                if (stepLate > 0) overdue.push({ kind: "overdue", node: step, objective, milestone, days: stepLate });
+              });
+          });
+        });
+        return [...dependencies, ...overdue.sort((a, b) => b.days - a.days)];
+      },
+
+      // Open milestones due today or later, soonest first (overdue ones are blockers).
+      upcomingMilestones(department = "all", limit = 4) {
+        return model
+          .objectivesIn(department)
+          .flatMap((objective) => model.savedChildrenOf(objective.id).map((milestone) => ({ milestone, objective })))
+          .filter(({ milestone }) => model.statusOf(milestone) !== "complete" && daysUntil(milestone.dueDate) !== null && daysUntil(milestone.dueDate) >= 0)
+          .sort((a, b) => daysUntil(a.milestone.dueDate) - daysUntil(b.milestone.dueDate))
+          .slice(0, limit);
+      },
+
+      // Un-marks a blocking dependency and logs it on the node.
+      resolveDependency(nodeId, index) {
+        const node = model.byId(nodeId);
+        const dependency = node && (node.dependencies || [])[index];
+        if (!dependency || !dependency.blocking) return false;
+        dependency.blocking = false;
+        node.history = node.history || [];
+        node.history.push({
+          at: new Date().toISOString(),
+          action: "updated",
+          changes: [{ field: "Dependencies", note: `Resolved “${dependency.title}” (no longer blocking)` }],
+        });
+        return true;
+      },
+
       save: () => AIS.data.save(DATASET, data),
     };
     return model;
@@ -309,6 +408,7 @@
     DEPARTMENTS,
     formatDate,
     dueLabel,
+    daysUntil,
 
     async load() {
       let data = await AIS.data.load(DATASET);
