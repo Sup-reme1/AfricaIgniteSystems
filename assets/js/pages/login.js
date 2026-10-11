@@ -244,4 +244,5 @@
   });
 
   setMode(mode);
+  if (params.get("expired") === "1") showAlert("Your session expired. Sign in again to continue.");
 })();

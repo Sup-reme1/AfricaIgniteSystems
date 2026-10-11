@@ -39,6 +39,46 @@
         <span class="material-symbols-outlined text-on-surface-variant shrink-0">unfold_more</span>
       </div>
     </div> -->
+    <!-- Workspace switcher (filled in by app.js from AIS.workspace / GET /api/workspaces) -->
+    <div class="relative px-space-md py-space-xs" data-workspace-switcher>
+      <button
+        type="button"
+        class="w-full p-space-sm bg-surface-container rounded-xl flex items-center justify-between gap-2 hover:bg-surface-container-high transition-colors text-left"
+        aria-haspopup="menu"
+        aria-expanded="false"
+        aria-controls="workspace-menu"
+        data-workspace-toggle
+      >
+        <span class="flex items-center gap-space-sm min-w-0">
+          <span class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-title-sm text-title-sm shrink-0" data-workspace-initials>·</span>
+          <span class="min-w-0">
+            <span class="block font-title-sm text-title-sm text-on-surface truncate" data-workspace-name>Loading…</span>
+            <span class="block font-label-sm text-label-sm text-on-surface-variant truncate" data-workspace-role></span>
+          </span>
+        </span>
+        <span class="material-symbols-outlined text-on-surface-variant shrink-0">unfold_more</span>
+      </button>
+      <div
+        id="workspace-menu"
+        role="menu"
+        class="hidden absolute left-space-md right-space-md mt-1 bg-surface-container-lowest rounded-xl shadow-lg ring-1 ring-outline-variant/40 p-space-xs z-50"
+        data-workspace-menu
+      >
+        <div class="px-space-sm pt-1 pb-space-xs font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Workspaces</div>
+        <div class="space-y-0.5" data-workspace-list></div>
+        <form class="mt-space-xs pt-space-xs border-t border-outline-variant/40 flex gap-1" data-workspace-create>
+          <input
+            type="text"
+            maxlength="80"
+            required
+            placeholder="New workspace name"
+            aria-label="New workspace name"
+            class="flex-1 min-w-0 h-8 px-2 rounded-lg bg-surface-container-low font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary-container/40"
+          />
+          <button type="submit" class="h-8 px-2.5 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md disabled:opacity-60">Add</button>
+        </form>
+      </div>
+    </div>
     <nav
       class="flex-1 px-space-md py-space-sm space-y-1 overflow-y-auto"
       aria-label="Main"

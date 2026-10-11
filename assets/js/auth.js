@@ -220,6 +220,23 @@
       clearSession();
       location.replace(LOGIN_PAGE);
     },
+
+    // The API rejected the token (expired or revoked): sign out and come back here after.
+    expire() {
+      clearSession();
+      location.replace(`${loginUrl()}&expired=1`);
+    },
+
+    // Updates the stored user (e.g. after GET/PATCH /me) without signing in again.
+    updateUser(fields) {
+      const remembered = readFrom(localStorage);
+      const session = currentSession();
+      if (!session) return;
+      session.user = { ...session.user, ...fields };
+      storeSession(session, Boolean(remembered));
+    },
+
+    isDemo: () => Boolean((currentSession() || {}).demo),
   };
 
   // ---- Guard ----------------------------------------------------------------

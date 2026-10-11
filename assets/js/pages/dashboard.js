@@ -155,9 +155,10 @@
       <button type="button" class="font-title-sm text-title-sm text-primary hover:underline" data-add-objective>Add your first objective</button>
     </div>`;
 
-  const ERROR_STATE = `
-    <div class="bg-error-container rounded-xl p-space-lg text-on-error-container font-body-md text-body-md">
-      Objectives could not be loaded. Refresh the page to try again.
+  const ERROR_STATE = (message) => `
+    <div class="bg-error-container rounded-xl p-space-lg text-on-error-container font-body-md text-body-md flex flex-wrap items-center justify-between gap-space-sm" role="alert">
+      <span>Objectives could not be loaded. ${esc(message || "")}</span>
+      <button type="button" class="h-9 px-space-md rounded-lg bg-error text-on-error font-title-sm text-title-sm" data-retry>Try again</button>
     </div>`;
 
   // ---- Stat cards -----------------------------------------------------------
@@ -389,7 +390,8 @@
       okrs = await AIS.okrs.load();
     } catch (error) {
       console.error(error);
-      list.innerHTML = ERROR_STATE;
+      list.innerHTML = ERROR_STATE(error.message);
+      list.querySelector("[data-retry]").addEventListener("click", () => location.reload());
       return;
     }
     if (!main.isConnected) return; // navigated away while loading
@@ -470,13 +472,19 @@
       main.querySelector("[data-blockers-summary]").textContent = panel.summary;
     }
 
-    // "Mark resolved" / "Mark done" in the Blockers panel: save, re-render, confirm.
-    function applyQuickAction(changed, message) {
-      if (!changed) return;
-      const saved = okrs.save();
-      render();
-      AIS.toast(message);
-      if (!saved) AIS.toast("This browser blocked saving, so the change will be lost when the page reloads.", { tone: "error" });
+    // "Mark resolved" / "Mark done" in the Blockers panel: the button shows it's
+    // working, the change is saved, then the page re-renders with a confirmation.
+    async function applyQuickAction(button, action, message) {
+      button.disabled = true;
+      button.textContent = "Saving…";
+      try {
+        const changed = await action();
+        render();
+        if (changed) AIS.toast(message);
+      } catch (error) {
+        render();
+        AIS.toast(error.message, { tone: "error" });
+      }
     }
 
     // Scrolls to an objective card and briefly rings it.
@@ -514,15 +522,18 @@
 
       const resolve = target.closest("[data-resolve-dependency]");
       if (resolve) {
-        const node = okrs.byId(resolve.dataset.resolveDependency);
-        const title = node && (node.dependencies || [])[Number(resolve.dataset.index)]?.title;
-        applyQuickAction(okrs.resolveDependency(resolve.dataset.resolveDependency, Number(resolve.dataset.index)), `“${title}” marked resolved.`);
+        const nodeId = resolve.dataset.resolveDependency;
+        const index = Number(resolve.dataset.index);
+        const node = okrs.byId(nodeId);
+        const title = node && (node.dependencies || [])[index]?.title;
+        applyQuickAction(resolve, () => okrs.resolveDependency(nodeId, index), `“${title}” marked resolved.`);
         return;
       }
       const markDone = target.closest("[data-mark-done]");
       if (markDone) {
-        const node = okrs.byId(markDone.dataset.markDone);
-        applyQuickAction(okrs.toggleDone(markDone.dataset.markDone) === true, `“${node.title}” marked done.`);
+        const id = markDone.dataset.markDone;
+        const node = okrs.byId(id);
+        applyQuickAction(markDone, () => okrs.toggleDone(id), `“${node.title}” marked done.`);
         return;
       }
 

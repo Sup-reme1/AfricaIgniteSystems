@@ -53,7 +53,9 @@ assets/
   js/app.js           shared behaviour + helpers (mobile sidebar, footer year, AIS.escape, AIS.toast,
                       opens the New Objective form for any [data-add-objective])
   js/data.js          AIS.data.load/save/reset/isModified: data/<name>.json + edits saved in localStorage
-  js/okrs.js          AIS.okrs: shared OKR model (tree helpers, progress roll-up, add/update/remove, validation)
+  js/api.js           AIS.api: data API client (Bearer token, JSON, timeouts, ApiError { status, message, fields })
+  js/workspace.js     AIS.workspace: current workspace (remembered per browser), list/create/rename/delete, members
+  js/okrs.js          AIS.okrs: shared OKR model, loaded from the API (demo: local file), async create/update/delete
   js/drawer.js        AIS.drawer: right-hand slide-over modal (focus trap, Esc, backdrop, beforeClose)
   js/objective-form.js  AIS.objectiveForm: "New objective" form in the slide-over
   js/router.js        client-side navigation (swaps <main> only) + page lifecycle (AIS.definePage)
@@ -78,6 +80,8 @@ Every page has the same shell; only `<title>`, `data-page`, the `<main>` content
   <script src="assets/js/layout.js"></script>
   <script src="assets/js/app.js"></script>
   <script src="assets/js/data.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/workspace.js"></script>
   <script src="assets/js/okrs.js"></script>
   <script src="assets/js/drawer.js"></script>
   <script src="assets/js/objective-form.js"></script>
@@ -87,6 +91,21 @@ Every page has the same shell; only `<title>`, `data-page`, the `<main>` content
 ```
 
 The `<head>` loads `assets/js/config.js` and `assets/js/auth.js` first (the sign-in guard), then fonts, the Tailwind CDN, `assets/js/tailwind-theme.js`, and `base.css` and `layout.css`. Copy it from an existing page. Keep the shared script order: page scripts come last.
+
+### Data API, workspaces and Settings
+
+- **Base URL:** `AIS.config.apiBase` in `config.js` points to the hosted API. Set `USE_LOCAL_API = true` to use a backend on `http://localhost:3000/api`.
+- **Endpoints used:** `/me`, `/workspaces` (+ members), `/workspaces/:id/okrs`, objectives / milestones / items / dependencies CRUD, `/dependencies/:id/resolve`, and `/activity`. They're specified in `docs/database-schema.md` §7.
+- **`AIS.api`:** adds `Authorization: Bearer <access_token>`. A 401 calls `AIS.auth.expire()`, which goes to `login.html?next=…&expired=1`. The first slow request shows a "Waking up the server" toast.
+- **Sidebar workspace switcher** (`app.js`): lists your workspaces with your role in each, and has "New workspace". Switching reloads the page so every cache starts clean.
+- **Settings** (`settings.html` + `pages/settings.js`):
+  - **Profile:** `GET` / `PATCH /me`. It updates the stored session and fires `profile:change`, which refreshes the header.
+  - **Workspace:** rename (admins), and delete (owners, with an inline confirmation).
+  - **Members:** list, add by email, change role, remove (admins), and leave.
+- **Testing against the API:**
+  - The screenshot tool runs in demo mode, so it can't reach the API.
+  - Use the test account (ask the user for its credentials), with Node scripts that load the real frontend modules plus small browser stand-ins.
+  - Clean up whatever you create.
 
 ### Authentication (`login.html` + `assets/js/auth.js` + `assets/js/pages/login.js`)
 
@@ -147,6 +166,17 @@ When you change a JSON file's shape, bump its `version` and reset older saved co
   | 3 | Checklist item | title, notes, assignee, optional `dueDate`, `done` | 0/100 when ticked, or share of sub-steps done |
   | 4+ | Sub-step (no depth limit) | same as a checklist item | same |
 
+- **Where the data comes from:**
+  - **Normally:** the API. `load()` calls `GET /workspaces/:id/okrs` for the current workspace (`AIS.workspace.current()`) and maps it to the flat node list the pages use: objectives → `parentId: null`, milestones → `objectiveId`, items → `parentItemId ?? milestoneId`, `ownerName` → `owner`, `assigneeName` → `assignee`, null dates → `""`.
+  - **In the demo session** (`?demo=1`): `data/okrs.json` plus browser storage, with the same model and methods.
+  - `okrs.source` is `"api"` or `"demo"`.
+- **Every change is async and saved immediately:**
+  - `createNode(node)` (a node from `newNode()`, may be a draft; it gets the server id), `updateNode(node, next)` (returns the changes; also syncs dependencies one by one), `deleteNode(id)` and `resolveDependency(nodeId, index)`.
+  - `toggleDone(id)` flips the item at once and returns a promise. If the server refuses, the item flips back and the promise rejects.
+  - `historyOf(node)` returns the Audit Log, built from `GET /activity` with actor names from the members list.
+  - Failures throw `AIS.api.ApiError`. `AIS.okrs.fieldErrors(error)` maps them to form field names, and a 409 goes to `code`.
+  - Pages show a "Saving…" state, then field errors or an error toast.
+- **Viewers:** the workspace role `viewer` sets `.is-read-only` on `<html>`, which hides add / edit / delete / tick controls (`layout.css`).
 - **Progress is never stored:** use `progressOf`, `stepCounts` and `isDone`. Only items with no sub-steps can be ticked (`toggleDone`). A parent item is done when all of its sub-steps are. `statusOf` shows a milestone as Complete once every step is done.
 - **Dates:** stored as `YYYY-MM-DD`. Use `AIS.okrs.formatDate` and `AIS.okrs.dueLabel` ("Due in 4 days", "Overdue 2 days").
 - **One source of truth:** the dashboard and the Objective Hierarchy both read and edit it through `await AIS.okrs.load()`. Don't fetch `okrs.json` directly, and don't copy its tree logic into page scripts.

@@ -34,7 +34,7 @@
       targetDate: "",
       expectedPacing: "0",
     };
-    const state = { errors: {}, dirty: false, confirmingDiscard: false };
+    const state = { errors: {}, dirty: false, confirmingDiscard: false, saving: false, formError: "" };
 
     const drawer = AIS.drawer.open({
       title: "New objective",
@@ -81,6 +81,11 @@
                 </div>`
               : ""
           }
+          ${
+            state.formError
+              ? `<p class="m-space-md mb-0 p-space-sm rounded-lg bg-error-container text-on-error-container font-body-sm text-body-sm" role="alert">${esc(state.formError)}</p>`
+              : ""
+          }
           <div class="flex-1 min-h-0 overflow-y-auto p-space-lg space-y-space-md">
             <p class="font-body-sm text-body-sm text-on-surface-variant">
               An objective is the goal at the top of the tree. After saving, use <strong class="text-on-surface">Set up hierarchy</strong> to break it into milestones and checklists.
@@ -102,22 +107,30 @@
             ${field("expectedPacing", "Expected progress by now (%)", `<input class="${INPUT}" type="number" min="0" max="100" step="1" inputmode="numeric" ${attrs("expectedPacing")} value="${esc(draft.expectedPacing)}" />`, "Used to show whether it's ahead or behind.")}
           </div>
           <div class="p-space-md bg-surface-container-low flex gap-2">
-            <button type="submit" class="flex-1 h-10 bg-primary-container hover:bg-primary text-on-primary font-title-sm text-title-sm rounded-lg shadow-sm transition-colors flex items-center justify-center gap-1.5">
-              <span class="material-symbols-outlined text-base">check</span><span>Save objective</span>
+            <button type="submit" class="flex-1 h-10 bg-primary-container hover:bg-primary text-on-primary font-title-sm text-title-sm rounded-lg shadow-sm transition-colors flex items-center justify-center gap-1.5 disabled:opacity-70 disabled:cursor-wait" ${state.saving ? "disabled" : ""}>
+              ${
+                state.saving
+                  ? '<span class="w-4 h-4 rounded-full border-2 border-on-primary border-t-transparent animate-spin"></span><span>Saving…</span>'
+                  : '<span class="material-symbols-outlined text-base">check</span><span>Save objective</span>'
+              }
             </button>
             <button type="button" class="flex-1 h-10 bg-surface-container-lowest hover:bg-surface-container text-on-surface font-title-sm text-title-sm rounded-lg shadow-sm transition-colors" data-cancel>Cancel</button>
           </div>
         </form>`;
     }
 
-    function save() {
+    function showErrors() {
+      state.confirmingDiscard = false;
+      render();
+      const invalid = drawer.body.querySelector('[aria-invalid="true"]');
+      if (invalid) invalid.focus();
+    }
+
+    async function save() {
+      if (state.saving) return;
+      state.formError = "";
       state.errors = okrs.validate(draft, 0);
-      if (Object.keys(state.errors).length) {
-        state.confirmingDiscard = false;
-        render();
-        drawer.body.querySelector('[aria-invalid="true"]').focus();
-        return;
-      }
+      if (Object.keys(state.errors).length) return showErrors();
 
       const node = okrs.newNode(null, {
         code: draft.code.trim(),
@@ -130,9 +143,16 @@
         targetDate: draft.targetDate,
         expectedPacing: Math.round(Number(draft.expectedPacing)),
       });
-      okrs.data.nodes.push(node);
-      okrs.commitNew(node);
-      const saved = okrs.save();
+      state.saving = true;
+      render();
+      try {
+        await okrs.createNode(node);
+      } catch (error) {
+        state.saving = false;
+        state.errors = AIS.okrs.fieldErrors(error);
+        if (!Object.keys(state.errors).length) state.formError = error.message;
+        return showErrors();
+      }
 
       drawer.close({ force: true });
       document.dispatchEvent(new CustomEvent("okrs:change", { detail: { action: "created", id: node.id } }));
@@ -145,9 +165,6 @@
             ? {}
             : { actionLabel: "View on dashboard", href: `index.html?highlight=${encodeURIComponent(node.id)}` };
       AIS.toast(`Objective “${node.title}” added.`, followUp);
-      if (!saved) {
-        AIS.toast("This browser blocked saving, so the objective will be lost when the page reloads.", { tone: "error" });
-      }
     }
 
     const listen = (type, handler) => drawer.body.addEventListener(type, handler, { signal: drawer.signal });

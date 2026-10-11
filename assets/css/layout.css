@@ -106,6 +106,21 @@ body.drawer-open {
   }
 }
 
+/* Viewers (workspace role "viewer"): hide controls that change data.
+   okrs.js sets .is-read-only on <html> from the workspace role. */
+.is-read-only [data-add-objective],
+.is-read-only [data-add-child],
+.is-read-only [data-edit],
+.is-read-only [data-delete],
+.is-read-only [data-resolve-dependency],
+.is-read-only [data-mark-done] {
+  display: none !important;
+}
+
+.is-read-only [data-toggle-done] {
+  pointer-events: none;
+}
+
 /* Client-side page changes (router.js): keep the cross-fade short. */
 .is-navigating {
   cursor: progress;

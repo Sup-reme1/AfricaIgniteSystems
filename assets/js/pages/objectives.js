@@ -100,7 +100,12 @@
       okrs = await loadOkrs();
     } catch (error) {
       console.error(error);
-      tree.innerHTML = `<p class="pt-space-xl text-center font-body-md text-body-md text-error">The hierarchy could not be loaded. Refresh the page to try again.</p>`;
+      tree.innerHTML = `
+        <div class="pt-space-xl text-center space-y-space-sm" role="alert">
+          <p class="font-body-md text-body-md text-error">The hierarchy could not be loaded. ${esc(error.message || "")}</p>
+          <button type="button" class="h-9 px-space-md rounded-lg bg-primary-container text-on-primary font-title-sm text-title-sm" data-retry>Try again</button>
+        </div>`;
+      tree.querySelector("[data-retry]").addEventListener("click", () => location.reload());
       return;
     }
     if (!main.isConnected) return; // navigated away while loading
@@ -112,7 +117,9 @@
       errors: {},
       dirty: false,
       pendingAction: null, // runs after "Discard changes"
-      saveFailed: false,
+      saving: false, // a save or delete is in flight
+      formError: "", // server error not tied to a field
+      audit: null, // { loading } | { entries } | { error } while the Audit Log is open
       query: "",
       zoom: 100,
       inspectorOpen: false, // opens when an item is clicked
@@ -138,10 +145,6 @@
         .join(" ")
         .toLowerCase()
         .includes(state.query);
-    }
-
-    function persist() {
-      state.saveFailed = !okrs.save();
     }
 
     // Arriving with ?focus=<id> selects that item; otherwise the first objective.
@@ -472,7 +475,7 @@
           </button>
         </div>
         ${state.pendingAction ? unsavedBannerHtml() : ""}
-        ${state.saveFailed ? `<p class="m-space-md mb-0 p-space-sm rounded-lg bg-error-container text-on-error-container font-body-sm text-body-sm" role="alert">This browser blocked saving, so your changes will be lost when the page reloads.</p>` : ""}
+        ${state.formError ? `<p class="m-space-md mb-0 p-space-sm rounded-lg bg-error-container text-on-error-container font-body-sm text-body-sm" role="alert">${esc(state.formError)}</p>` : ""}
         ${state.mode === "edit" ? editHtml(node) : state.mode === "audit" ? auditHtml(node) : viewHtml(node)}`;
     }
 
@@ -660,7 +663,7 @@
           <div class="p-space-md bg-error-container text-on-error-container space-y-2" role="alert">
             <p class="font-body-sm text-body-sm"><strong>Delete “${esc(node.title)}”</strong>${count ? ` and the ${count} item${count === 1 ? "" : "s"} under it` : ""}? You can only get it back with Reset data.</p>
             <div class="flex gap-2">
-              <button type="button" class="flex-1 h-9 rounded-lg bg-error text-on-error font-title-sm text-title-sm" data-confirm-delete>Delete</button>
+              <button type="button" class="flex-1 h-9 rounded-lg bg-error text-on-error font-title-sm text-title-sm disabled:opacity-70 disabled:cursor-wait" data-confirm-delete ${state.saving ? "disabled" : ""}>${state.saving ? "Deleting…" : "Delete"}</button>
               <button type="button" class="${SECONDARY_BUTTON}" data-cancel>Cancel</button>
             </div>
           </div>`;
@@ -761,8 +764,23 @@
         ${viewFooterHtml(node)}`;
     }
 
+    // Fetches the Audit Log (API activity, or local history in demo) and shows it.
+    async function openAudit(node) {
+      state.mode = "audit";
+      state.audit = { loading: true };
+      renderInspector();
+      try {
+        const entries = await okrs.historyOf(node);
+        if (state.mode === "audit" && state.selectedId === node.id) state.audit = { entries };
+      } catch (error) {
+        if (state.mode === "audit" && state.selectedId === node.id) state.audit = { error: error.message };
+      }
+      if (state.mode === "audit" && state.selectedId === node.id) renderInspector();
+    }
+
     function auditHtml(node) {
-      const entries = [...(node.history || [])].reverse();
+      const audit = state.audit || { loading: true };
+      const entries = [...(audit.entries || [])].reverse(); // newest first
       const list = entries
         .map((entry) => {
           const when = new Date(entry.at).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
@@ -780,6 +798,7 @@
                 <span class="font-title-sm text-title-sm text-on-surface">${entry.action === "created" ? "Created" : "Updated"}</span>
                 <span class="font-label-sm text-label-sm text-on-surface-variant">${esc(when)}</span>
               </div>
+              ${entry.actor ? `<div class="mb-1 font-label-sm text-label-sm text-on-surface-variant">by ${esc(entry.actor)}</div>` : ""}
               ${changes ? `<ul class="space-y-1">${changes}</ul>` : ""}
             </li>`;
         })
@@ -790,7 +809,15 @@
             <div class="font-label-sm text-label-sm text-primary font-semibold uppercase tracking-wider">${esc(typeOf(node).label)}${node.code ? ` · ${esc(node.code)}` : ""}</div>
             <h3 class="font-title-md text-title-md text-on-surface font-bold">${esc(node.title)}</h3>
           </div>
-          ${entries.length ? `<ol class="space-y-space-sm">${list}</ol>` : `<p class="font-body-sm text-body-sm text-outline italic">No changes recorded yet. Edits and ticks made here will appear in this log.</p>`}
+          ${
+            audit.loading
+              ? `<p class="font-body-sm text-body-sm text-on-surface-variant">Loading history…</p>`
+              : audit.error
+                ? `<p class="p-space-sm rounded-lg bg-error-container text-on-error-container font-body-sm text-body-sm" role="alert">The history could not be loaded. ${esc(audit.error)}</p>`
+                : entries.length
+                  ? `<ol class="space-y-space-sm">${list}</ol>`
+                  : `<p class="font-body-sm text-body-sm text-outline italic">No changes recorded yet. Edits and ticks made here will appear in this log.</p>`
+          }
         </div>
         <div class="p-space-md bg-surface-container-low">
           <button type="button" class="${SECONDARY_BUTTON} w-full" data-back><span class="material-symbols-outlined text-base">arrow_back</span><span>Back to details</span></button>
@@ -911,10 +938,14 @@
         <form class="flex-1 min-h-0 flex flex-col" data-edit-form novalidate>
           <div class="flex-1 min-h-0 overflow-y-auto p-space-lg space-y-space-md">${fields}</div>
           <div class="p-space-md bg-surface-container-low flex gap-2">
-            <button type="submit" class="${PRIMARY_BUTTON}">
-              <span class="material-symbols-outlined text-base">check</span><span>${node.isDraft ? `Add ${type.label.toLowerCase()}` : "Save changes"}</span>
+            <button type="submit" class="${PRIMARY_BUTTON} disabled:opacity-70 disabled:cursor-wait" ${state.saving ? "disabled" : ""}>
+              ${
+                state.saving
+                  ? '<span class="w-4 h-4 rounded-full border-2 border-on-primary border-t-transparent animate-spin"></span><span>Saving…</span>'
+                  : `<span class="material-symbols-outlined text-base">check</span><span>${node.isDraft ? `Add ${type.label.toLowerCase()}` : "Save changes"}</span>`
+              }
             </button>
-            <button type="button" class="${SECONDARY_BUTTON}" data-cancel>${node.isDraft ? "Discard" : "Cancel"}</button>
+            <button type="button" class="${SECONDARY_BUTTON}" data-cancel ${state.saving ? "disabled" : ""}>${node.isDraft ? "Discard" : "Cancel"}</button>
           </div>
         </form>`;
     }
@@ -922,6 +953,7 @@
     function startEdit(node) {
       state.mode = "edit";
       state.errors = {};
+      state.formError = "";
       state.dirty = false;
       state.editDraft = {
         code: node.code || "",
@@ -947,21 +979,26 @@
       target[keys[keys.length - 1]] = value;
     }
 
-    function saveEdit() {
+    function showFormErrors() {
+      renderInspector();
+      const firstInvalid = inspector.querySelector('[aria-invalid="true"]');
+      if (firstInvalid) firstInvalid.focus();
+    }
+
+    async function saveEdit() {
+      if (state.saving) return;
       const node = nodeById(state.selectedId);
       const draft = state.editDraft;
       const depth = depthOf(node);
 
+      state.formError = "";
       state.errors = okrs.validate(draft, depth);
-      if (Object.keys(state.errors).length) {
-        renderInspector();
-        const firstInvalid = inspector.querySelector('[aria-invalid="true"]');
-        if (firstInvalid) firstInvalid.focus();
-        return;
-      }
+      if (Object.keys(state.errors).length) return showFormErrors();
 
+      // Keep ids so existing dependencies are updated rather than recreated.
       const dependencies = () =>
         draft.dependencies.map((dependency) => ({
+          id: dependency.id || null,
           title: dependency.title.trim(),
           detail: (dependency.detail || "").trim(),
           blocking: Boolean(dependency.blocking),
@@ -994,14 +1031,26 @@
         next = { title: draft.title.trim(), notes: draft.notes.trim(), assignee: draft.assignee.trim(), dueDate: draft.dueDate };
       }
 
-      if (node.isDraft) {
-        Object.assign(node, next);
-        okrs.commitNew(node);
-      } else {
-        okrs.update(node, next);
+      state.saving = true;
+      renderInspector();
+      try {
+        if (node.isDraft) {
+          Object.assign(node, next);
+          await okrs.createNode(node); // node.id becomes the server's id
+        } else {
+          await okrs.updateNode(node, next);
+        }
+      } catch (error) {
+        state.saving = false;
+        if (!main.isConnected) return;
+        state.errors = AIS.okrs.fieldErrors(error);
+        if (!Object.keys(state.errors).length) state.formError = error.message;
+        return showFormErrors();
       }
+      state.saving = false;
+      if (!main.isConnected) return;
 
-      persist();
+      state.selectedId = node.id;
       state.mode = "view";
       state.editDraft = null;
       state.dirty = false;
@@ -1070,30 +1119,70 @@
       }
     }
 
+    // Ticks at once; if the server refuses, the model flips back and we re-render.
     function toggleDone(id, fromPanel) {
-      if (okrs.toggleDone(id) === null) return;
-      persist();
-      renderTree();
-      if (state.mode !== "edit") renderInspector();
-      updateToolbar();
+      const refresh = () => {
+        if (!main.isConnected) return;
+        renderTree();
+        if (state.mode !== "edit") renderInspector();
+        updateToolbar();
+      };
+      const request = okrs.toggleDone(id);
+      refresh();
       const scope = fromPanel ? inspector : tree;
       const box = scope.querySelector(`[data-toggle-done="${CSS.escape(id)}"]`);
       if (box) box.focus({ preventScroll: true });
+      request.catch((error) => {
+        refresh();
+        AIS.toast(`Couldn't save the tick. ${error.message}`, { tone: "error" });
+      });
     }
 
-    function deleteSelected() {
+    async function deleteSelected() {
       const node = nodeById(state.selectedId);
-      if (!node) return;
-      const parent = okrs.remove(node.id);
+      if (!node || state.saving) return;
+      state.saving = true;
+      renderInspector();
+      let parent;
+      try {
+        parent = await okrs.deleteNode(node.id);
+      } catch (error) {
+        state.saving = false;
+        state.mode = "view";
+        if (main.isConnected) renderInspector();
+        AIS.toast(`Couldn't delete “${node.title}”. ${error.message}`, { tone: "error" });
+        return;
+      }
+      state.saving = false;
+      if (!main.isConnected) return;
       state.selectedId = parent ? parent.id : firstObjectiveId();
       state.mode = "view";
       if (!parent) state.inspectorOpen = false;
-      persist();
       render();
       if (state.selectedId) focusTile(state.selectedId);
+      AIS.toast(`“${node.title}” deleted.`);
     }
 
+    // API: reload from the server ("Refresh"). Demo: restore the sample data
+    // (asks for a second click first, since it discards local edits).
     async function resetData() {
+      if (okrs.source === "api") {
+        AIS.okrs.reload();
+        resetButton.disabled = true;
+        try {
+          okrs = await loadOkrs();
+        } catch (error) {
+          AIS.toast(`Couldn't refresh. ${error.message}`, { tone: "error" });
+          resetButton.disabled = false;
+          return;
+        }
+        if (!main.isConnected) return;
+        Object.assign(state, { mode: "view", editDraft: null, errors: {}, dirty: false, pendingAction: null, formError: "" });
+        if (!nodeById(state.selectedId)) state.selectedId = firstObjectiveId();
+        render();
+        AIS.toast("Up to date.");
+        return;
+      }
       if (!state.resetArmed) {
         state.resetArmed = true;
         updateToolbar();
@@ -1105,10 +1194,10 @@
       }
       clearTimeout(resetTimer);
       state.resetArmed = false;
-      AIS.okrs.reset();
+      AIS.okrs.reload();
       okrs = await loadOkrs();
       if (!main.isConnected) return;
-      Object.assign(state, { mode: "view", editDraft: null, errors: {}, dirty: false, pendingAction: null, saveFailed: false });
+      Object.assign(state, { mode: "view", editDraft: null, errors: {}, dirty: false, pendingAction: null, formError: "" });
       state.selectedId = firstObjectiveId();
       state.inspectorOpen = false;
       render();
@@ -1137,6 +1226,13 @@
     function updateToolbar() {
       main.querySelector("#zoom-indicator").textContent = `${state.zoom}%`;
       const label = resetButton.querySelector("[data-reset-label]");
+      if (okrs.source === "api") {
+        // Data lives on the server: the button reloads it.
+        label.textContent = "Refresh";
+        resetButton.title = "Load the latest from the server";
+        resetButton.disabled = false;
+        return;
+      }
       label.textContent = state.resetArmed ? "Click again to reset" : "Reset data";
       resetButton.classList.toggle("bg-error-container", state.resetArmed);
       resetButton.classList.toggle("text-on-error-container", state.resetArmed);
@@ -1168,8 +1264,7 @@
         renderInspector();
         inspector.querySelector("#edit-title").focus();
       } else if (hit("[data-audit]")) {
-        state.mode = "audit";
-        renderInspector();
+        openAudit(nodeById(state.selectedId));
       } else if (hit("[data-back]")) {
         state.mode = "view";
         renderInspector();

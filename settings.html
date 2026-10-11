@@ -28,12 +28,21 @@
     <div class="app-content">
       <div data-include="header"></div>
       <main class="w-full pt-16 bg-surface">
-        <div class="p-space-lg max-w-[1440px] w-full mx-auto">
-          <div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm text-center space-y-space-sm">
-            <span class="material-symbols-outlined text-primary text-5xl">settings</span>
+        <div class="p-space-lg max-w-4xl w-full mx-auto space-y-space-lg">
+          <div class="space-y-1">
             <h1 class="font-headline-lg text-headline-lg text-on-surface">Settings</h1>
-            <p class="font-body-lg text-body-lg text-on-surface-variant">Workspace, profile and notification settings are coming soon.</p>
+            <p class="font-body-md text-body-md text-on-surface-variant">Your profile, the current workspace and who can access it.</p>
           </div>
+          <!-- Rendered by assets/js/pages/settings.js -->
+          <section class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm" aria-labelledby="profile-heading" data-settings-profile>
+            <p class="font-body-sm text-body-sm text-on-surface-variant">Loading profile…</p>
+          </section>
+          <section class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm" aria-labelledby="workspace-heading" data-settings-workspace>
+            <p class="font-body-sm text-body-sm text-on-surface-variant">Loading workspace…</p>
+          </section>
+          <section class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm" aria-labelledby="members-heading" data-settings-members>
+            <p class="font-body-sm text-body-sm text-on-surface-variant">Loading members…</p>
+          </section>
         </div>
       </main>
       <div data-include="footer"></div>
@@ -42,9 +51,12 @@
     <script src="assets/js/layout.js"></script>
     <script src="assets/js/app.js"></script>
     <script src="assets/js/data.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/workspace.js"></script>
     <script src="assets/js/okrs.js"></script>
     <script src="assets/js/drawer.js"></script>
     <script src="assets/js/objective-form.js"></script>
     <script src="assets/js/router.js"></script>
+    <script src="assets/js/pages/settings.js"></script>
   </body>
 </html>
