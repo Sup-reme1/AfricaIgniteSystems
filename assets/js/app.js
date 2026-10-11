@@ -55,23 +55,21 @@ function initUserMenu() {
   const user = AIS.auth && AIS.auth.user();
   if (!root || !user) return;
 
-  // "ada.obi@company.com" → "Ada Obi"
-  const name = String(user.email || "Signed in")
-    .split("@")[0]
-    .split(/[._-]+/)
-    .filter(Boolean)
-    .map((part) => part[0].toUpperCase() + part.slice(1))
-    .join(" ");
+  // Full name from sign-up, or a name made from the email for older accounts.
+  const name = AIS.auth.displayName();
   const initials = name
-    .split(" ")
+    .split(/\s+/)
+    .filter(Boolean)
     .slice(0, 2)
     .map((part) => part[0])
     .join("")
     .toUpperCase();
 
   root.querySelector("[data-user-initials]").textContent = initials || "?";
-  root.querySelector("[data-user-name]").textContent = name;
+  root.querySelectorAll("[data-user-name]").forEach((el) => (el.textContent = name));
   root.querySelectorAll("[data-user-email]").forEach((el) => (el.textContent = user.email || ""));
+  root.querySelector("[data-user-phone]").textContent = user.phone || "";
+  root.querySelector("[data-user-phone-row]").classList.toggle("hidden", !user.phone);
 
   const toggle = root.querySelector("[data-user-menu-toggle]");
   const menu = root.querySelector('[role="menu"]');

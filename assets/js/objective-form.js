@@ -29,7 +29,7 @@
       description: "",
       department: DEPARTMENTS[0],
       team: "",
-      owner: "",
+      owner: (AIS.auth && AIS.auth.displayName()) || "", // the signed-in person, editable
       status: "on-track",
       targetDate: "",
       expectedPacing: "0",

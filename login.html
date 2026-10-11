@@ -89,11 +89,26 @@
             </div>
 
             <form class="space-y-space-md" novalidate data-auth-form>
+              <div data-signup-only>
+                <label for="auth-name" class="block mb-1 font-label-md text-label-md text-on-surface-variant">Full name</label>
+                <input id="auth-name" name="fullName" type="text" autocomplete="name" maxlength="80" placeholder="Ada Obi"
+                  class="w-full h-11 px-3 bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary-container/40" />
+                <p class="hidden mt-1 font-label-sm text-label-sm text-error" id="auth-name-error"></p>
+              </div>
+
               <div>
                 <label for="auth-email" class="block mb-1 font-label-md text-label-md text-on-surface-variant">Email</label>
                 <input id="auth-email" name="email" type="email" autocomplete="email" required placeholder="you@company.com"
                   class="w-full h-11 px-3 bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary-container/40" />
                 <p class="hidden mt-1 font-label-sm text-label-sm text-error" id="auth-email-error"></p>
+              </div>
+
+              <div data-signup-only>
+                <label for="auth-phone" class="block mb-1 font-label-md text-label-md text-on-surface-variant">Phone number</label>
+                <input id="auth-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="20" placeholder="+234 803 123 4567" aria-describedby="auth-phone-hint"
+                  class="w-full h-11 px-3 bg-surface-container-low rounded-lg font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary-container/40" />
+                <p class="mt-1 font-label-sm text-label-sm text-on-surface-variant" id="auth-phone-hint">Include your country code.</p>
+                <p class="hidden mt-1 font-label-sm text-label-sm text-error" id="auth-phone-error"></p>
               </div>
 
               <div>

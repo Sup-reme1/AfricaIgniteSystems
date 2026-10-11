@@ -18,6 +18,8 @@
   const $$ = (selector) => [...document.querySelectorAll(selector)];
 
   const form = $("[data-auth-form]");
+  const fullName = $("#auth-name");
+  const phone = $("#auth-phone");
   const email = $("#auth-email");
   const password = $("#auth-password");
   const confirm = $("#auth-confirm");
@@ -48,6 +50,10 @@
   const TAB_ACTIVE = ["bg-surface-container-lowest", "text-on-surface", "shadow-sm"];
   const TAB_INACTIVE = ["text-on-surface-variant", "hover:text-on-surface"];
   const MIN_PASSWORD = 6;
+
+  // "+234 (803) 123-4567" → "+2348031234567". Valid: optional +, then 7–15 digits.
+  const normalizePhone = (value) => value.trim().replace(/[\s().-]/g, "");
+  const isValidPhone = (value) => /^\+?\d{7,15}$/.test(value);
 
   let mode = location.hash === "#signup" ? "signup" : "login";
   let busy = false;
@@ -99,20 +105,23 @@
 
   function fieldError(input, message) {
     const error = $(`#${input.id}-error`);
+    const hint = $(`#${input.id}-hint`);
     error.textContent = message;
     error.classList.toggle("hidden", !message);
+    if (hint) hint.classList.toggle("hidden", Boolean(message));
     if (message) {
       input.setAttribute("aria-invalid", "true");
       input.setAttribute("aria-describedby", error.id);
     } else {
       input.removeAttribute("aria-invalid");
-      input.removeAttribute("aria-describedby");
+      if (hint) input.setAttribute("aria-describedby", hint.id);
+      else input.removeAttribute("aria-describedby");
     }
   }
 
   function clearErrors() {
     alertBox.classList.add("hidden");
-    [email, password, confirm].forEach((input) => fieldError(input, ""));
+    [fullName, email, phone, password, confirm].forEach((input) => fieldError(input, ""));
   }
 
   function setBusy(isBusy) {
@@ -121,15 +130,26 @@
     $("[data-auth-spinner]").classList.toggle("hidden", !isBusy);
     $("[data-auth-submit-label]").textContent = isBusy ? COPY[mode].busy : COPY[mode].submit;
     if (!isBusy) $("[data-auth-slow]").classList.add("hidden");
-    [email, password, confirm, remember].forEach((input) => (input.disabled = isBusy));
+    [fullName, email, phone, password, confirm, remember].forEach((input) => (input.disabled = isBusy));
   }
 
   function validate() {
     clearErrors();
     const errors = [];
+    if (mode === "signup") {
+      const name = fullName.value.trim();
+      if (!name) errors.push([fullName, "Enter your full name."]);
+      else if (name.length < 2) errors.push([fullName, "Enter your full name, e.g. Ada Obi."]);
+    }
     const value = email.value.trim();
     if (!value) errors.push([email, "Enter your email address."]);
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) errors.push([email, "Enter a valid email address, like you@company.com."]);
+    if (mode === "signup") {
+      if (!phone.value.trim()) errors.push([phone, "Enter your phone number."]);
+      else if (!isValidPhone(normalizePhone(phone.value))) {
+        errors.push([phone, "Enter a valid phone number with country code, e.g. +234 803 123 4567."]);
+      }
+    }
     if (!password.value) errors.push([password, "Enter your password."]);
     else if (mode === "signup" && password.value.length < MIN_PASSWORD) {
       errors.push([password, `Use at least ${MIN_PASSWORD} characters.`]);
@@ -155,7 +175,11 @@
         location.replace(next);
         return;
       }
-      const result = await AIS.auth.signup(...credentials, { onSlow });
+      const result = await AIS.auth.signup(...credentials, {
+        fullName: fullName.value.trim().replace(/\s+/g, " "),
+        phone: normalizePhone(phone.value),
+        onSlow,
+      });
       if (!result.needsConfirmation) {
         location.replace(next);
         return;
@@ -189,7 +213,8 @@
     password.value = "";
     confirm.value = "";
     setMode(nextMode);
-    (email.value ? password : email).focus();
+    const firstEmpty = mode === "signup" ? [fullName, email, phone, password].find((input) => !input.value) : null;
+    (firstEmpty || (email.value ? password : email)).focus();
   }
 
   // ---- Events -----------------------------------------------------------------

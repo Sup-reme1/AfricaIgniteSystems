@@ -94,13 +94,19 @@ The `<head>` loads `assets/js/config.js` and `assets/js/auth.js` first (the sign
   - `POST /auth/signup` and `POST /auth/login` take `{ email, password }` and return Supabase's `{ user, session }`. Signup answers `201`, login `200`.
   - CORS allows any origin.
   - It's hosted on Render and can be asleep: the first request may take up to a minute, and the sign-in page shows a "waking up" message after 5 seconds.
-- **Session:** `{ access_token, refresh_token, expires_at, user: { id, email } }`, stored under `ais:auth:session`.
+- **Sign-up form:** asks for full name, email, phone (with country code, normalised to e.g. `+2348031234567`), password and confirmation.
+  - The request body is `{ email, password, fullName, phone, options: { data: { full_name, phone } } }`.
+  - The API should store the name and phone as Supabase user metadata (see `docs/database-schema.md`).
+- **Session:** `{ access_token, refresh_token, expires_at, user: { id, email, fullName, phone } }`, stored under `ais:auth:session`.
+  - `fullName` and `phone` are read from `user.user_metadata`.
+  - `AIS.auth.displayName()` returns the full name, or a name made from the email for accounts without one.
   - With "Keep me signed in" it goes in `localStorage`, otherwise in `sessionStorage`.
   - Expired sessions count as signed out. There's no refresh or logout endpoint yet.
 - **Guard:** `auth.js` redirects any page not marked `<html data-auth="public">` to `login.html?next=<page>` before it renders. It checks again on each `page:change`. `AIS.auth.safeNext()` only allows portal pages as `next`.
 - **Sign-up with email confirmation on:** Supabase returns no session, and the page shows "Check your inbox". An existing email comes back as a user with empty `identities`, which is treated as "already registered".
 - **Error messages:** `friendlyMessage()` in `auth.js` turns API and network errors into plain language. The server's text is read from `error`, `message` or `msg`.
-- **Header:** `app.js` shows the user's name (from the email), email and initials, plus a Sign out menu.
+- **Header:** `app.js` shows the user's name and initials. The menu shows name, email and phone, and Sign out.
+- **New Objective form:** Owner starts as the signed-in user's name.
 - **Limits:** this guards the screens only. Data access must be enforced by the API (check the `access_token`) once data moves to Supabase.
 - **Local demo session:** on `localhost` / `127.0.0.1`, any page opened with `?demo=1` gets a temporary demo session (`demo@localhost`, 12 hours, `sessionStorage`). It's ignored on other hosts.
 
@@ -267,4 +273,4 @@ node dev-server.js screenshot login.html
 1. Mock data layer: `data.js`, the shared OKR dataset, the dashboard (objectives, stat cards, Blockers & Milestones) and the objective hierarchy are done. Next: check-ins and initiatives from data, and the sidebar progress box.
 2. Persistence: localStorage saving exists (`AIS.data.save`), and the hierarchy uses it. Next: dashboard edits and check-in submissions.
 3. Shared UI components: modal, toast, dropdown, tabs (New Objective, notifications, workspace switcher).
-4. Auth: sign-up and sign-in against the Supabase auth API are done. Next: move the OKR data from localStorage to Supabase (per user), add refresh and logout endpoints, then roles (individual, team lead, admin).
+4. Auth: sign-up and sign-in against the Supabase auth API are done. Next: move the OKR data from localStorage to Supabase, add refresh and logout endpoints, then roles. The database schema, access rules, API endpoints and the SQL migration are specified in `docs/database-schema.md`. Phase 1 (the Objective Hierarchy API only, per-user data) is in `docs/objective-hierarchy/`: spec, mock response, and schema plus seed SQL.

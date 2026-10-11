@@ -5,8 +5,9 @@
 // page shows. Pages marked <html data-auth="public"> (the sign-in page) are open.
 //
 //   await AIS.auth.login(email, password, { remember, onSlow });
-//   await AIS.auth.signup(email, password, { onSlow });  // → { needsConfirmation }
-//   AIS.auth.user();  AIS.auth.signOut();
+//   await AIS.auth.signup(email, password, { fullName, phone, onSlow });  // → { needsConfirmation }
+//   AIS.auth.user();  // { id, email, fullName, phone }
+//   AIS.auth.displayName();  AIS.auth.signOut();
 //
 // The session is kept in localStorage ("Keep me signed in") or sessionStorage.
 // There is no refresh endpoint yet, so an expired session means signing in again.
@@ -65,16 +66,33 @@
   }
 
   // Keeps only what the portal needs from Supabase's { user, session }.
+  // Full name and phone come from user_metadata (set at sign-up).
   function toSession(data) {
     const session = data && (data.session || data);
     if (!session || !session.access_token) return null;
     const user = session.user || (data && data.user) || {};
+    const meta = user.user_metadata || {};
     return {
       access_token: session.access_token,
       refresh_token: session.refresh_token || "",
       expires_at: session.expires_at || Math.floor(Date.now() / 1000) + (Number(session.expires_in) || 3600),
-      user: { id: user.id || "", email: user.email || "" },
+      user: {
+        id: user.id || "",
+        email: user.email || "",
+        fullName: String(meta.full_name || meta.fullName || meta.name || "").trim(),
+        phone: String(meta.phone || user.phone || "").trim(),
+      },
     };
+  }
+
+  // "ada.obi@company.com" → "Ada Obi" (used when no full name was given).
+  function nameFromEmail(email) {
+    return String(email || "")
+      .split("@")[0]
+      .split(/[._-]+/)
+      .filter(Boolean)
+      .map((part) => part[0].toUpperCase() + part.slice(1))
+      .join(" ");
   }
 
   // ---- Requests -------------------------------------------------------------
@@ -163,6 +181,13 @@
     session: currentSession,
     user: () => (currentSession() || {}).user || null,
     isSignedIn: () => Boolean(currentSession()),
+
+    // Full name if the account has one, otherwise a name made from the email.
+    displayName() {
+      const user = AIS.auth.user();
+      if (!user) return "";
+      return user.fullName || nameFromEmail(user.email) || "Signed in";
+    },
     safeNext,
     loginUrl,
 
@@ -175,8 +200,11 @@
     },
 
     // Returns { needsConfirmation: true } when Supabase requires email confirmation.
-    async signup(email, password, { onSlow } = {}) {
-      const data = await post("/auth/signup", { email, password }, { onSlow });
+    // fullName and phone are sent both as top-level fields and as Supabase
+    // user metadata (options.data), so the API can use either.
+    async signup(email, password, { fullName = "", phone = "", onSlow } = {}) {
+      const body = { email, password, fullName, phone, options: { data: { full_name: fullName, phone } } };
+      const data = await post("/auth/signup", body, { onSlow });
       // With confirmations on, Supabase answers an existing email with a user
       // that has no identities instead of an error.
       if (data && data.user && Array.isArray(data.user.identities) && !data.user.identities.length) {
@@ -198,7 +226,13 @@
 
   if (isLocalHost && new URLSearchParams(location.search).get("demo") === "1" && !currentSession()) {
     storeSession(
-      { access_token: "demo", refresh_token: "", expires_at: Math.floor(Date.now() / 1000) + 12 * 3600, user: { id: "demo", email: "demo@localhost" }, demo: true },
+      {
+        access_token: "demo",
+        refresh_token: "",
+        expires_at: Math.floor(Date.now() / 1000) + 12 * 3600,
+        user: { id: "demo", email: "demo@localhost", fullName: "Demo User", phone: "+234 800 000 0000" },
+        demo: true,
+      },
       false
     );
   }
