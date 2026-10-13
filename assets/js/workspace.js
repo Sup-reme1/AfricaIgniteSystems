@@ -5,6 +5,7 @@
 //   AIS.workspace.select(id);                    // switch (reloads the page)
 //   await AIS.workspace.create("Growth team");   // POST /workspaces
 //   await AIS.workspace.members(ws.id);          // [{ userId, email, fullName, role }]
+//   await AIS.workspace.users(ws.id);            // everyone registered (admins only), for search
 //
 // In the local demo session (?demo=1) there's one fake workspace and no API calls.
 (function () {
@@ -14,6 +15,7 @@
 
   let listPromise = null;
   const membersCache = new Map();
+  const usersCache = new Map();
 
   function storedId() {
     try {
@@ -97,6 +99,21 @@
     },
 
     forgetMembers: (id) => membersCache.delete(id),
+
+    // Every registered user ({ userId, email, fullName }), for finding people to
+    // add. Owners and admins only (others get 403). Loaded once per page.
+    users(id) {
+      if (!usersCache.has(id)) {
+        usersCache.set(
+          id,
+          AIS.api.get(`/workspaces/${id}/users`).catch((error) => {
+            usersCache.delete(id);
+            throw error;
+          })
+        );
+      }
+      return usersCache.get(id);
+    },
 
     canEdit: (role) => ["owner", "admin", "member"].includes(role),
     isAdmin: (role) => ["owner", "admin"].includes(role),

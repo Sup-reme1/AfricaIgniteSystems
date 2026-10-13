@@ -57,6 +57,7 @@ assets/
   js/workspace.js     AIS.workspace: current workspace (remembered per browser), list/create/rename/delete, members
   js/okrs.js          AIS.okrs: shared OKR model, loaded from the API (demo: local file), async create/update/delete
   js/drawer.js        AIS.drawer: right-hand slide-over modal (focus trap, Esc, backdrop, beforeClose)
+  js/confirm.js       AIS.confirm({ title, message, confirmLabel, tone }): confirmation dialog, resolves true/false
   js/objective-form.js  AIS.objectiveForm: "New objective" form in the slide-over
   js/router.js        client-side navigation (swaps <main> only) + page lifecycle (AIS.definePage)
   js/pages/*.js       one script per page, named after its data-page
@@ -98,10 +99,22 @@ The `<head>` loads `assets/js/config.js` and `assets/js/auth.js` first (the sign
 - **Endpoints used:** `/me`, `/workspaces` (+ members), `/workspaces/:id/okrs`, objectives / milestones / items / dependencies CRUD, `/dependencies/:id/resolve`, and `/activity`. They're specified in `docs/database-schema.md` §7.
 - **`AIS.api`:** adds `Authorization: Bearer <access_token>`. A 401 calls `AIS.auth.expire()`, which goes to `login.html?next=…&expired=1`. The first slow request shows a "Waking up the server" toast.
 - **Sidebar workspace switcher** (`app.js`): lists your workspaces with your role in each, and has "New workspace". Switching reloads the page so every cache starts clean.
-- **Settings** (`settings.html` + `pages/settings.js`):
+- **Confirmations:** every action on Settings (save profile, rename, delete workspace, add member, change role, remove, leave) asks first with `await AIS.confirm(...)`.
+  - Use `tone: "danger"` for anything destructive. Danger dialogs focus Cancel first, so Enter can't destroy anything.
+  - Esc, Cancel or a click outside resolves `false`. If a role change is cancelled, the select goes back to the old role.
+  - Never use `window.confirm`.
+- **Settings** (`settings.html` + `pages/settings.js`): three **accordion** sections (Profile, Workspace, Members). Each has a header button (`aria-expanded`) with a one-line summary, e.g. "3 members in Product".
+  - Which sections are open is remembered in `localStorage` (`ais:settings:open`). Only Profile is open by default.
+  - Render functions fill only the panel (`data-settings-*`), not the header.
   - **Profile:** `GET` / `PATCH /me`. It updates the stored session and fires `profile:change`, which refreshes the header.
   - **Workspace:** rename (admins), and delete (owners, with an inline confirmation).
-  - **Members:** list, add by email, change role, remove (admins), and leave.
+  - **Members:** list, add, change role, remove (admins), and leave.
+  - **Adding a person:** a search box (a combobox) backed by `GET /workspaces/:id/users`, which returns everyone registered and is limited to owners and admins. The list is fetched once, on the first search.
+    - Nobody is listed until 2 characters are typed. It then shows up to 8 matches on name or email, with the match highlighted, and existing members marked "Already a member".
+    - There's no hint line under the box, which keeps the search / Role / Add member row aligned. Messages such as "No one matches…" and "Searching…" appear inside the dropdown.
+    - The arrow keys, Enter, Esc and the mouse all work. Adding posts the chosen person's email.
+    - If the users list can't be loaded, typing a full email still works.
+  - Read form fields with `form.elements.namedItem("…")`. `form.role` and `form.name` hit built-in properties instead of the fields.
 - **Testing against the API:**
   - The screenshot tool runs in demo mode, so it can't reach the API.
   - Use the test account (ask the user for its credentials), with Node scripts that load the real frontend modules plus small browser stand-ins.

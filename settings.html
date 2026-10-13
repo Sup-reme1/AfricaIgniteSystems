@@ -33,16 +33,68 @@
             <h1 class="font-headline-lg text-headline-lg text-on-surface">Settings</h1>
             <p class="font-body-md text-body-md text-on-surface-variant">Your profile, the current workspace and who can access it.</p>
           </div>
-          <!-- Rendered by assets/js/pages/settings.js -->
-          <section class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm" aria-labelledby="profile-heading" data-settings-profile>
-            <p class="font-body-sm text-body-sm text-on-surface-variant">Loading profile…</p>
-          </section>
-          <section class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm" aria-labelledby="workspace-heading" data-settings-workspace>
-            <p class="font-body-sm text-body-sm text-on-surface-variant">Loading workspace…</p>
-          </section>
-          <section class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm" aria-labelledby="members-heading" data-settings-members>
-            <p class="font-body-sm text-body-sm text-on-surface-variant">Loading members…</p>
-          </section>
+          <!-- Accordion sections; panels are rendered by assets/js/pages/settings.js -->
+          <div class="space-y-space-md" data-settings-accordion>
+            <section class="bg-surface-container-lowest rounded-xl shadow-sm" data-accordion-section="profile">
+              <h2>
+                <button type="button" id="settings-profile-toggle" aria-expanded="true" aria-controls="settings-profile-panel"
+                  class="w-full flex items-center justify-between gap-space-md p-space-lg text-left rounded-xl hover:bg-surface-container-low/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-container"
+                  data-accordion-toggle>
+                  <span class="flex items-center gap-space-md min-w-0">
+                    <span class="w-10 h-10 shrink-0 rounded-lg bg-primary-fixed text-primary flex items-center justify-center"><span class="material-symbols-outlined">person</span></span>
+                    <span class="min-w-0">
+                      <span class="block font-headline-sm text-headline-sm text-on-surface">Your profile</span>
+                      <span class="block font-body-sm text-body-sm text-on-surface-variant truncate" data-accordion-summary>Name, phone and email</span>
+                    </span>
+                  </span>
+                  <span class="material-symbols-outlined text-on-surface-variant transition-transform" data-accordion-icon>expand_more</span>
+                </button>
+              </h2>
+              <div id="settings-profile-panel" role="region" aria-labelledby="settings-profile-toggle" class="px-space-lg pb-space-lg" data-settings-profile>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Loading profile…</p>
+              </div>
+            </section>
+
+            <section class="bg-surface-container-lowest rounded-xl shadow-sm" data-accordion-section="workspace">
+              <h2>
+                <button type="button" id="settings-workspace-toggle" aria-expanded="false" aria-controls="settings-workspace-panel"
+                  class="w-full flex items-center justify-between gap-space-md p-space-lg text-left rounded-xl hover:bg-surface-container-low/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-container"
+                  data-accordion-toggle>
+                  <span class="flex items-center gap-space-md min-w-0">
+                    <span class="w-10 h-10 shrink-0 rounded-lg bg-primary-fixed text-primary flex items-center justify-center"><span class="material-symbols-outlined">workspaces</span></span>
+                    <span class="min-w-0">
+                      <span class="block font-headline-sm text-headline-sm text-on-surface">Workspace</span>
+                      <span class="block font-body-sm text-body-sm text-on-surface-variant truncate" data-accordion-summary>Name and your role</span>
+                    </span>
+                  </span>
+                  <span class="material-symbols-outlined text-on-surface-variant transition-transform" data-accordion-icon>expand_more</span>
+                </button>
+              </h2>
+              <div id="settings-workspace-panel" role="region" aria-labelledby="settings-workspace-toggle" class="px-space-lg pb-space-lg" data-settings-workspace>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Loading workspace…</p>
+              </div>
+            </section>
+
+            <section class="bg-surface-container-lowest rounded-xl shadow-sm" data-accordion-section="members">
+              <h2>
+                <button type="button" id="settings-members-toggle" aria-expanded="false" aria-controls="settings-members-panel"
+                  class="w-full flex items-center justify-between gap-space-md p-space-lg text-left rounded-xl hover:bg-surface-container-low/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-container"
+                  data-accordion-toggle>
+                  <span class="flex items-center gap-space-md min-w-0">
+                    <span class="w-10 h-10 shrink-0 rounded-lg bg-primary-fixed text-primary flex items-center justify-center"><span class="material-symbols-outlined">group</span></span>
+                    <span class="min-w-0">
+                      <span class="block font-headline-sm text-headline-sm text-on-surface">Members</span>
+                      <span class="block font-body-sm text-body-sm text-on-surface-variant truncate" data-accordion-summary>Who can access this workspace</span>
+                    </span>
+                  </span>
+                  <span class="material-symbols-outlined text-on-surface-variant transition-transform" data-accordion-icon>expand_more</span>
+                </button>
+              </h2>
+              <div id="settings-members-panel" role="region" aria-labelledby="settings-members-toggle" class="px-space-lg pb-space-lg" data-settings-members>
+                <p class="font-body-sm text-body-sm text-on-surface-variant">Loading members…</p>
+              </div>
+            </section>
+          </div>
         </div>
       </main>
       <div data-include="footer"></div>
@@ -55,6 +107,7 @@
     <script src="assets/js/workspace.js"></script>
     <script src="assets/js/okrs.js"></script>
     <script src="assets/js/drawer.js"></script>
+    <script src="assets/js/confirm.js"></script>
     <script src="assets/js/objective-form.js"></script>
     <script src="assets/js/router.js"></script>
     <script src="assets/js/pages/settings.js"></script>
